@@ -1,7 +1,6 @@
 // Map layer configuration for Mapbox
 
 export const layerConfig = {
-    // Sweden outline - crisp border
     swedenOutline: {
       id: 'sweden-outline',
       type: 'line' as const,
@@ -45,7 +44,7 @@ export const layerConfig = {
       source: 'sweden-mask',
       paint: {
         'fill-color': '#000000',
-        'fill-opacity': 0.45
+        'fill-opacity': 0.12
       }
     }
   };
