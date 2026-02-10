@@ -1,0 +1,164 @@
+{
+    "organizations": [
+      {
+        "id": 1,
+        "name": "TechHub Stockholm",
+        "description": "Centro de innovación tecnológica enfocado en startups de IA y machine learning",
+        "type": "Centro de Innovación",
+        "activity": "XR",
+        "contact": {
+          "email": "info@techhubstockholm.se",
+          "phone": "+46 8 123 4567"
+        },
+        "location": {
+          "city": "Stockholm",
+          "lat": 59.3293,
+          "lng": 18.0686
+        }
+      },
+      {
+        "id": 2,
+        "name": "Green Energy Gothenburg",
+        "description": "Organización dedicada a energías renovables y sostenibilidad ambiental",
+        "type": "Energías Renovables",
+        "activity": "UI",
+        "contact": {
+          "email": "contact@greenenergygtb.se",
+          "phone": "+46 31 234 5678"
+        },
+        "location": {
+          "city": "Gothenburg",
+          "lat": 57.7089,
+          "lng": 11.9746
+        }
+      },
+      {
+        "id": 3,
+        "name": "Malmö Digital Hub",
+        "description": "Plataforma de desarrollo web y aplicaciones móviles para empresas nórdicas",
+        "type": "Agencia Digital",
+        "activity": "Visualization",
+        "contact": {
+          "email": "hello@malmodigital.se",
+          "phone": "+46 40 345 6789"
+        },
+        "location": {
+          "city": "Malmö",
+          "lat": 55.6050,
+          "lng": 12.9773
+        }
+      },
+      {
+        "id": 4,
+        "name": "Uppsala Research Institute",
+        "description": "Instituto de investigación en biotecnología y ciencias de la vida",
+        "type": "Investigación",
+        "activity": "Games",
+        "contact": {
+          "email": "research@uppsalainst.se",
+          "phone": "+46 18 456 7890"
+        },
+        "location": {
+          "city": "Uppsala",
+          "lat": 59.8585,
+          "lng": 17.6383
+        }
+      },
+      {
+        "id": 5,
+        "name": "Norrköping Creative Studio",
+        "description": "Estudio de diseño y producción audiovisual para contenido digital",
+        "type": "Agencia Creativa",
+        "activity": "XR",
+        "contact": {
+          "email": "studio@nkopingcreative.se",
+          "phone": "+46 11 567 8901"
+        },
+        "location": {
+          "city": "Norrköping",
+          "lat": 58.5941,
+          "lng": 16.1842
+        }
+      },
+      {
+        "id": 6,
+        "name": "Linköping Tech Solutions",
+        "description": "Soluciones empresariales de software y consultoría tecnológica",
+        "type": "Consultoría Tech",
+        "activity": "UI",
+        "contact": {
+          "email": "solutions@linkopingtech.se",
+          "phone": "+46 13 678 9012"
+        },
+        "location": {
+          "city": "Linköping",
+          "lat": 58.4109,
+          "lng": 15.6267
+        }
+      },
+      {
+        "id": 7,
+        "name": "Örebro Social Impact",
+        "description": "Organización sin ánimo de lucro enfocada en emprendimiento social",
+        "type": "ONG/Impacto Social",
+        "activity": "Visualization",
+        "contact": {
+          "email": "impact@orebrosocial.se",
+          "phone": "+46 19 789 0123"
+        },
+        "location": {
+          "city": "Örebro",
+          "lat": 59.2741,
+          "lng": 15.2134
+        }
+      },
+      {
+        "id": 8,
+        "name": "Västerås Manufacturing Hub",
+        "description": "Centro de innovación industrial para manufacturación avanzada y I+D",
+        "type": "Manufacturación",
+        "activity": "Games",
+        "contact": {
+          "email": "hub@vmanufacturing.se",
+          "phone": "+46 21 890 1234"
+        },
+        "location": {
+          "city": "Västerås",
+          "lat": 59.6119,
+          "lng": 16.5477
+        }
+      },
+      {
+        "id": 9,
+        "name": "Helsingborg Trade Network",
+        "description": "Red de comercio y logística para empresas de exportación nórdicas",
+        "type": "Logística/Comercio",
+        "activity": "XR",
+        "contact": {
+          "email": "trade@helsingborg-network.se",
+          "phone": "+46 42 901 2345"
+        },
+        "location": {
+          "city": "Helsingborg",
+          "lat": 56.0465,
+          "lng": 12.6955
+        }
+      },
+      {
+        "id": 10,
+        "name": "Jönköping Education Lab",
+        "description": "Laboratorio de innovación educativa y desarrollo de metodologías de enseñanza",
+        "type": "Educación",
+        "activity": "UI",
+        "contact": {
+          "email": "lab@jonkopingedu.se",
+          "phone": "+46 36 123 4567"
+        },
+        "location": {
+          "city": "Jönköping",
+          "lat": 57.7819,
+          "lng": 14.1654
+        }
+      }
+    ]
+  }
