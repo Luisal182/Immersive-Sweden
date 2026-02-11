@@ -5,13 +5,16 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './MapContainer.module.css';
 import { useMapLayers } from '@/hooks/useMapLayers';
-
+import { useOrganizations } from '@/hooks/useOrganizations';
+import { useMapMarkers } from '@/hooks/useMapMarkers';
 // Set Mapbox token from environment variable
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
 export default function MapContainer() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const { organizations, loading, error } = useOrganizations();
+  useMapMarkers({ map: map.current, organizations });
 
   useEffect(() => {
     if (!mapContainer.current) return;
