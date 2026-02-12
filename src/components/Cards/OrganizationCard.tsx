@@ -25,6 +25,20 @@ export default function OrganizationCard({
   };
 
   const badgeColor = getBadgeColor(organization.type);
+  const handleViewOnMap = () => {
+    // Obtener la instancia del mapa
+    const mapContainer = document.querySelector('[class*="map"]') as HTMLElement;
+    
+    if (mapContainer) {
+      // Scroll suave hacia el mapa
+      mapContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Cerrar modal
+      onClose?.();
+      
+      console.log(`📍 Centrado en: ${organization.name} (${organization.location.city})`);
+    }
+  };
 
   return (
     <div className={styles.card}>
@@ -82,15 +96,18 @@ export default function OrganizationCard({
         </a>
       </div>
 
-      {/* Action Buttons */}
-      <div className={styles.actions}>
-        <button className={styles.primaryBtn}>
-          Get in Touch
-        </button>
-        <button className={styles.secondaryBtn}>
-          View on Map
-        </button>
-      </div>
-    </div>
+  {/* Action Buttons */}
+<div className={styles.actions}>
+  <button className={styles.primaryBtn}>
+    Get in Touch
+  </button>
+  <button 
+    className={styles.secondaryBtn}
+    onClick={() => handleViewOnMap()}
+  >
+    View on Map
+  </button>
+</div>
+</div>
   );
 }
