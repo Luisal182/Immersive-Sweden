@@ -1,8 +1,13 @@
+import { Organization } from '@/types';
 import { useMapStore } from '@/store/mapStore';
 import OrganizationCard from '@/components/Cards/OrganizationCard';
 import styles from './Modal.module.css';
 
-export default function Modal() {
+interface ModalProps {
+  flyToOrganization?: (organization: Organization) => void;
+}
+
+export default function Modal({ flyToOrganization }: ModalProps) {
   const { isModalOpen, setModalOpen, getSelectedOrganization } = useMapStore();
   const selectedOrg = getSelectedOrganization();
 
@@ -28,6 +33,7 @@ export default function Modal() {
         <OrganizationCard 
           organization={selectedOrg}
           onClose={handleClose}
+          flyToOrganization={flyToOrganization}
         />
       </div>
     </div>

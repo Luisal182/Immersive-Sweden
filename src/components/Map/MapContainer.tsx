@@ -9,6 +9,7 @@ import { useOrganizations } from '@/hooks/useOrganizations';
 import { useMapMarkers } from '@/hooks/useMapMarkers';
 import Modal from '@/components/Modal/Modal';
 import { useMapStore } from '@/store/mapStore';
+import { useMapInteractions } from '@/hooks/useMapInteractions';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -17,6 +18,7 @@ export default function MapContainer() {
   const map = useRef<mapboxgl.Map | null>(null);
   const { organizations, loading, error } = useOrganizations();
   const { setOrganizations } = useMapStore();
+  const { flyToOrganization } = useMapInteractions({ map: map.current });
 
   useMapMarkers({ map: map.current, organizations });
 
@@ -59,7 +61,7 @@ export default function MapContainer() {
 
   return (
     <div className={styles.container}>
-      <Modal />
+      <Modal flyToOrganization={flyToOrganization} />
       <div ref={mapContainer} className={styles.map} />
       
       {/* Loading indicator */}

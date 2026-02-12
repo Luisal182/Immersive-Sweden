@@ -4,11 +4,13 @@ import styles from './OrganizationCard.module.css';
 interface OrganizationCardProps {
   organization: Organization;
   onClose?: () => void;
+  flyToOrganization?: (organization: Organization) => void;
 }
 
 export default function OrganizationCard({
   organization,
-  onClose
+  onClose,
+  flyToOrganization
 }: OrganizationCardProps) {
   
   // Dynamic color based on organization type
@@ -25,19 +27,13 @@ export default function OrganizationCard({
   };
 
   const badgeColor = getBadgeColor(organization.type);
+
   const handleViewOnMap = () => {
-    // Obtener la instancia del mapa
-    const mapContainer = document.querySelector('[class*="map"]') as HTMLElement;
-    
-    if (mapContainer) {
-      // Scroll suave hacia el mapa
-      mapContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      
-      // Cerrar modal
-      onClose?.();
-      
-      console.log(`📍 Centrado en: ${organization.name} (${organization.location.city})`);
+    if (flyToOrganization) {
+      flyToOrganization(organization);
     }
+    onClose?.();
+    console.log(`📍 Centrado en: ${organization.name} (${organization.location.city})`);
   };
 
   return (
@@ -96,18 +92,18 @@ export default function OrganizationCard({
         </a>
       </div>
 
-  {/* Action Buttons */}
-<div className={styles.actions}>
-  <button className={styles.primaryBtn}>
-    Get in Touch
-  </button>
-  <button 
-    className={styles.secondaryBtn}
-    onClick={() => handleViewOnMap()}
-  >
-    View on Map
-  </button>
-</div>
-</div>
+      {/* Action Buttons */}
+      <div className={styles.actions}>
+        <button className={styles.primaryBtn}>
+          Get in Touch
+        </button>
+        <button 
+          className={styles.secondaryBtn}
+          onClick={() => handleViewOnMap()}
+        >
+          View on Map
+        </button>
+      </div>
+    </div>
   );
 }
