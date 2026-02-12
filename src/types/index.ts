@@ -1,40 +1,44 @@
+// Organization Interface
 export interface Organization {
     id: number;
     name: string;
     description: string;
-     type: string;
-     activity: 'XR' | 'UI' | 'Visualization' | 'Games' | 'Gaming' | 'Other';    
-     contact:
-        {
-            email: string;
-            phone: string;
-            website: string;
-        };
-        location:{
-            city: string;
-            lat: number;
-            lng: number;
-
-        }
-    }
-
-    //API response types
-
-export interface OrganizationResponse {
+    type: 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies';
+    activity: 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies';
+    contact: {
+      email: string;
+      phone: string;
+      website?: string;
+    };
+    location: {
+      city: string;
+      lat: number;
+      lng: number;
+    };
+  }
+  
+  // API Response
+  export interface OrganizationResponse {
     organizations: Organization[];
-}
-
-//Map State types
-export interface MapState {
+  }
+  
+  // Map State
+  export interface MapState {
     organizations: Organization[];
     filteredOrganizations: Organization[];
-    currentFilter: 'all' | 'XR' | 'UI' | 'Visualization' | 'Games';
+    currentFilter: 'all' | 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies';
     searchTerm: string;
     selectedOrgId: number | null;
   }
-
+  
   // Sweden Border
-export interface SwedenCoordinates {
+  export interface SwedenCoordinates {
     type: 'Polygon';
     coordinates: number[][][];
+  }
+  
+  export interface SwedenBorder {
+    type: 'Feature';
+    geometry: SwedenCoordinates;
+    properties: Record<string, unknown>;
   }
