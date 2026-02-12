@@ -4,11 +4,13 @@ import styles from './OrganizationCard.module.css';
 interface OrganizationCardProps {
   organization: Organization;
   onClose?: () => void;
+  flyToOrganization?: (organization: Organization) => void;
 }
 
 export default function OrganizationCard({
   organization,
-  onClose
+  onClose,
+  flyToOrganization
 }: OrganizationCardProps) {
   
   // Dynamic color based on organization type
@@ -25,6 +27,14 @@ export default function OrganizationCard({
   };
 
   const badgeColor = getBadgeColor(organization.type);
+
+  const handleViewOnMap = () => {
+    if (flyToOrganization) {
+      flyToOrganization(organization);
+    }
+    onClose?.();
+    console.log(`📍 Centrado en: ${organization.name} (${organization.location.city})`);
+  };
 
   return (
     <div className={styles.card}>
@@ -87,7 +97,10 @@ export default function OrganizationCard({
         <button className={styles.primaryBtn}>
           Get in Touch
         </button>
-        <button className={styles.secondaryBtn}>
+        <button 
+          className={styles.secondaryBtn}
+          onClick={() => handleViewOnMap()}
+        >
           View on Map
         </button>
       </div>

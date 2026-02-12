@@ -1,6 +1,6 @@
 # Immersive Sweden 🗺️
 
-An interactive web platform to discover and connect with Swedish companies working in immersive technologies (UI/UX, Visualization, Games, XR, AR, and more).
+An interactive web platform to discover and connect with Swedish companies working in immersive technologies (XR, AI, Games, Visualization, Culture, Technologies).
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 ![Phase](https://img.shields.io/badge/Phase-2%20%2F%206-blue)
@@ -10,13 +10,13 @@ An interactive web platform to discover and connect with Swedish companies worki
 
 ## 🎯 Overview
 
-**Immersive Sweden** is an interactive 3D map platform built to showcase the ecosystem of Swedish companies working in immersive technologies. Users can search, filter, and discover companies by activity sector, location, and contact information.
+**Immersive Sweden** is an interactive map platform built to showcase the ecosystem of Swedish companies working in immersive technologies. Users can search, filter, and discover companies by activity sector, location, and contact information.
 
 ### Key Features
 
 - 🗺️ Interactive map of Sweden with company markers
-- 🔍 Real-time search functionality
-- 🏷️ Filter by activity (XR, UI, Visualization, Games)
+- 📍 14 organizations with precise geolocation
+- 🏷️ Filter by immersive tech sectors (XR, AI, Games, Visualization, Culture, Technologies)
 - 📱 Fully responsive design (mobile-first)
 - 🌍 Geolocation support
 - 💬 Company contact information
@@ -37,40 +37,47 @@ An interactive web platform to discover and connect with Swedish companies worki
 
 1. **Clone the repository**
 
-   ```bash
-   git clone https://github.com/yourusername/immersive-sweden.git
+```bash
+   git clone https://github.com/Luisal182/immersive-sweden.git
    cd immersive-sweden
-   ```
+```
 
 2. **Install dependencies**
 
-   ```bash
+```bash
    npm install
-   ```
+```
 
 3. **Setup environment variables**
 
-   ```bash
+```bash
    # Create .env.local in root directory
    cp .env.example .env.local
-   ```
+```
 
-   Add your Mapbox token:
+Add your Mapbox token:
 
-   ```
+```
    NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
-   ```
+```
 
 4. **Run development server**
 
-   ```bash
+```bash
    npm run dev
-   ```
+```
 
 5. **Open in browser**
-   ```
+
+```
    http://localhost:3000
-   ```
+```
+
+6. **View on Vercel**
+
+```
+   https://immersive-sweden.vercel.app
+```
 
 ---
 
@@ -82,16 +89,16 @@ An interactive web platform to discover and connect with Swedish companies worki
 - **Language:** TypeScript
 - **UI/Maps:** Mapbox GL JS
 - **Styling:** CSS Modules
-- **State:** Zustand
-- **Animations:** Framer Motion
+- **State:** Zustand (planned)
+- **Animations:** Framer Motion (planned)
 
 ### Backend
 
 - **API:** Next.js API Routes
+- **Data:** JSON (local, planned: Bolagsverket + Firebase)
 - **External APIs:**
-  - [Bolagsverket API](https://bolagsverket.se/) - Swedish company registry
-  - [OpenStreetMap Nominatim](https://nominatim.org/) - Free geocoding
-- **Caching:** Firebase (planned)
+  - [Bolagsverket API](https://bolagsverket.se/) - Swedish company registry (future)
+  - [OpenStreetMap Nominatim](https://nominatim.org/) - Free geocoding (future)
 
 ### DevOps
 
@@ -116,11 +123,15 @@ immersive-sweden/
 │   │   ├── Map/
 │   │   │   ├── MapContainer.tsx
 │   │   │   └── MapContainer.module.css
+│   │   ├── Cards/
+│   │   │   ├── OrganizationCard.tsx
+│   │   │   └── OrganizationCard.module.css
 │   │   └── ...                  # Other components (future)
 │   │
 │   ├── hooks/
 │   │   ├── useMapLayers.ts      # Map layer management
 │   │   ├── useOrganizations.ts  # Load organization data
+│   │   ├── useMapMarkers.ts     # Marker management
 │   │   └── ...                  # Other hooks (future)
 │   │
 │   ├── store/
@@ -135,9 +146,11 @@ immersive-sweden/
 │   │
 │   └── data/
 │       ├── swedenBorder.ts      # Sweden coordinates
-│       └── organizations.json   # Mock company data
+│       └── organizations.json   # 14 company mock data
 │
-├── public/                      # Static assets
+├── public/
+│   └── data/
+│       └── organizations.json   # Accessible JSON for fetch
 ├── .env.local                   # Environment variables (local)
 ├── .gitignore
 ├── package.json
@@ -173,35 +186,34 @@ npm run lint
 
 ### Features
 
-#### Search Organizations
+#### View Organizations on Map
 
-- Type company name in the search field (top-right)
-- Results filter in real-time
+- Map displays **14 Swedish companies** in immersive tech
+- Each company shows a **red pin marker (📍)**
+- Markers positioned by precise geolocation coordinates
 
-#### Filter by Activity
+#### Organization Data
 
-- Click filter buttons (bottom-right):
-  - 🥽 XR (Extended Reality)
-  - 🎨 UI (User Interface)
-  - 📊 Visualization
-  - 🎮 Games
+Each organization includes:
 
-#### View Organization Details
+- **Name:** Company name
+- **Type:** XR, AI, Games, Visualization, Culture, Technologies
+- **Activity:** Business focus area
+- **Location:** City and coordinates
+- **Contact:** Email and phone number
+- **Description:** Company overview
 
-- Click any marker on the map
-- View company information card (future phase)
-- Contact information & location
+#### Interactive Map
 
-#### Geolocation
-
-- Enable geolocation in browser
-- See your current location on map (future phase)
+- **Sweden Border:** Blue glow effect with inverted mask (world darkened)
+- **Responsive Design:** Works on desktop, tablet, mobile
+- **Mapbox GL:** Professional mapping library
 
 ---
 
 ## 📊 Current Development Status
 
-### Phase 1: Foundation ✅
+### Phase 1: Foundation ✅ COMPLETE
 
 - [x] Next.js 14 setup with TypeScript
 - [x] Mapbox GL integration
@@ -210,17 +222,35 @@ npm run lint
 - [x] Responsive design
 - [x] GitHub & Vercel setup
 
-### Phase 2: Mock Data Rendering 🔄
+### Phase 2: Organization Markers & Data 🔄 IN PROGRESS
 
-- [ ] Load organizations from JSON
-- [ ] Dynamic marker rendering
-- [ ] Company information cards
-- [ ] Click-to-view functionality
-- [ ] Filter by activity
+- [x] Load organizations from JSON
+- [x] Dynamic marker rendering (14 organizations)
+- [x] Red pin markers on map
+- [x] OrganizationCard component (created)
+- [x] Mapbox layer management (utils + hooks)
+- [ ] Click marker → Open modal with card
+- [ ] Filter by activity (XR, AI, Games, etc)
 - [ ] Search functionality
-- [ ] Marker animations
+- [ ] Marker animations (hover, click)
 
-### Phase 3-6: Production Features 📋
+### Phase 3: Modal & Interactions 📋 PLANNED
+
+- [ ] Create Modal component
+- [ ] Zustand store for global state
+- [ ] Open modal on marker click
+- [ ] Display organization card in modal
+- [ ] Close button & escape key support
+- [ ] Animation transitions
+
+### Phase 4: Filtering & Search 📋 PLANNED
+
+- [ ] Implement activity filters (working buttons)
+- [ ] Implement search by name
+- [ ] Filter markers dynamically
+- [ ] Update card display
+
+### Phase 5-6: Production Features 📋 PLANNED
 
 See [MVP Work Plan](./MVP_PLAN.md) for full roadmap.
 
@@ -239,141 +269,13 @@ NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
 
 # Future: Firebase
 # NEXT_PUBLIC_FIREBASE_API_KEY=your_key_here
-# NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
 ```
 
 ⚠️ **IMPORTANT:** Never commit `.env.local` - use `.env.example` for sharing.
 
 ---
 
-## 📚 API Integration (Future)
-
-### Bolagsverket API
-
-Search Swedish companies by keyword:
-
-```typescript
-GET /api/search-companies?keyword=XR
-```
-
-Returns companies matching the keyword in their activity description.
-
-### Nominatim Geocoding
-
-Convert address to coordinates:
-
-```typescript
-POST /api/geocode
-{ "address": "Storgatan 1, Stockholm, Sweden" }
-```
-
-See [API Documentation](./docs/API.md) for details.
-
----
-
-## 🎨 Customization
-
-### Change Map Colors
-
-Edit `src/utils/mapLayerConfig.ts`:
-
-```typescript
-paint: {
-  'line-color': '#4fc3ff',      // Change border color
-  'fill-opacity': 0.45,          // Adjust darkness
-}
-```
-
-### Add New Activities
-
-Edit `src/types/index.ts`:
-
-```typescript
-activity: "XR" | "UI" | "Visualization" | "Games" | "NewActivity";
-```
-
-### Customize Organizations Data
-
-Edit `src/data/organizations.json`:
-
-```json
-{
-  "name": "Company Name",
-  "activity": "XR",
-  "location": { "lat": 59.3293, "lng": 18.0686 }
-}
-```
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push to GitHub
-2. Connect repository to [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard
-4. Automatic deployment on push to `main`
-
-```bash
-# Deploy from CLI
-npm i -g vercel
-vercel
-```
-
-### Deploy to Other Platforms
-
-The project can be deployed to any Node.js hosting:
-
-- Netlify
-- AWS
-- Google Cloud
-- Azure
-- Digital Ocean
-
-See [Deployment Guide](./docs/DEPLOYMENT.md) for details.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-1. **Create a feature branch:**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** and test locally
-
-3. **Commit with conventional commits:**
-
-   ```bash
-   git commit -m "feat: add search functionality"
-   ```
-
-4. **Push and create Pull Request:**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-5. **Await review** and merge to `develop`
-
-### Commit Message Convention
-
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation
-- `style:` - Formatting
-- `refactor:` - Code reorganization
-- `test:` - Tests
-- `chore:` - Maintenance
-
----
-
-## 📝 Documentation
+## 📚 Documentation
 
 - [MVP Work Plan](./MVP_PLAN.md) - Detailed project roadmap
 - [Architecture](./docs/ARCHITECTURE.md) - System design (coming soon)
@@ -386,23 +288,23 @@ We welcome contributions! Please follow these guidelines:
 
 ### Mapbox Not Loading
 
-- Verify `NEXT_PUBLIC_MAPBOX_TOKEN` is set
+- Verify `NEXT_PUBLIC_MAPBOX_TOKEN` is set in `.env.local`
 - Check token has `Maps:Read` scope
 - Clear browser cache (Ctrl+Shift+Del)
 
 ### Organizations Not Showing
 
-- Ensure `/src/data/organizations.json` exists
+- Ensure `public/data/organizations.json` exists
 - Check browser console for errors (F12)
-- Verify geolocation coordinates are valid
+- Verify geolocation coordinates are valid (lat between -90/90, lng between -180/180)
 
-### Performance Issues
+### GitHub/Vercel Out of Sync
 
-- Check network tab (F12) for slow requests
-- Enable browser DevTools performance profiling
-- See [Performance Guide](./docs/PERFORMANCE.md)
+- Pull latest from `main`: `git pull origin main`
+- Merge `develop` into `main` via GitHub PR
+- Vercel auto-deploys on push to `main`
 
-For more help, open an [Issue](https://github.com/yourusername/immersive-sweden/issues).
+For more help, open an [Issue](https://github.com/Luisal182/immersive-sweden/issues).
 
 ---
 
@@ -411,7 +313,7 @@ For more help, open an [Issue](https://github.com/yourusername/immersive-sweden/
 ### Get Help
 
 - 📧 Email: contact@immersivesweden.se (future)
-- 💬 GitHub Issues: [Report a bug](https://github.com/yourusername/immersive-sweden/issues)
+- 💬 GitHub Issues: [Report a bug](https://github.com/Luisal182/immersive-sweden/issues)
 - 📚 Documentation: [See docs/](./docs/)
 
 ### Report Security Issues
@@ -429,28 +331,32 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 ## 🙏 Acknowledgments
 
 - **Mapbox** - Interactive map technology
-- **Bolagsverket** - Swedish company registry data
-- **OpenStreetMap** - Nominatim geocoding service
+- **Bolagsverket** - Swedish company registry data (future integration)
+- **OpenStreetMap** - Nominatim geocoding service (future)
 - **Next.js** - React framework
 - **Vercel** - Hosting & deployment
+- **Sweden** - Inspiration for the project 🇸🇪
 
 ---
 
 ## 📈 Project Stats
 
-- **Repository:** [immersive-sweden](https://github.com/yourusername/immersive-sweden)
+- **Repository:** [immersive-sweden](https://github.com/Luisal182/immersive-sweden)
 - **Live Demo:** [immersive-sweden.vercel.app](https://immersive-sweden.vercel.app)
 - **Status:** Active Development
-- **Latest Release:** v0.1.0 (Beta)
-- **Contributors:** 1
-- **Last Updated:** February 10, 2026
+- **Current Release:** v0.2.0 (Beta - Phase 2 in progress)
+- **Contributors:** 1 (Luis Alfonso Arranz García)
+- **Last Updated:** February 11, 2026
+- **Organizations:** 14 mock companies loaded
+- **Markers:** All displaying on map with red pins
 
 ---
 
 ## 🗺️ Roadmap
 
-- **Q1 2026:** MVP with mock data ✅ In Progress
-- **Q1 2026:** Bolagsverket integration 🔄 Planned
+- **Q1 2026:** MVP with mock data & markers ✅ In Progress
+- **Q1 2026:** Modal interactions & filtering 🔄 Planned
+- **Q1 2026:** Bolagsverket integration 📋 Planned
 - **Q2 2026:** User authentication & profiles 📋 Planned
 - **Q2 2026:** 3D visualization with Three.js 📋 Planned
 - **Q3 2026:** Analytics dashboard 📋 Planned
@@ -462,36 +368,36 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 
 Have an idea? Found a bug? Let us know!
 
-1. Check existing [Issues](https://github.com/yourusername/immersive-sweden/issues)
-2. [Create a new issue](https://github.com/yourusername/immersive-sweden/issues/new)
-3. Join discussions in [Discussions tab](https://github.com/yourusername/immersive-sweden/discussions)
+1. Check existing [Issues](https://github.com/Luisal182/immersive-sweden/issues)
+2. [Create a new issue](https://github.com/Luisal182/immersive-sweden/issues/new)
+3. Join discussions in [Discussions tab](https://github.com/Luisal182/immersive-sweden/discussions)
 
 ---
 
-## 📱 Preview
+## 🔄 Recent Updates (February 11, 2026)
 
-### Desktop View
+### ✅ Completed
 
-```
-┌─────────────────────────────────────────────┐
-│  Immersive Sweden - Interactive Map         │
-├─────────────────────────────────────────────┤
-│                                             │
-│  [Search...] 🔍         [Map of Sweden]    │
-│                         with markers        │
-│                         🥽 XR              │
-│                         🎨 UI              │
-│                         📊 Visualization   │
-│                         🎮 Games           │
-│                                             │
-└─────────────────────────────────────────────┘
-```
+- [x] Created 14 mock organizations with immersive tech focus
+- [x] Implemented marker loading from JSON
+- [x] Red pin markers (📍) displaying on map
+- [x] OrganizationCard component with modern design
+- [x] CSS Module styling with badge colors
+- [x] GitHub synchronized (develop merged to main)
+- [x] Vercel deployment updated
 
-### Mobile View
+### 🔄 In Progress
 
-```
-Fully responsive on all devices (320px+)
-```
+- [ ] Modal component for card display
+- [ ] Click handler for markers
+- [ ] Global state with Zustand
+
+### 📋 Next Steps
+
+1. Create Modal component
+2. Implement modal open/close on marker click
+3. Display OrganizationCard inside modal
+4. Add filter functionality
 
 ---
 
@@ -500,4 +406,4 @@ Fully responsive on all devices (320px+)
 ---
 
 **Questions?** Open an issue or reach out!  
-**Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md)
+**Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md) (coming soon)

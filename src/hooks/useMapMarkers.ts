@@ -1,6 +1,9 @@
+// Custom hook to manage organization markers on map
+
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Organization } from '@/types';
+import { useMapStore } from '@/store/mapStore';
 
 interface UseMapMarkersProps {
   map: mapboxgl.Map | null;
@@ -9,6 +12,7 @@ interface UseMapMarkersProps {
 
 export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
   const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const { setSelectedOrgId } = useMapStore();
 
   const getActivityEmoji = (): string => {
     return '📍'; // Solo chincheta roja
@@ -25,14 +29,16 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
     organizations.forEach(org => {
       const el = document.createElement('div');
       el.className = 'marker';
+      el.style.cursor = 'pointer';
       el.innerHTML = `
         <div class="marker-inner">
-        ${getActivityEmoji()}
+          ${getActivityEmoji()}
         </div>
       `;
 
       el.addEventListener('click', () => {
         console.log('Clicked organization:', org.name);
+        setSelectedOrgId(org.id); // Abre modal
       });
 
       const marker = new mapboxgl.Marker(el)
@@ -43,5 +49,5 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
     });
 
     console.log(`✅ Added ${organizations.length} markers to map`);
-  }, [map, organizations]);
+  }, [map, organizations, setSelectedOrgId]);
 };

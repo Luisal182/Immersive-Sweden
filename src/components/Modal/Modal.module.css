@@ -1,0 +1,114 @@
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal.active {
+    pointer-events: auto;
+    opacity: 1;
+  }
+  
+  /* Backdrop - Semi-transparent overlay */
+  .backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .modal.active .backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Modal Content - Card container */
+  .content {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal.active .content {
+    transform: translateY(0);
+  }
+  
+  /* Responsive */
+  @media (min-width: 768px) {
+    .modal {
+      align-items: center;
+      justify-content: flex-end;
+    }
+  
+    .content {
+      position: absolute;
+      bottom: auto;
+      right: 20px;
+      width: auto;
+      max-width: 450px;
+      border-radius: 12px;
+      transform: scale(0.9) translateX(120%);
+      transform-origin: right center;
+      margin: 0;
+    }
+  
+    .modal.active .content {
+      transform: scale(1) translateX(0);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .content {
+      border-radius: 20px 20px 0 0;
+    }
+  }
+  
+  /* Scrollbar styling */
+  .content::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+  
+  .content::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .modal,
+    .backdrop,
+    .content {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
