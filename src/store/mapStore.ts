@@ -8,6 +8,7 @@ interface MapStoreState {
   currentFilter: 'all' | 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies';
   searchTerm: string;
   isModalOpen: boolean;
+  isMapCentered: boolean;
 
   // Actions
   setOrganizations: (organizations: Organization[]) => void;
@@ -15,6 +16,7 @@ interface MapStoreState {
   setCurrentFilter: (filter: 'all' | 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies') => void;
   setSearchTerm: (term: string) => void;
   setModalOpen: (isOpen: boolean) => void;
+  setIsMapCentered: (value: boolean) => void;
   filterOrganizations: () => void;
   getSelectedOrganization: () => Organization | undefined;
 }
@@ -27,6 +29,7 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
   currentFilter: 'all',
   searchTerm: '',
   isModalOpen: false,
+  isMapCentered: false,
 
   // Actions
   setOrganizations: (organizations) => {
@@ -39,7 +42,14 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
   },
 
   setCurrentFilter: (filter) => {
-    set({ currentFilter: filter });
+    
+    const { currentFilter } = get();
+    if (currentFilter === filter) {
+      set({ currentFilter: 'all' });
+    } else {
+      set({ currentFilter: filter });
+    }
+    
     get().filterOrganizations();
   },
 
@@ -55,14 +65,16 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
     }
   },
 
+  setIsMapCentered: (value) => {
+    set({ isMapCentered: value });
+  },
+
   filterOrganizations: () => {
     const { organizations, currentFilter, searchTerm } = get();
     
     const filtered = organizations.filter(org => {
-      // Filter by activity
       const filterMatch = currentFilter === 'all' || org.activity === currentFilter;
       
-      // Filter by search term
       const searchMatch = 
         org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         org.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
