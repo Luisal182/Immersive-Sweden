@@ -1,5 +1,7 @@
 import { Organization } from '@/types';
 import styles from './OrganizationCard.module.css';
+import { useMapStore } from '@/store/mapStore';  
+
 
 interface OrganizationCardProps {
   organization: Organization;
@@ -12,6 +14,9 @@ export default function OrganizationCard({
   onClose,
   flyToOrganization
 }: OrganizationCardProps) {
+
+  // Hooks
+const { setIsMapCentered } = useMapStore();
   
   // Dynamic color based on organization type
   const getBadgeColor = (type: string): string => {
@@ -32,6 +37,7 @@ export default function OrganizationCard({
     if (flyToOrganization) {
       flyToOrganization(organization);
     }
+    setIsMapCentered(true);
     onClose?.();
     console.log(`📍 Centrado en: ${organization.name} (${organization.location.city})`);
   };

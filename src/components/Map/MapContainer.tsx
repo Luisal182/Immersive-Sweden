@@ -17,8 +17,7 @@ export default function MapContainer() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const { organizations, loading, error } = useOrganizations();
-  const { setOrganizations, setCurrentFilter } = useMapStore();
-  const { flyToOrganization } = useMapInteractions({ map: map.current });
+  const { setOrganizations, setCurrentFilter, setModalOpen, isMapCentered, setIsMapCentered } = useMapStore();  const { flyToOrganization } = useMapInteractions({ map: map.current });
 
   useMapMarkers({ map: map.current, organizations });
 
@@ -61,6 +60,22 @@ export default function MapContainer() {
 
   return (
     <div className={styles.container}>
+       {/* Back Button - Only when map is centered */}
+{map.current && isMapCentered && (
+  <button 
+    className={styles.backBtn}
+    onClick={() => {
+      setIsMapCentered(false);
+      map.current?.flyTo({
+        center: [15.0, 60.0],
+        zoom: 4.2,
+        duration: 1500
+      });
+    }}
+  >
+    ← Back
+  </button>
+)}
       <Modal flyToOrganization={flyToOrganization} />
       <div ref={mapContainer} className={styles.map} />
       
@@ -69,7 +84,7 @@ export default function MapContainer() {
         <div style={{
           position: 'absolute',
           top: '20px',
-          left: '20px',
+          left: '120px',
           background: 'rgba(0, 0, 0, 0.7)',
           color: 'white',
           padding: '12px 16px',
