@@ -17,7 +17,7 @@ export default function MapContainer() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const { organizations, loading, error } = useOrganizations();
-  const { setOrganizations } = useMapStore();
+  const { setOrganizations, setCurrentFilter } = useMapStore();
   const { flyToOrganization } = useMapInteractions({ map: map.current });
 
   useMapMarkers({ map: map.current, organizations });
@@ -114,21 +114,51 @@ export default function MapContainer() {
         </button>
       </div>
 
-      {/* Filter Buttons */}
-      <div className={styles.filterButtons}>
-        <button className={styles.filterBtn} data-activity="XR">
-          <span>🥽 XR</span>
-        </button>
-        <button className={styles.filterBtn} data-activity="UI">
-          <span>🎨 UI</span>
-        </button>
-        <button className={styles.filterBtn} data-activity="Visualization">
-          <span>📊 Visualization</span>
-        </button>
-        <button className={styles.filterBtn} data-activity="Games">
-          <span>🎮 Games</span>
-        </button>
-      </div>
+    {/* Filter Buttons */}
+<div className={styles.filterButtons}>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="XR"
+    onClick={() => setCurrentFilter('XR')}
+  >
+    <span>🥽 XR</span>
+  </button>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="AI"
+    onClick={() => setCurrentFilter('AI')}
+  >
+    <span>🧠 AI</span>
+  </button>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="Games"
+    onClick={() => setCurrentFilter('Games')}
+  >
+    <span>🎮 Games</span>
+  </button>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="Visualization"
+    onClick={() => setCurrentFilter('Visualization')}
+  >
+    <span>📊 Visualization</span>
+  </button>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="Culture"
+    onClick={() => setCurrentFilter('Culture')}
+  >
+    <span>🎨 Culture</span>
+  </button>
+  <button 
+    className={styles.filterBtn} 
+    data-activity="Technologies"
+    onClick={() => setCurrentFilter('Technologies')}
+  >
+    <span>💻 Technologies</span>
+  </button>
+</div>
     </div>
   );
 }
