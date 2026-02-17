@@ -1,4 +1,4 @@
-import { swedenBorder, swedenBorderCoordinates } from '@/data/swedenBorder';
+import { swedenBorder, swedenBorderCoordinates, gotlandCoordinates, olandCoordinates } from '@/data/swedenBorder';
 import { layerConfig } from '@/utils/mapLayerConfig';
 
 interface UseMapLayersProps {
@@ -43,6 +43,38 @@ export const useMapLayers = ({ map }: UseMapLayersProps) => {
         });
       }
 
+      // Add Gotland source
+      if (!map.getSource('gotland')) {
+        console.log('Adding gotland source...');
+        map.addSource('gotland', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [gotlandCoordinates]
+            },
+            properties: {}
+          }
+        });
+      }
+
+      // Add Öland source
+      if (!map.getSource('oland')) {
+        console.log('Adding oland source...');
+        map.addSource('oland', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [olandCoordinates]
+            },
+            properties: {}
+          }
+        });
+      }
+
       // Add layers if they don't exist
       if (!map.getLayer('sweden-shadow-blur')) {
         map.addLayer(layerConfig.swedenShadowBlur);
@@ -62,6 +94,18 @@ export const useMapLayers = ({ map }: UseMapLayersProps) => {
       if (!map.getLayer('sweden-outline')) {
         map.addLayer(layerConfig.swedenOutline);
         console.log('✅ Added sweden-outline layer');
+      }
+
+      // Add Gotland fill layer
+      if (!map.getLayer('gotland-fill')) {
+        map.addLayer(layerConfig.gotlandFill);
+        console.log('✅ Added gotland-fill layer');
+      }
+
+      // Add Öland fill layer
+      if (!map.getLayer('oland-fill')) {
+        map.addLayer(layerConfig.olandFill);
+        console.log('✅ Added oland-fill layer');
       }
 
       console.log('✅ All map layers added successfully');
