@@ -79,7 +79,7 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
         org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         org.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         org.type.toLowerCase().includes(searchTerm.toLowerCase());
-
+        org.activity.toLowerCase().includes(searchTerm.toLowerCase());
       return filterMatch && searchMatch;
     });
 
