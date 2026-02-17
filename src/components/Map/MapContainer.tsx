@@ -17,7 +17,7 @@ export default function MapContainer() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const { organizations, loading, error } = useOrganizations();
-  const { setOrganizations, setCurrentFilter, setModalOpen, isMapCentered, setIsMapCentered } = useMapStore();  const { flyToOrganization } = useMapInteractions({ map: map.current });
+  const { setOrganizations, setCurrentFilter, setModalOpen, isMapCentered, setIsMapCentered, setSearchTerm} = useMapStore();  const { flyToOrganization } = useMapInteractions({ map: map.current });
 
   useMapMarkers({ map: map.current, organizations });
 
@@ -120,6 +120,7 @@ export default function MapContainer() {
           className={styles.searchInput}
           placeholder="Search organization..."
           aria-label="Search organizations"
+          onChange={(e) => setSearchTerm(e.target.value)} 
         />
         <button className={styles.searchBtn} aria-label="Search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
