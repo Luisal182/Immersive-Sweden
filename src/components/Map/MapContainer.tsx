@@ -10,21 +10,39 @@ import { useMapMarkers } from '@/hooks/useMapMarkers';
 import Modal from '@/components/Modal/Modal';
 import { useMapStore } from '@/store/mapStore';
 import { useMapInteractions } from '@/hooks/useMapInteractions';
+import { TechnologyType, IndustryType, OrganizationModelType } from '@/types';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
 export default function MapContainer() {
+  // Refs
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+
+  // Hooks
   const { organizations, loading, error } = useOrganizations();
-  const { setOrganizations, setCurrentFilter, setModalOpen, isMapCentered, setIsMapCentered, setSearchTerm} = useMapStore();  const { flyToOrganization } = useMapInteractions({ map: map.current });
+  
+  const filteredOrganizations = useMapStore(state => state.filteredOrganizations);
+  const searchTerm = useMapStore(state => state.searchTerm);
+  const setOrganizations = useMapStore(state => state.setOrganizations);
+  const setModalOpen = useMapStore(state => state.setModalOpen);
+  const setSearchTerm = useMapStore(state => state.setSearchTerm);
+  const isMapCentered = useMapStore(state => state.isMapCentered);
+  const setIsMapCentered = useMapStore(state => state.setIsMapCentered);
+  const currentTechnology = useMapStore(state => state.currentTechnology);
+  const currentIndustry = useMapStore(state => state.currentIndustry);
+  const currentOrganizationModel = useMapStore(state => state.currentOrganizationModel);
+  const setCurrentTechnology = useMapStore(state => state.setCurrentTechnology);
+  const setCurrentIndustry = useMapStore(state => state.setCurrentIndustry);
+  const setCurrentOrganizationModel = useMapStore(state => state.setCurrentOrganizationModel);
+  
+  const { flyToOrganization } = useMapInteractions({ map: map.current });
+  useMapMarkers({ map: map.current, organizations: filteredOrganizations });
 
-  useMapMarkers({ map: map.current, organizations });
-
+  // Initialize map
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
@@ -34,7 +52,6 @@ export default function MapContainer() {
       bearing: 0
     });
 
-    // Add layers when map is ready
     map.current.on('load', () => {
       if (map.current) {
         useMapLayers({ map: map.current });
@@ -43,7 +60,6 @@ export default function MapContainer() {
 
     console.log('✅ Map initialized');
 
-    // Cleanup
     return () => {
       if (map.current) {
         map.current.remove();
@@ -51,7 +67,7 @@ export default function MapContainer() {
     };
   }, []);
 
-  // Update Zustand store when organizations load
+  // Load organizations into Zustand
   useEffect(() => {
     if (organizations.length > 0) {
       setOrganizations(organizations);
@@ -60,26 +76,30 @@ export default function MapContainer() {
 
   return (
     <div className={styles.container}>
-       {/* Back Button - Only when map is centered */}
-{map.current && isMapCentered && (
-  <button 
-    className={styles.backBtn}
-    onClick={() => {
-      setIsMapCentered(false);
-      map.current?.flyTo({
-        center: [15.0, 60.0],
-        zoom: 4.2,
-        duration: 1500
-      });
-    }}
-  >
-    ← Back
-  </button>
-)}
+      {/* Back Button */}
+      {map.current && isMapCentered && (
+        <button 
+          className={styles.backBtn}
+          onClick={() => {
+            setIsMapCentered(false);
+            map.current?.flyTo({
+              center: [15.0, 60.0],
+              zoom: 4.2,
+              duration: 1500
+            });
+          }}
+        >
+          ← Back
+        </button>
+      )}
+
+      {/* Modal */}
       <Modal flyToOrganization={flyToOrganization} />
+
+      {/* Map */}
       <div ref={mapContainer} className={styles.map} />
-      
-      {/* Loading indicator */}
+
+      {/* Loading Indicator */}
       {loading && (
         <div style={{
           position: 'absolute',
@@ -96,7 +116,7 @@ export default function MapContainer() {
         </div>
       )}
 
-      {/* Error message */}
+      {/* Error Message */}
       {error && (
         <div style={{
           position: 'absolute',
@@ -112,7 +132,7 @@ export default function MapContainer() {
           Error: {error}
         </div>
       )}
-      
+
       {/* Search Field */}
       <div className={styles.searchContainer}>
         <input
@@ -130,51 +150,76 @@ export default function MapContainer() {
         </button>
       </div>
 
-    {/* Filter Buttons */}
-<div className={styles.filterButtons}>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="XR"
-    onClick={() => setCurrentFilter('XR')}
-  >
-    <span>🥽 XR</span>
-  </button>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="AI"
-    onClick={() => setCurrentFilter('AI')}
-  >
-    <span>🧠 AI</span>
-  </button>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="Games"
-    onClick={() => setCurrentFilter('Games')}
-  >
-    <span>🎮 Games</span>
-  </button>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="Visualization"
-    onClick={() => setCurrentFilter('Visualization')}
-  >
-    <span>📊 Visualization</span>
-  </button>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="Culture"
-    onClick={() => setCurrentFilter('Culture')}
-  >
-    <span>🎨 Culture</span>
-  </button>
-  <button 
-    className={styles.filterBtn} 
-    data-activity="Technologies"
-    onClick={() => setCurrentFilter('Technologies')}
-  >
-    <span>💻 Technologies</span>
-  </button>
+      {/* Filter Dropdowns */}
+      <div className={styles.filterGroup}>
+        {/* Technology Dropdown */}
+        <div className={styles.filterDropdownWrapper}>
+          <label>Technology</label>
+          <select 
+            value={currentTechnology}
+            onChange={(e) => setCurrentTechnology(e.target.value as TechnologyType | 'all')}
+            className={styles.filterDropdown}
+          >
+            <option value="all">All Technologies</option>
+            <option value="XR">XR</option>
+            <option value="AI">AI</option>
+            <option value="Visualization">Visualization</option>
+          </select>
+        </div>
+
+        {/* Industry Dropdown */}
+        <div className={styles.filterDropdownWrapper}>
+          <label>Industry</label>
+          <select 
+            value={currentIndustry}
+            onChange={(e) => setCurrentIndustry(e.target.value as IndustryType | 'all')}
+            className={styles.filterDropdown}
+          >
+            <option value="all">All Industries</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Culture">Culture</option>
+            <option value="Games">Games</option>
+          </select>
+        </div>
+
+        {/* Organization Model Dropdown */}
+        <div className={styles.filterDropdownWrapper}>
+          <label>Organization Model</label>
+          <select 
+            value={currentOrganizationModel}
+            onChange={(e) => setCurrentOrganizationModel(e.target.value as OrganizationModelType | 'all')}
+            className={styles.filterDropdown}
+          >
+            <option value="all">All Models</option>
+            <option value="Business">Business</option>
+            <option value="Nonprofit Organization">Nonprofit Organization</option>
+          </select>
+          </div>
+        </div>
+        {/* DEBUG - Remove later */}
+<div style={{
+  position: 'absolute',
+  bottom: '10px',  // ← STRING
+  left: '10px',    // ← STRING
+  background: 'rgba(0, 0, 0, 0.9)',
+  color: '#4fc3ff',
+  padding: '10px',
+  borderRadius: '4px',
+  fontSize: '10px',
+  zIndex: 1000,
+  maxWidth: '200px',
+  wordBreak: 'break-all'
+}}>
+  <div>Tech: {currentTechnology}</div>
+  <div>Industry: {currentIndustry}</div>
+  <div>Model: {currentOrganizationModel}</div>
+  <div>Search: {searchTerm}</div>
+  <div>Filtered: {filteredOrganizations.length} / {organizations.length}</div>
 </div>
-    </div>
+</div>
+
+      
+    
   );
 }
