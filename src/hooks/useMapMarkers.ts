@@ -10,21 +10,21 @@ interface UseMapMarkersProps {
 
 export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
   const markersRef = useRef<mapboxgl.Marker[]>([]);
-  const { setSelectedOrgId, filteredOrganizations } = useMapStore();
+  const setSelectedOrgId = useMapStore(state => state.setSelectedOrgId);
 
   const getActivityEmoji = (): string => {
-    return '📍'; // Solo chincheta roja
+    return '📍';
   };
 
   useEffect(() => {
-    if (!map || !filteredOrganizations.length) return;
+    if (!map || !organizations.length) return;
 
     // Clear existing markers
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
 
-    // Add new markers ONLY for filtered organizations
-    filteredOrganizations.forEach(org => {
+    // Add new markers
+    organizations.forEach(org => {
       const el = document.createElement('div');
       el.className = 'marker';
       el.style.cursor = 'pointer';
@@ -36,7 +36,7 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
 
       el.addEventListener('click', () => {
         console.log('Clicked organization:', org.name);
-        setSelectedOrgId(org.id); // Abre modal
+        setSelectedOrgId(org.id);
       });
 
       const marker = new mapboxgl.Marker(el)
@@ -46,6 +46,6 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
       markersRef.current.push(marker);
     });
 
-    console.log(`✅ Added ${filteredOrganizations.length} filtered markers to map`);
-  }, [map, filteredOrganizations, setSelectedOrgId]);
+    console.log(`✅ Added ${organizations.length} markers to map`);
+  }, [map, organizations, setSelectedOrgId]);
 };

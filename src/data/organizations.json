@@ -6,6 +6,9 @@
       "description": "Centro de innovación tecnológica enfocado en startups de IA y machine learning",
       "type": "Technologies",
       "activity": "XR",
+      "technology": "XR",
+      "industry": null,
+      "organizationModel": "Business",
       "contact": {
         "email": "info@techhubstockholm.se",
         "phone": "+46 8 123 4567"
@@ -22,6 +25,9 @@
       "description": "Organización dedicada a energías renovables y sostenibilidad ambiental",
       "type": "AI",
       "activity": "Visualization",
+      "technology": null,
+      "industry": "Healthcare",
+      "organizationModel": "Nonprofit Organization",
       "contact": {
         "email": "contact@greenenergygtb.se",
         "phone": "+46 31 234 5678"
@@ -38,6 +44,9 @@
       "description": "Plataforma de desarrollo web y aplicaciones móviles para empresas nórdicas",
       "type": "Technologies",
       "activity": "Visualization",
+      "technology": "AI",
+      "industry": null,
+      "organizationModel": null,
       "contact": {
         "email": "hello@malmodigital.se",
         "phone": "+46 40 345 6789"
@@ -54,6 +63,9 @@
       "description": "Instituto de investigación en biotecnología y ciencias de la vida",
       "type": "AI",
       "activity": "Games",
+      "technology": "AI",
+      "industry": "Culture",
+      "organizationModel": null,
       "contact": {
         "email": "research@uppsalainst.se",
         "phone": "+46 18 456 7890"
@@ -70,6 +82,9 @@
       "description": "Estudio de diseño y producción audiovisual para contenido digital",
       "type": "Culture",
       "activity": "XR",
+      "technology": "Visualization",
+      "industry": null,
+      "organizationModel": null,
       "contact": {
         "email": "studio@nkopingcreative.se",
         "phone": "+46 11 567 8901"
@@ -86,6 +101,9 @@
       "description": "Soluciones empresariales de software y consultoría tecnológica",
       "type": "Technologies",
       "activity": "AI",
+      "technology": "XR",
+      "industry": null,
+      "organizationModel": "Business",
       "contact": {
         "email": "solutions@linkopingtech.se",
         "phone": "+46 13 678 9012"
@@ -102,6 +120,9 @@
       "description": "Organización sin ánimo de lucro enfocada en emprendimiento social",
       "type": "Culture",
       "activity": "Visualization",
+      "technology": null,
+      "industry": "Culture",
+      "organizationModel": "Nonprofit Organization",
       "contact": {
         "email": "impact@orebrosocial.se",
         "phone": "+46 19 789 0123"
@@ -118,6 +139,9 @@
       "description": "Centro de innovación industrial para manufacturación avanzada y I+D",
       "type": "XR",
       "activity": "Games",
+      "technology": "XR",
+      "industry": "Manufacturing",
+      "organizationModel": "Business",
       "contact": {
         "email": "hub@vmanufacturing.se",
         "phone": "+46 21 890 1234"
@@ -134,6 +158,9 @@
       "description": "Red de comercio y logística para empresas de exportación nórdicas",
       "type": "XR",
       "activity": "XR",
+      "technology": "AI",
+      "industry": "Manufacturing",
+      "organizationModel": "Business",
       "contact": {
         "email": "trade@helsingborg-network.se",
         "phone": "+46 42 901 2345"
@@ -150,6 +177,9 @@
       "description": "Laboratorio de innovación educativa y desarrollo de metodologías de enseñanza",
       "type": "AI",
       "activity": "Games",
+      "technology": null,
+      "industry": "Culture",
+      "organizationModel": "Nonprofit Organization",
       "contact": {
         "email": "lab@jonkopingedu.se",
         "phone": "+46 36 123 4567"
@@ -166,6 +196,9 @@
       "description": "Estudio de videojuegos independiente especializado en experiencias inmersivas",
       "type": "Games",
       "activity": "Games",
+      "technology": "Visualization",
+      "industry": "Games",
+      "organizationModel": "Business",
       "contact": {
         "email": "hello@lundgames.se",
         "phone": "+46 46 123 4567"
@@ -182,6 +215,9 @@
       "description": "Laboratorio de visualización de datos 3D y realidad virtual para investigación científica",
       "type": "Visualization",
       "activity": "Visualization",
+      "technology": "Visualization",
+      "industry": null,
+      "organizationModel": "Nonprofit Organization",
       "contact": {
         "email": "info@kirunavislab.se",
         "phone": "+46 98 123 4567"
@@ -198,6 +234,9 @@
       "description": "Empresa especializada en desarrollo de experiencias de realidad extendida para empresas",
       "type": "XR",
       "activity": "Visualization",
+      "technology": "XR",
+      "industry": "Games",
+      "organizationModel": "Business",
       "contact": {
         "email": "contact@sundsvallxr.se",
         "phone": "+46 60 123 4567"
@@ -214,6 +253,9 @@
       "description": "Plataforma de experiencias culturales inmersivas y contenido digital interactivo",
       "type": "Culture",
       "activity": "Games",
+      "technology": "AI",
+      "industry": "Culture",
+      "organizationModel": null,
       "contact": {
         "email": "hello@varmlandculture.se",
         "phone": "+46 54 123 4567"
@@ -222,6 +264,196 @@
         "city": "Karlstad",
         "lat": 59.2793,
         "lng": 16.1735
+      }
+    },
+    {
+      "id": 15,
+      "name": "Stockholm AI Healthcare",
+      "description": "Soluciones de IA aplicadas al sector sanitario y telemedicina",
+      "type": "AI",
+      "activity": "AI",
+      "technology": "AI",
+      "industry": "Healthcare",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "info@stockholmaihealth.se",
+        "phone": "+46 8 234 5678"
+      },
+      "location": {
+        "city": "Södermalm, Stockholm",
+        "lat": 59.3180,
+        "lng": 18.0720
+      }
+    },
+    {
+      "id": 16,
+      "name": "Gothenburg XR Manufacturing",
+      "description": "Soluciones XR para entrenamiento y optimización de procesos manufactureros",
+      "type": "XR",
+      "activity": "XR",
+      "technology": "XR",
+      "industry": "Manufacturing",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "contact@gotxrmanufacturing.se",
+        "phone": "+46 31 345 6789"
+      },
+      "location": {
+        "city": "Mölndal, Gothenburg",
+        "lat": 57.6500,
+        "lng": 12.0200
+      }
+    },
+    {
+      "id": 17,
+      "name": "Malmö Visualization Games",
+      "description": "Estudio de visualización 3D para industria de videojuegos",
+      "type": "Games",
+      "activity": "Visualization",
+      "technology": "Visualization",
+      "industry": "Games",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "studio@malmovisgames.se",
+        "phone": "+46 40 456 7890"
+      },
+      "location": {
+        "city": "Lund, Malmö Region",
+        "lat": 55.7045,
+        "lng": 13.1910
+      }
+    },
+    {
+      "id": 18,
+      "name": "Uppsala Cultural AI Initiative",
+      "description": "Iniciativa sin ánimo de lucro para integrar IA en proyectos culturales",
+      "type": "Culture",
+      "activity": "AI",
+      "technology": "AI",
+      "industry": "Culture",
+      "organizationModel": "Nonprofit Organization",
+      "contact": {
+        "email": "initiative@uppsalachulture.se",
+        "phone": "+46 18 567 8901"
+      },
+      "location": {
+        "city": "Uppsala",
+        "lat": 59.8585,
+        "lng": 17.6383
+      }
+    },
+    {
+      "id": 19,
+      "name": "Norrköping XR Creative Hub",
+      "description": "Hub creativo especializado en experiencias XR para industria cultural",
+      "type": "Culture",
+      "activity": "XR",
+      "technology": "XR",
+      "industry": "Culture",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "hub@nkopingxrcreative.se",
+        "phone": "+46 11 678 9012"
+      },
+      "location": {
+        "city": "Norrköping",
+        "lat": 58.5941,
+        "lng": 16.1842
+      }
+    },
+    {
+      "id": 20,
+      "name": "Linköping Healthcare Visualization",
+      "description": "Visualización de datos médicos y educación en ciencias de la salud",
+      "type": "Visualization",
+      "activity": "Visualization",
+      "technology": "Visualization",
+      "industry": "Healthcare",
+      "organizationModel": "Nonprofit Organization",
+      "contact": {
+        "email": "info@linkopinghealthvis.se",
+        "phone": "+46 13 789 0123"
+      },
+      "location": {
+        "city": "Linköping",
+        "lat": 58.4109,
+        "lng": 15.6267
+      }
+    },
+    {
+      "id": 21,
+      "name": "Örebro AI Games Studio",
+      "description": "Estudio independiente de juegos basados en IA y aprendizaje automático",
+      "type": "Games",
+      "activity": "Games",
+      "technology": "AI",
+      "industry": "Games",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "studio@orebroaigames.se",
+        "phone": "+46 19 890 1234"
+      },
+      "location": {
+        "city": "Örebro",
+        "lat": 59.2741,
+        "lng": 15.2134
+      }
+    },
+    {
+      "id": 22,
+      "name": "Västerås Manufacturing XR Training",
+      "description": "Plataforma de entrenamiento industrial usando realidad extendida",
+      "type": "XR",
+      "activity": "XR",
+      "technology": "XR",
+      "industry": "Manufacturing",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "training@vxrmanufacturing.se",
+        "phone": "+46 21 901 2345"
+      },
+      "location": {
+        "city": "Västerås",
+        "lat": 59.6119,
+        "lng": 16.5477
+      }
+    },
+    {
+      "id": 23,
+      "name": "Helsingborg Culture Visualization",
+      "description": "Centro cultural que utiliza visualización de datos para experiencias inmersivas",
+      "type": "Culture",
+      "activity": "Visualization",
+      "technology": "Visualization",
+      "industry": "Culture",
+      "organizationModel": "Nonprofit Organization",
+      "contact": {
+        "email": "center@helsingborgculture.se",
+        "phone": "+46 42 123 4567"
+      },
+      "location": {
+        "city": "Helsingborg",
+        "lat": 56.0465,
+        "lng": 12.6955
+      }
+    },
+    {
+      "id": 24,
+      "name": "Jönköping Games Manufacturing",
+      "description": "Estudio que combina gamificación con procesos de manufactura",
+      "type": "Games",
+      "activity": "Games",
+      "technology": "Visualization",
+      "industry": "Manufacturing",
+      "organizationModel": "Business",
+      "contact": {
+        "email": "studio@jonkopinggames.se",
+        "phone": "+46 36 234 5678"
+      },
+      "location": {
+        "city": "Jönköping",
+        "lat": 57.7819,
+        "lng": 14.1654
       }
     }
   ]

@@ -1,11 +1,14 @@
 import { create } from 'zustand';
-import { Organization } from '@/types';
+import { Organization, TechnologyType, IndustryType, OrganizationModelType } from '@/types';
 
 interface MapStoreState {
+  // State
   organizations: Organization[];
   filteredOrganizations: Organization[];
   selectedOrgId: number | null;
-  currentFilter: 'all' | 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies';
+  currentTechnology: TechnologyType | 'all';
+  currentIndustry: IndustryType | 'all';
+  currentOrganizationModel: OrganizationModelType | 'all';
   searchTerm: string;
   isModalOpen: boolean;
   isMapCentered: boolean;
@@ -13,7 +16,9 @@ interface MapStoreState {
   // Actions
   setOrganizations: (organizations: Organization[]) => void;
   setSelectedOrgId: (id: number | null) => void;
-  setCurrentFilter: (filter: 'all' | 'XR' | 'AI' | 'Games' | 'Visualization' | 'Culture' | 'Technologies') => void;
+  setCurrentTechnology: (tech: TechnologyType | 'all') => void;
+  setCurrentIndustry: (industry: IndustryType | 'all') => void;
+  setCurrentOrganizationModel: (model: OrganizationModelType | 'all') => void;
   setSearchTerm: (term: string) => void;
   setModalOpen: (isOpen: boolean) => void;
   setIsMapCentered: (value: boolean) => void;
@@ -22,16 +27,23 @@ interface MapStoreState {
 }
 
 export const useMapStore = create<MapStoreState>((set, get) => ({
-  // State
+  // ============================================
+  // STATE
+  // ============================================
   organizations: [],
   filteredOrganizations: [],
   selectedOrgId: null,
-  currentFilter: 'all',
+  currentTechnology: 'all',
+  currentIndustry: 'all',
+  currentOrganizationModel: 'all',
   searchTerm: '',
   isModalOpen: false,
   isMapCentered: false,
 
-  // Actions
+  // ============================================
+  // ACTIONS
+  // ============================================
+  
   setOrganizations: (organizations) => {
     set({ organizations });
     get().filterOrganizations();
@@ -41,15 +53,18 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
     set({ selectedOrgId: id, isModalOpen: id !== null });
   },
 
-  setCurrentFilter: (filter) => {
-    
-    const { currentFilter } = get();
-    if (currentFilter === filter) {
-      set({ currentFilter: 'all' });
-    } else {
-      set({ currentFilter: filter });
-    }
-    
+  setCurrentTechnology: (tech) => {
+    set({ currentTechnology: tech });
+    get().filterOrganizations();
+  },
+  
+  setCurrentIndustry: (industry) => {
+    set({ currentIndustry: industry });
+    get().filterOrganizations();
+  },
+  
+  setCurrentOrganizationModel: (model) => {
+    set({ currentOrganizationModel: model });
     get().filterOrganizations();
   },
 
@@ -68,24 +83,52 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
   setIsMapCentered: (value) => {
     set({ isMapCentered: value });
   },
-
+  
+    
+  // ============================================
+  // FILTERING LOGIC
+  // ============================================
   filterOrganizations: () => {
-    const { organizations, currentFilter, searchTerm } = get();
+    const { organizations, currentTechnology, currentIndustry, currentOrganizationModel, searchTerm } = get();
+    
+    console.log('FILTER START:', {
+      totalOrgs: organizations.length,
+      currentTechnology,
+      firstOrg: organizations[0] ? {
+        name: organizations[0].name,
+        technology: organizations[0].technology,
+        industry: organizations[0].industry,
+        organizationModel: organizations[0].organizationModel
+      } : null
+    });
     
     const filtered = organizations.filter(org => {
-      const filterMatch = currentFilter === 'all' || org.activity === currentFilter;
+      const technologyMatch = 
+        currentTechnology === 'all' || 
+        String(org.technology).trim() === String(currentTechnology).trim();
       
-      const searchMatch = 
-        org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        org.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        org.type.toLowerCase().includes(searchTerm.toLowerCase());
-        org.activity.toLowerCase().includes(searchTerm.toLowerCase());
-      return filterMatch && searchMatch;
+      const industryMatch = 
+        currentIndustry === 'all' || 
+        String(org.industry).trim() === String(currentIndustry).trim();
+      
+      const modelMatch = 
+        currentOrganizationModel === 'all' || 
+        String(org.organizationModel).trim() === String(currentOrganizationModel).trim();
+      
+      const searchMatch = searchTerm === '' ||
+        org.name.toLowerCase().includes(searchTerm.toLowerCase());
+  
+      return technologyMatch && industryMatch && modelMatch && searchMatch;
     });
-
+  
+    console.log('FILTER RESULT:', { filtered: filtered.length, total: organizations.length });
     set({ filteredOrganizations: filtered });
   },
-
+ 
+  // ============================================
+  // SELECTORS
+  // ============================================
+  
   getSelectedOrganization: () => {
     const { organizations, selectedOrgId } = get();
     return organizations.find(org => org.id === selectedOrgId);

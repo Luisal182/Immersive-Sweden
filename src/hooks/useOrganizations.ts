@@ -13,28 +13,17 @@ export const useOrganizations = (): UseOrganizationsReturn => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/data/organizations.json');
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch organizations: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setOrganizations(data.organizations);
-        console.log(`✅ Loaded ${data.organizations.length} organizations`);
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Unknown error';
-        setError(message);
-        console.error('❌ Error loading organizations:', message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrganizations();
+    try {
+      const data = require('@/data/organizations.json');
+      setOrganizations(data.organizations);
+      console.log(`✅ Loaded ${data.organizations.length} organizations`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(message);
+      console.error('❌ Error loading organizations:', message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   return { organizations, loading, error };
