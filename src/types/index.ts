@@ -11,6 +11,7 @@ export interface Organization {
   id: number;
   name: string;
   description: string;
+  activity?: string | null;          
   type: string;
   technology?: string | null;
   industry?:string | null;
