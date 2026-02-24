@@ -197,26 +197,7 @@ export default function MapContainer() {
           </select>
           </div>
         </div>
-        {/* DEBUG - Remove later */}
-<div style={{
-  position: 'absolute',
-  bottom: '10px',  // ← STRING
-  left: '10px',    // ← STRING
-  background: 'rgba(0, 0, 0, 0.9)',
-  color: '#4fc3ff',
-  padding: '10px',
-  borderRadius: '4px',
-  fontSize: '10px',
-  zIndex: 1000,
-  maxWidth: '200px',
-  wordBreak: 'break-all'
-}}>
-  <div>Tech: {currentTechnology}</div>
-  <div>Industry: {currentIndustry}</div>
-  <div>Model: {currentOrganizationModel}</div>
-  <div>Search: {searchTerm}</div>
-  <div>Filtered: {filteredOrganizations.length} / {organizations.length}</div>
-</div>
+      
 </div>
 
       
