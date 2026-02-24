@@ -10,17 +10,18 @@ An interactive web platform to discover and connect with Swedish companies worki
 
 ## 🎯 Overview
 
-**Immersive Sweden** is an interactive map platform built to showcase the ecosystem of Swedish companies working in immersive technologies. Users can search, filter, and discover companies by activity sector, location, and contact information.
+**Immersive Sweden** is an interactive map platform built to showcase the ecosystem of Swedish companies working in immersive technologies. Users can search, filter by technology/industry/model, and discover companies with advanced filtering capabilities.
 
 ### Key Features
 
 - 🗺️ Interactive map of Sweden with company markers
-- 📍 14 organizations with precise geolocation
-- 🏷️ Filter by immersive tech sectors (XR, AI, Games, Visualization, Culture, Technologies)
+- 📍 24 organizations with precise geolocation distributed across Swedish metropolitan areas
+- 🏷️ **3 Dropdown filters: Technology (XR, AI, Visualization), Industry (Manufacturing, Healthcare, Culture, Games), Organization Model (Business, Nonprofit)**
+- 🔍 **Advanced search functionality** (filters by name, description, type, technology, industry, organization model)
+- 🎨 **Dark mode UI with modern design** (dropdowns, modal, cards)
 - 📱 Fully responsive design (mobile-first)
-- 🌍 Geolocation support
-- 💬 Company contact information
-- 🚀 Fast, modern tech stack
+- 💬 Company contact information & modal interactions
+- 🚀 Fast, modern tech stack (Next.js, TypeScript, Zustand, Mapbox)
 
 ---
 
@@ -38,45 +39,44 @@ An interactive web platform to discover and connect with Swedish companies worki
 1. **Clone the repository**
 
 ```bash
-   git clone https://github.com/Luisal182/immersive-sweden.git
-   cd immersive-sweden
+git clone https://github.com/Luisal182/immersive-sweden.git
+cd immersive-sweden
 ```
 
 2. **Install dependencies**
 
 ```bash
-   npm install
+npm install
 ```
 
 3. **Setup environment variables**
 
 ```bash
-   # Create .env.local in root directory
-   cp .env.example .env.local
+cp .env.example .env.local
 ```
 
 Add your Mapbox token:
 
 ```
-   NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
+NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
 ```
 
 4. **Run development server**
 
 ```bash
-   npm run dev
+npm run dev
 ```
 
 5. **Open in browser**
 
 ```
-   http://localhost:3000
+http://localhost:3000
 ```
 
 6. **View on Vercel**
 
 ```
-   https://immersive-sweden.vercel.app
+https://immersive-sweden.vercel.app
 ```
 
 ---
@@ -89,20 +89,21 @@ Add your Mapbox token:
 - **Language:** TypeScript
 - **UI/Maps:** Mapbox GL JS
 - **Styling:** CSS Modules
-- **State:** Zustand (planned)
+- **State Management:** Zustand ✅ IMPLEMENTED
 - **Animations:** Framer Motion (planned)
+- **3D Assets:** React Three Fiber (planned)
 
 ### Backend
 
 - **API:** Next.js API Routes
-- **Data:** JSON (local, planned: Bolagsverket + Firebase)
+- **Data:** JSON (local at src/data/organizations.json)
 - **External APIs:**
   - [Bolagsverket API](https://bolagsverket.se/) - Swedish company registry (future)
   - [OpenStreetMap Nominatim](https://nominatim.org/) - Free geocoding (future)
 
 ### DevOps
 
-- **Version Control:** GitHub
+- **Version Control:** GitHub (dev/main branches)
 - **Hosting:** Vercel (CI/CD)
 - **Environment:** Node.js 18+
 
@@ -121,37 +122,43 @@ immersive-sweden/
 │   │
 │   ├── components/
 │   │   ├── Map/
-│   │   │   ├── MapContainer.tsx
-│   │   │   └── MapContainer.module.css
+│   │   │   ├── MapContainer.tsx      # Main map component
+│   │   │   └── MapContainer.module.css # Map + dropdown styling
 │   │   ├── Cards/
-│   │   │   ├── OrganizationCard.tsx
+│   │   │   ├── OrganizationCard.tsx  # Organization card component
 │   │   │   └── OrganizationCard.module.css
-│   │   └── ...                  # Other components (future)
+│   │   ├── Modal/
+│   │   │   └── Modal.tsx             # Modal wrapper
+│   │   └── _graveyard/               # Old/experimental components
 │   │
 │   ├── hooks/
-│   │   ├── useMapLayers.ts      # Map layer management
-│   │   ├── useOrganizations.ts  # Load organization data
-│   │   ├── useMapMarkers.ts     # Marker management
-│   │   └── ...                  # Other hooks (future)
+│   │   ├── useMapLayers.ts       # Map layer management
+│   │   ├── useOrganizations.ts   # Load organization data (require-based)
+│   │   ├── useMapMarkers.ts      # Marker management with filters
+│   │   └── useMapInteractions.ts # Click handlers & zoom
 │   │
 │   ├── store/
-│   │   └── mapStore.ts          # Zustand store (future)
+│   │   └── mapStore.ts           # Zustand store ✅ IMPLEMENTED
+│   │       - filteredOrganizations
+│   │       - currentTechnology, currentIndustry, currentOrganizationModel
+│   │       - searchTerm
+│   │       - Filter logic with AND combination
 │   │
 │   ├── types/
-│   │   └── index.ts             # TypeScript types
+│   │   └── index.ts              # TypeScript types & constants
+│   │       - TECHNOLOGY_OPTIONS, INDUSTRY_OPTIONS, ORGANIZATION_MODEL_OPTIONS
+│   │       - Organization interface with technology, industry, organizationModel
+│   │       - activity field (required for card display)
 │   │
 │   ├── utils/
-│   │   ├── mapLayerConfig.ts    # Mapbox layer config
-│   │   └── ...                  # Other utilities (future)
+│   │   └── mapLayerConfig.ts     # Mapbox layer configuration
 │   │
 │   └── data/
-│       ├── swedenBorder.ts      # Sweden coordinates
-│       └── organizations.json   # 14 company mock data
+│       └── organizations.json    # 24 organizations with all fields
 │
 ├── public/
-│   └── data/
-│       └── organizations.json   # Accessible JSON for fetch
-├── .env.local                   # Environment variables (local)
+│   └── (assets, static files)
+├── .env.local                    # Environment variables (local)
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
@@ -186,11 +193,46 @@ npm run lint
 
 ### Features
 
-#### View Organizations on Map
+#### Interactive Map with 24 Organizations
 
-- Map displays **14 Swedish companies** in immersive tech
+- Map displays **24 Swedish companies** in immersive tech sectors
 - Each company shows a **red pin marker (📍)**
-- Markers positioned by precise geolocation coordinates
+- Markers positioned with precise geolocation coordinates
+- Distributed across Swedish metropolitan areas:
+  - Stockholm region (Södermalm, Stockholm)
+  - Gothenburg region (Mölndal, Gothenburg)
+  - Malmö region (Lund)
+  - Plus 21 other locations
+
+#### Advanced Filtering System
+
+**3 Dropdown Filters** (work independently with AND logic):
+
+1. **Technology Filter:**
+
+   - All Technologies (default)
+   - XR
+   - AI
+   - Visualization
+
+2. **Industry Filter:**
+
+   - All Industries (default)
+   - Manufacturing
+   - Healthcare
+   - Culture
+   - Games
+
+3. **Organization Model Filter:**
+   - All Models (default)
+   - Business
+   - Nonprofit Organization
+
+**Search Functionality:**
+
+- Searches across: name, description, type, technology, industry, organization model
+- Works seamlessly with dropdown filters
+- Real-time filtering with Zustand state management
 
 #### Organization Data
 
@@ -199,112 +241,159 @@ Each organization includes:
 - **Name:** Company name
 - **Type:** XR, AI, Games, Visualization, Culture, Technologies
 - **Activity:** Business focus area
-- **Location:** City and coordinates
+- **Technology:** XR, AI, or Visualization (optional, can be null)
+- **Industry:** Manufacturing, Healthcare, Culture, Games (optional, can be null)
+- **Organization Model:** Business or Nonprofit Organization (optional, can be null)
+- **Location:** City and precise coordinates (latitude, longitude)
 - **Contact:** Email and phone number
 - **Description:** Company overview
 
-#### Interactive Map
+#### Organization Card Modal
+
+- Click any marker to open modal
+- Displays:
+  - Company badge (colored by type)
+  - Title and description
+  - Location, contact info
+  - Technology/industry tags
+  - "Get in Touch" button (blue gradient)
+  - "View on Map" button (outline style)
+- Dark mode design with glassmorphism effect
+- Close button with hover effects
+- Smooth slideUp animation on open
+
+#### Interactive Map Features
 
 - **Sweden Border:** Blue glow effect with inverted mask (world darkened)
+- **Gotland & Öland Islands:** Visible on zoom
+- **Back Button:** Returns to full Sweden view with gradient + pulse animation
 - **Responsive Design:** Works on desktop, tablet, mobile
-- **Mapbox GL:** Professional mapping library
+- **Mapbox GL:** Professional mapping library with dark styling
 
 ---
 
-## 📊 Current Development Status
+## 📊 Development Status - Phase 2
 
-### Phase 1: Foundation ✅ COMPLETE
+### ✅ COMPLETED This Session
 
-- [x] Next.js 14 setup with TypeScript
-- [x] Mapbox GL integration
-- [x] Sweden border with glow effects
-- [x] Search UI & filter buttons
-- [x] Responsive design
-- [x] GitHub & Vercel setup
+**Filtering System:**
 
-### Phase 2: Organization Markers & Data 🔄 IN PROGRESS
+- [x] Created 3 dropdown filters (Technology, Industry, Organization Model)
+- [x] Implemented Zustand store for filter state management
+- [x] Built filter logic with AND combination (all filters must match)
+- [x] Filter supports null values for flexible data distribution
+- [x] Dropdown toggle logic (select = change value, works seamlessly)
 
-- [x] Load organizations from JSON
-- [x] Dynamic marker rendering (14 organizations)
-- [x] Red pin markers on map
-- [x] OrganizationCard component (created)
-- [x] Mapbox layer management (utils + hooks)
-- [ ] Click marker → Open modal with card
-- [ ] Filter by activity (XR, AI, Games, etc)
-- [ ] Search functionality
-- [ ] Marker animations (hover, click)
+**Data Expansion:**
 
-### Phase 3: Modal & Interactions 📋 PLANNED
+- [x] Expanded from 14 to 24 organizations
+- [x] Added technology, industry, organizationModel fields to all orgs
+- [x] Distributed organizations across Swedish metropolitan areas
+- [x] Updated organizations.json with precise geolocation data
+- [x] Added missing `activity` field to TypeScript interface
 
-- [ ] Create Modal component
-- [ ] Zustand store for global state
-- [ ] Open modal on marker click
-- [ ] Display organization card in modal
-- [ ] Close button & escape key support
-- [ ] Animation transitions
+**Search Integration:**
 
-### Phase 4: Filtering & Search 📋 PLANNED
+- [x] Implemented search by name, description, type, technology, industry, model
+- [x] Search works independently and with dropdowns
+- [x] Real-time filtering updates on search input
+- [x] Search field styled to match dropdown aesthetics
 
-- [ ] Implement activity filters (working buttons)
-- [ ] Implement search by name
-- [ ] Filter markers dynamically
-- [ ] Update card display
+**UI/UX Improvements:**
 
-### Phase 5-6: Production Features 📋 PLANNED
+- [x] Dark mode design for dropdowns (rgba(44, 62, 80, 0.9) background)
+- [x] Glassmorphism effect on filter group (backdrop-filter: blur)
+- [x] Enhanced hover states (translateY animation + glow shadow)
+- [x] Improved typography and contrast
+- [x] Removed debug div from interface
+- [x] Responsive dropdowns on mobile
 
-See [MVP Work Plan](./MVP_PLAN.md) for full roadmap.
+**Modal/Card Enhancements:**
+
+- [x] Dark mode card background (rgba(20, 30, 45, 0.8))
+- [x] Improved button styling with gradient + shine effects
+- [x] Better spacing and typography hierarchy
+- [x] Close button with blue highlight
+- [x] Activity tag styling with border
+- [x] Section dividers with subtle blue borders
+
+**Technical Fixes:**
+
+- [x] Fixed JSON loading (moved from public/ to src/data/)
+- [x] Changed fetch to require-based loading
+- [x] Fixed TypeScript types for Organization interface
+- [x] Removed toggle behavior from dropdowns (now simple select)
+- [x] Fixed filter comparison logic with proper string matching
+- [x] Unified Zustand subscription to prevent infinite re-renders
+- [x] Used `filteredOrganizations` in useMapMarkers hook
+
+### 📚 Learning & Documentation
+
+**Key Discoveries:**
+
+- Zustand best practices (single subscription per component)
+- Filter logic with AND combination vs OR
+- JSON loading in Next.js (public/ vs src/)
+- TypeScript strict mode in production builds
+- CSS Modules with dark mode design
+- Responsive dropdown styling
+- Glassmorphism effects with backdrop-filter
+
+**Technical Challenges Resolved:**
+
+1. JSON loading issues → Moved to src/data/ with require()
+2. Filter not working → Fixed string comparison with normalize
+3. Infinite re-renders → Unified Zustand subscription
+4. Dropdown values not changing → Fixed onChange handlers
+5. TypeScript errors in Vercel → Added missing interface fields
+
+---
+
+## 📈 Current Metrics
+
+- **Organizations:** 24 (14 base + 10 new with full data)
+- **Filters:** 3 (Technology, Industry, Organization Model)
+- **Filter Options:** 10 total (XR, AI, Visualization + Manufacturing, Healthcare, Culture, Games + Business, Nonprofit)
+- **Map Markers:** 24 active markers
+- **Geographic Distribution:** Spread across Swedish metropolitan areas
+- **Search Fields:** 6 (name, description, type, technology, industry, organizationModel)
+- **Code Quality:** TypeScript strict mode ✅ Passing
 
 ---
 
 ## 🔐 Environment Variables
 
-Create `.env.local` in the root directory:
+Create `.env.local` in root:
 
 ```bash
 # Mapbox API Token (get from https://account.mapbox.com/tokens/)
 NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
-
-# Future: Bolagsverket API
-# BOLAGSVERKET_API_KEY=your_key_here
-
-# Future: Firebase
-# NEXT_PUBLIC_FIREBASE_API_KEY=your_key_here
 ```
-
-⚠️ **IMPORTANT:** Never commit `.env.local` - use `.env.example` for sharing.
-
----
-
-## 📚 Documentation
-
-- [MVP Work Plan](./MVP_PLAN.md) - Detailed project roadmap
-- [Architecture](./docs/ARCHITECTURE.md) - System design (coming soon)
-- [API Documentation](./docs/API.md) - API endpoints (coming soon)
-- [Deployment Guide](./docs/DEPLOYMENT.md) - How to deploy (coming soon)
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Mapbox Not Loading
+### Dropdowns Not Filtering
 
-- Verify `NEXT_PUBLIC_MAPBOX_TOKEN` is set in `.env.local`
-- Check token has `Maps:Read` scope
-- Clear browser cache (Ctrl+Shift+Del)
+- Check browser console for errors
+- Verify organization.json has technology, industry, organizationModel fields
+- Ensure Zustand store is initialized
+- Check that filter values match exactly (case-sensitive)
 
-### Organizations Not Showing
+### Organizations Not Loading
 
-- Ensure `public/data/organizations.json` exists
-- Check browser console for errors (F12)
-- Verify geolocation coordinates are valid (lat between -90/90, lng between -180/180)
+- Verify src/data/organizations.json exists
+- Check browser console for require() errors
+- Ensure JSON is valid (use JSON validator)
+- Verify geolocation coordinates are valid
 
-### GitHub/Vercel Out of Sync
+### Build Fails on Vercel
 
-- Pull latest from `main`: `git pull origin main`
-- Merge `develop` into `main` via GitHub PR
-- Vercel auto-deploys on push to `main`
-
-For more help, open an [Issue](https://github.com/Luisal182/immersive-sweden/issues).
+- Run `npm run build` locally to catch TypeScript errors
+- Ensure all TypeScript interfaces are complete
+- Check .env variables are set in Vercel project settings
+- Verify no console.error or warnings are breaking build
 
 ---
 
@@ -315,10 +404,6 @@ For more help, open an [Issue](https://github.com/Luisal182/immersive-sweden/iss
 - 📧 Email: contact@immersivesweden.se (future)
 - 💬 GitHub Issues: [Report a bug](https://github.com/Luisal182/immersive-sweden/issues)
 - 📚 Documentation: [See docs/](./docs/)
-
-### Report Security Issues
-
-Please email security@immersivesweden.se with details (do not open public issue).
 
 ---
 
@@ -331,73 +416,116 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 ## 🙏 Acknowledgments
 
 - **Mapbox** - Interactive map technology
-- **Bolagsverket** - Swedish company registry data (future integration)
-- **OpenStreetMap** - Nominatim geocoding service (future)
+- **Zustand** - State management library
 - **Next.js** - React framework
 - **Vercel** - Hosting & deployment
 - **Sweden** - Inspiration for the project 🇸🇪
 
 ---
 
-## 📈 Project Stats
-
-- **Repository:** [immersive-sweden](https://github.com/Luisal182/immersive-sweden)
-- **Live Demo:** [immersive-sweden.vercel.app](https://immersive-sweden.vercel.app)
-- **Status:** Active Development
-- **Current Release:** v0.2.0 (Beta - Phase 2 in progress)
-- **Contributors:** 1 (Luis Alfonso Arranz García)
-- **Last Updated:** February 11, 2026
-- **Organizations:** 14 mock companies loaded
-- **Markers:** All displaying on map with red pins
-
----
-
 ## 🗺️ Roadmap
 
-- **Q1 2026:** MVP with mock data & markers ✅ In Progress
-- **Q1 2026:** Modal interactions & filtering 🔄 Planned
-- **Q1 2026:** Bolagsverket integration 📋 Planned
-- **Q2 2026:** User authentication & profiles 📋 Planned
-- **Q2 2026:** 3D visualization with Three.js 📋 Planned
-- **Q3 2026:** Analytics dashboard 📋 Planned
-- **Q4 2026:** Mobile app (React Native) 📋 Planned
+### Phase 2: ✅ COMPLETE (February 24, 2026)
+
+**Completed:**
+
+- ✅ Dropdown filters (Technology, Industry, Organization Model)
+- ✅ Search functionality
+- ✅ 24 organizations with full data
+- ✅ Zustand state management
+- ✅ Filter logic with AND combination
+- ✅ Dark mode UI improvements
+- ✅ Modal interactions
+- ✅ Responsive design
+
+### Phase 3: CSS & Animation 📋 NEXT
+
+**Planned:**
+
+- [ ] Framer Motion animations for dropdowns
+- [ ] Hover effects on dropdown options
+- [ ] Polish card animations
+- [ ] Mobile responsive refinements
+- [ ] Search field UI improvements
+
+### Phase 4: 3D & Advanced Features 📋 FUTURE
+
+**Planned:**
+
+- [ ] React Three Fiber integration
+- [ ] 3D GLB models with optimization
+- [ ] Dynamic texture mapping
+- [ ] Professional lighting system
+
+### Phase 5-6: Backend Integration & Production 📋 FUTURE
+
+**Planned:**
+
+- [ ] Bolagsverket API integration
+- [ ] Firebase/Supabase database
+- [ ] User authentication
+- [ ] Admin dashboard
+- [ ] Batch import tools
 
 ---
 
-## 💡 Ideas & Feedback
+## 📋 Recent Session Notes (February 24, 2026)
 
-Have an idea? Found a bug? Let us know!
+### What We Built
 
-1. Check existing [Issues](https://github.com/Luisal182/immersive-sweden/issues)
-2. [Create a new issue](https://github.com/Luisal182/immersive-sweden/issues/new)
-3. Join discussions in [Discussions tab](https://github.com/Luisal182/immersive-sweden/discussions)
+1. **Dropdown Filter System** (3 dropdowns for Technology, Industry, Organization Model)
 
----
+   - Independent filters with AND logic
+   - Support for null values for flexible data
+   - Clean, dark-themed UI with glassmorphism
 
-## 🔄 Recent Updates (February 11, 2026)
+2. **Expanded Organization Data** (14 → 24 organizations)
 
-### ✅ Completed
+   - Added technology, industry, organizationModel fields
+   - Distributed across Swedish metropolitan areas
+   - Maintained data quality and consistency
 
-- [x] Created 14 mock organizations with immersive tech focus
-- [x] Implemented marker loading from JSON
-- [x] Red pin markers (📍) displaying on map
-- [x] OrganizationCard component with modern design
-- [x] CSS Module styling with badge colors
-- [x] GitHub synchronized (develop merged to main)
-- [x] Vercel deployment updated
+3. **Advanced Search** (works with all filters)
 
-### 🔄 In Progress
+   - Searches 6 fields simultaneously
+   - Real-time filtering with Zustand
+   - Seamless integration with dropdowns
 
-- [ ] Modal component for card display
-- [ ] Click handler for markers
-- [ ] Global state with Zustand
+4. **UI/UX Polish**
+   - Dark mode design throughout
+   - Improved spacing and typography
+   - Enhanced hover/focus states
+   - Responsive on mobile devices
 
-### 📋 Next Steps
+### Key Learnings
 
-1. Create Modal component
-2. Implement modal open/close on marker click
-3. Display OrganizationCard inside modal
-4. Add filter functionality
+- Zustand best practices for React state management
+- CSS Modules for scoped styling
+- TypeScript strict mode for production builds
+- JSON loading strategies in Next.js
+- Filter logic design patterns
+- Glassmorphism design technique
+
+### Technical Decisions
+
+1. **Moved JSON from public/ to src/data/**
+
+   - Reason: Better bundling and type safety
+   - Method: Changed fetch to require()
+
+2. **Dropped toggle behavior on dropdowns**
+
+   - Reason: Simple select is more intuitive
+   - Result: Cleaner UX
+
+3. **Used AND combination for filters**
+
+   - Reason: More precise results
+   - Benefit: Users can narrow down more easily
+
+4. **Kept null values in organization data**
+   - Reason: Flexibility for incomplete data
+   - Benefit: Organizations appear across all filters
 
 ---
 
