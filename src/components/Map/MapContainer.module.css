@@ -103,12 +103,12 @@
     position: absolute;
     bottom: 180px;  /* ← Más arriba (era 20px) */
     right: 80px;
-    width: 220px;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 16px;     
+    gap: 28px;     
     background: rgba(44, 43, 43, 0.5);
-    padding: 20px;
+    padding: 28px;
     border-radius: 12px;
     z-index: 100;
     pointer-events: auto;
@@ -135,9 +135,9 @@
   
   .filterDropdown {
   padding: 14px 18px;
-  background: rgba(44, 62, 80, 0.9);  /* Gris oscuro */
-  color: #f5f9fb;                      /* Azul claro */
-  border: 2px solid #4fc3ff;          /* Border azul */
+  background: rgba(44, 62, 80, 0.9); 
+  color: #f5f9fb;                   
+  border: 2px solid #4fc3ff;         
   border-radius: 12px;
   font-weight: 600;
   font-size: 14px;
