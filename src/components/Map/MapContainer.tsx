@@ -13,6 +13,9 @@ import { useMapStore } from '@/store/mapStore';
 import { useMapInteractions } from '@/hooks/useMapInteractions';
 import { TechnologyType, IndustryType, OrganizationModelType } from '@/types';
 import CustomDropdown from '@/components/_graveyard/CustomDropdown/CustomDropdown';
+import { MapAnimation } from '@/components/3D/Animations/MapAnimation';
+import { SwedenBorderGlow } from '@/components/3D/Animations/SwedenBorderGlow';
+import { FloatingParticles } from '@/components/3D/Animations/FloatingParticles';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -76,7 +79,12 @@ export default function MapContainer() {
   }, [organizations, setOrganizations]);
 
   return (
+    <MapAnimation>
     <div className={styles.container}>
+
+    <FloatingParticles />
+ 
+    <SwedenBorderGlow />
 
       {/* Back Button */}
       {map.current && isMapCentered && (
@@ -187,7 +195,8 @@ export default function MapContainer() {
           ]}
         />
       </div>
-
     </div>
+    </MapAnimation>
+    
   );
 }
