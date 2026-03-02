@@ -1,4 +1,4 @@
-// Organization interface and types
+// INDEX.TS      Organization interface and types
 export const TECHNOLOGY_OPTIONS = ['XR', 'AI', 'Visualization'] as const;
 export const INDUSTRY_OPTIONS = ['Manufacturing', 'Healthcare', 'Culture', 'Games'] as const;
 export const ORGANIZATION_MODEL_OPTIONS = ['Business', 'Nonprofit Organization'] as const;
@@ -38,9 +38,9 @@ export interface MapState {
   organizations: Organization[];
   filteredOrganizations: Organization[];
   selectedOrgId: number | null;
-  currentTechnology: TechnologyType | 'all';
-  currentIndustry: IndustryType | 'all';
-  currentOrganizationModel: OrganizationModelType | 'all';
+  currentTechnology: TechnologyType[];
+  currentIndustry: IndustryType[];
+  currentOrganizationModel: OrganizationModelType[];
   searchTerm: string;
   isModalOpen: boolean;
   isMapCentered: boolean;

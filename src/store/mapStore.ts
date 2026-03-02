@@ -6,9 +6,9 @@ interface MapStoreState {
   organizations: Organization[];
   filteredOrganizations: Organization[];
   selectedOrgId: number | null;
-  currentTechnology: TechnologyType | 'all';
-  currentIndustry: IndustryType | 'all';
-  currentOrganizationModel: OrganizationModelType | 'all';
+  currentTechnologies: TechnologyType[];              // ← was: TechnologyType | 'all'
+  currentIndustries: IndustryType[];                  // ← was: IndustryType | 'all'
+  currentOrganizationModels: OrganizationModelType[]; // ← was: OrganizationModelType | 'all'
   searchTerm: string;
   isModalOpen: boolean;
   isMapCentered: boolean;
@@ -16,9 +16,9 @@ interface MapStoreState {
   // Actions
   setOrganizations: (organizations: Organization[]) => void;
   setSelectedOrgId: (id: number | null) => void;
-  setCurrentTechnology: (tech: TechnologyType | 'all') => void;
-  setCurrentIndustry: (industry: IndustryType | 'all') => void;
-  setCurrentOrganizationModel: (model: OrganizationModelType | 'all') => void;
+  setCurrentTechnologies: (techs: TechnologyType[]) => void;
+  setCurrentIndustries: (industries: IndustryType[]) => void;
+  setCurrentOrganizationModels: (models: OrganizationModelType[]) => void;
   setSearchTerm: (term: string) => void;
   setModalOpen: (isOpen: boolean) => void;
   setIsMapCentered: (value: boolean) => void;
@@ -33,9 +33,9 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
   organizations: [],
   filteredOrganizations: [],
   selectedOrgId: null,
-  currentTechnology: 'all',
-  currentIndustry: 'all',
-  currentOrganizationModel: 'all',
+  currentTechnologies: [],        // empty array = no filter active = show all
+  currentIndustries: [],
+  currentOrganizationModels: [],
   searchTerm: '',
   isModalOpen: false,
   isMapCentered: false,
@@ -43,7 +43,7 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
   // ============================================
   // ACTIONS
   // ============================================
-  
+
   setOrganizations: (organizations) => {
     set({ organizations });
     get().filterOrganizations();
@@ -53,18 +53,18 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
     set({ selectedOrgId: id, isModalOpen: id !== null });
   },
 
-  setCurrentTechnology: (tech) => {
-    set({ currentTechnology: tech });
+  setCurrentTechnologies: (techs) => {
+    set({ currentTechnologies: techs });
     get().filterOrganizations();
   },
-  
-  setCurrentIndustry: (industry) => {
-    set({ currentIndustry: industry });
+
+  setCurrentIndustries: (industries) => {
+    set({ currentIndustries: industries });
     get().filterOrganizations();
   },
-  
-  setCurrentOrganizationModel: (model) => {
-    set({ currentOrganizationModel: model });
+
+  setCurrentOrganizationModels: (models) => {
+    set({ currentOrganizationModels: models });
     get().filterOrganizations();
   },
 
@@ -75,62 +75,68 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
 
   setModalOpen: (isOpen) => {
     set({ isModalOpen: isOpen });
-    if (!isOpen) {
-      set({ selectedOrgId: null });
-    }
+    if (!isOpen) set({ selectedOrgId: null });
   },
 
   setIsMapCentered: (value) => {
     set({ isMapCentered: value });
   },
-  
-    
+
   // ============================================
   // FILTERING LOGIC
   // ============================================
   filterOrganizations: () => {
-    const { organizations, currentTechnology, currentIndustry, currentOrganizationModel, searchTerm } = get();
-    
+    const {
+      organizations,
+      currentTechnologies,
+      currentIndustries,
+      currentOrganizationModels,
+      searchTerm,
+    } = get();
+
     console.log('FILTER START:', {
       totalOrgs: organizations.length,
-      currentTechnology,
+      currentTechnologies,
+      currentIndustries,
+      currentOrganizationModels,
       firstOrg: organizations[0] ? {
         name: organizations[0].name,
         technology: organizations[0].technology,
         industry: organizations[0].industry,
-        organizationModel: organizations[0].organizationModel
-      } : null
+        organizationModel: organizations[0].organizationModel,
+      } : null,
     });
-    
+
     const filtered = organizations.filter(org => {
-      const technologyMatch = 
-        currentTechnology === 'all' || 
-        String(org.technology).trim() === String(currentTechnology).trim();
-      
-      const industryMatch = 
-        currentIndustry === 'all' || 
-        String(org.industry).trim() === String(currentIndustry).trim();
-      
-      const modelMatch = 
-        currentOrganizationModel === 'all' || 
-        String(org.organizationModel).trim() === String(currentOrganizationModel).trim();
-      
-      const searchMatch = searchTerm === '' ||
+      // Empty array = "all" — no filter active
+      const technologyMatch =
+        currentTechnologies.length === 0 ||
+        currentTechnologies.includes(String(org.technology).trim() as TechnologyType);
+
+      const industryMatch =
+        currentIndustries.length === 0 ||
+        currentIndustries.includes(String(org.industry).trim() as IndustryType);
+
+      const modelMatch =
+        currentOrganizationModels.length === 0 ||
+        currentOrganizationModels.includes(String(org.organizationModel).trim() as OrganizationModelType);
+
+      const searchMatch =
+        searchTerm === '' ||
         org.name.toLowerCase().includes(searchTerm.toLowerCase());
-  
+
       return technologyMatch && industryMatch && modelMatch && searchMatch;
     });
-  
+
     console.log('FILTER RESULT:', { filtered: filtered.length, total: organizations.length });
     set({ filteredOrganizations: filtered });
   },
- 
+
   // ============================================
   // SELECTORS
   // ============================================
-  
   getSelectedOrganization: () => {
     const { organizations, selectedOrgId } = get();
     return organizations.find(org => org.id === selectedOrgId);
-  }
+  },
 }));
