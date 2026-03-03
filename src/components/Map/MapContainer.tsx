@@ -85,6 +85,7 @@ export default function MapContainer() {
     <FloatingParticles />
  
     <SwedenBorderGlow />
+   
 
       {/* Back Button */}
       {map.current && isMapCentered && (

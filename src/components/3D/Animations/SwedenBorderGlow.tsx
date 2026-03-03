@@ -15,16 +15,16 @@ export const SwedenBorderGlow = () => {
         zIndex: 5,
       }}
     >
-      {/* Inner glow - MÁS FUERTE */}
+      {/* Inner glow - suave */}
       <motion.div
         animate={{
           boxShadow: [
-            'inset 0 0 40px rgba(79, 195, 255, 0.3)',
-            'inset 0 0 80px rgba(79, 195, 255, 0.6)',
-            'inset 0 0 40px rgba(79, 195, 255, 0.3)',
+            'inset 0 0 20px rgba(79, 195, 255, 0.05)',
+            'inset 0 0 40px rgba(79, 195, 255, 0.12)',
+            'inset 0 0 20px rgba(79, 195, 255, 0.05)',
           ],
         }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         style={{
           width: '100%',
           height: '100%',
@@ -32,24 +32,24 @@ export const SwedenBorderGlow = () => {
         }}
       />
 
-      {/* Edge glow - MÁS VISIBLE */}
+      {/* Edge glow - decorativo */}
       <motion.div
         animate={{
-          opacity: [0.5, 1, 0.5],
+          opacity: [0.4, 0.7, 0.4],
           boxShadow: [
-            '0 0 30px rgba(79, 195, 255, 0.6), inset 0 0 20px rgba(79, 195, 255, 0.2)',
-            '0 0 60px rgba(79, 195, 255, 1), inset 0 0 40px rgba(79, 195, 255, 0.4)',
-            '0 0 30px rgba(79, 195, 255, 0.6), inset 0 0 20px rgba(79, 195, 255, 0.2)',
+            '0 0 12px rgba(79, 195, 255, 0.15), inset 0 0 8px rgba(79, 195, 255, 0.05)',
+            '0 0 24px rgba(79, 195, 255, 0.25), inset 0 0 16px rgba(79, 195, 255, 0.1)',
+            '0 0 12px rgba(79, 195, 255, 0.15), inset 0 0 8px rgba(79, 195, 255, 0.05)',
           ],
         }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          border: '2px solid rgba(79, 195, 255, 0.6)',
+          border: '1px solid rgba(79, 195, 255, 0.2)',
           borderRadius: '8px',
         }}
       />
