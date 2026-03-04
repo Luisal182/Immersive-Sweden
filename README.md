@@ -3,25 +3,26 @@
 An interactive web platform to discover and connect with Swedish companies working in immersive technologies (XR, AI, Games, Visualization, Culture, Technologies).
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
-![Phase](https://img.shields.io/badge/Phase-2%20%2F%206-blue)
+![Phase](https://img.shields.io/badge/Phase-3%20%2F%206-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
 ## 🎯 Overview
 
-**Immersive Sweden** is an interactive map platform built to showcase the ecosystem of Swedish companies working in immersive technologies. Users can search, filter by technology/industry/model, and discover companies with advanced filtering capabilities.
+**Immersive Sweden** is an interactive map platform with advanced animations and visual effects. Users can search, filter by technology/industry/model, and discover companies with real-time filtering and smooth animations.
 
 ### Key Features
 
-- 🗺️ Interactive map of Sweden with company markers
+- 🗺️ Interactive map of Sweden with animated company markers
 - 📍 24 organizations with precise geolocation distributed across Swedish metropolitan areas
 - 🏷️ **3 Dropdown filters: Technology (XR, AI, Visualization), Industry (Manufacturing, Healthcare, Culture, Games), Organization Model (Business, Nonprofit)**
 - 🔍 **Advanced search functionality** (filters by name, description, type, technology, industry, organization model)
-- 🎨 **Dark mode UI with modern design** (dropdowns, modal, cards)
-- 📱 Fully responsive design (mobile-first)
+- ✨ **Framer Motion animations:** Breathing map effect, pulsating border glow, floating particles, marker animations
+- 🎨 **Dark mode UI with modern design** (dropdowns, modal, cards with glassmorphism)
+- 📱 Fully responsive design (mobile-first, adaptive zoom)
 - 💬 Company contact information & modal interactions
-- 🚀 Fast, modern tech stack (Next.js, TypeScript, Zustand, Mapbox)
+- 🚀 Fast, modern tech stack (Next.js, TypeScript, Zustand, Mapbox, Framer Motion)
 
 ---
 
@@ -47,6 +48,7 @@ cd immersive-sweden
 
 ```bash
 npm install
+npm install framer-motion
 ```
 
 3. **Setup environment variables**
@@ -90,7 +92,7 @@ https://immersive-sweden.vercel.app
 - **UI/Maps:** Mapbox GL JS
 - **Styling:** CSS Modules
 - **State Management:** Zustand ✅ IMPLEMENTED
-- **Animations:** Framer Motion (planned)
+- **Animations:** Framer Motion ✅ IMPLEMENTED
 - **3D Assets:** React Three Fiber (planned)
 
 ### Backend
@@ -118,7 +120,7 @@ immersive-sweden/
 │   │   ├── api/                 # API routes (future)
 │   │   ├── page.tsx             # Home page
 │   │   ├── layout.tsx           # Root layout
-│   │   └── globals.css          # Global styles
+│   │   └── globals.css          # Global styles + animations
 │   │
 │   ├── components/
 │   │   ├── Map/
@@ -129,16 +131,21 @@ immersive-sweden/
 │   │   │   └── OrganizationCard.module.css
 │   │   ├── Modal/
 │   │   │   └── Modal.tsx             # Modal wrapper
+│   │   ├── 3D/Animations/
+│   │   │   ├── MapAnimation.tsx      # Map entry + breathing effect
+│   │   │   ├── SwedenBorderGlow.tsx  # Pulsating border
+│   │   │   ├── FloatingParticles.tsx # Light particles
+│   │   │   └── MarkerAnimations.tsx  # Marker pulse + hover
 │   │   └── _graveyard/               # Old/experimental components
 │   │
 │   ├── hooks/
 │   │   ├── useMapLayers.ts       # Map layer management
-│   │   ├── useOrganizations.ts   # Load organization data (require-based)
-│   │   ├── useMapMarkers.ts      # Marker management with filters
+│   │   ├── useOrganizations.ts   # Load organization data
+│   │   ├── useMapMarkers.ts      # Marker management with animations
 │   │   └── useMapInteractions.ts # Click handlers & zoom
 │   │
 │   ├── store/
-│   │   └── mapStore.ts           # Zustand store ✅ IMPLEMENTED
+│   │   └── mapStore.ts           # Zustand store
 │   │       - filteredOrganizations
 │   │       - currentTechnology, currentIndustry, currentOrganizationModel
 │   │       - searchTerm
@@ -146,9 +153,6 @@ immersive-sweden/
 │   │
 │   ├── types/
 │   │   └── index.ts              # TypeScript types & constants
-│   │       - TECHNOLOGY_OPTIONS, INDUSTRY_OPTIONS, ORGANIZATION_MODEL_OPTIONS
-│   │       - Organization interface with technology, industry, organizationModel
-│   │       - activity field (required for card display)
 │   │
 │   ├── utils/
 │   │   └── mapLayerConfig.ts     # Mapbox layer configuration
@@ -196,37 +200,17 @@ npm run lint
 #### Interactive Map with 24 Organizations
 
 - Map displays **24 Swedish companies** in immersive tech sectors
-- Each company shows a **red pin marker (📍)**
-- Markers positioned with precise geolocation coordinates
-- Distributed across Swedish metropolitan areas:
-  - Stockholm region (Södermalm, Stockholm)
-  - Gothenburg region (Mölndal, Gothenburg)
-  - Malmö region (Lund)
-  - Plus 21 other locations
+- Each company shows a **red pin marker (📍)** with pulse animation
+- Markers with hover effects (scale 1.2) and click interactions
+- Distributed across Swedish metropolitan areas
 
 #### Advanced Filtering System
 
 **3 Dropdown Filters** (work independently with AND logic):
 
-1. **Technology Filter:**
-
-   - All Technologies (default)
-   - XR
-   - AI
-   - Visualization
-
-2. **Industry Filter:**
-
-   - All Industries (default)
-   - Manufacturing
-   - Healthcare
-   - Culture
-   - Games
-
-3. **Organization Model Filter:**
-   - All Models (default)
-   - Business
-   - Nonprofit Organization
+1. **Technology Filter:** All Technologies, XR, AI, Visualization
+2. **Industry Filter:** All Industries, Manufacturing, Healthcare, Culture, Games
+3. **Organization Model Filter:** All Models, Business, Nonprofit Organization
 
 **Search Functionality:**
 
@@ -234,129 +218,118 @@ npm run lint
 - Works seamlessly with dropdown filters
 - Real-time filtering with Zustand state management
 
-#### Organization Data
+#### Animated Visual Effects
 
-Each organization includes:
+**Map Animations:**
 
-- **Name:** Company name
-- **Type:** XR, AI, Games, Visualization, Culture, Technologies
-- **Activity:** Business focus area
-- **Technology:** XR, AI, or Visualization (optional, can be null)
-- **Industry:** Manufacturing, Healthcare, Culture, Games (optional, can be null)
-- **Organization Model:** Business or Nonprofit Organization (optional, can be null)
-- **Location:** City and precise coordinates (latitude, longitude)
-- **Contact:** Email and phone number
-- **Description:** Company overview
+- **Entry Animation:** Fade in with zoom effect (scale 0.8 → 1.0, 1.5s)
+- **Breathing Effect:** Continuous subtle scale animation (1.0 → 1.01 → 1.0, 4s cycle)
+- **Border Glow:** Pulsating Sweden border with inner/outer glow (3s cycle)
+- **Floating Particles:** 15 animated light particles with staggered animations
+
+**Marker Animations:**
+
+- **Pulse Effect:** Continuous scale animation (1.0 → 1.1 → 1.0, 2s cycle)
+- **Hover State:** Scale 1.3 on mouse enter with smooth transition
+- **Click Feedback:** Opens organization modal
 
 #### Organization Card Modal
 
-- Click any marker to open modal
-- Displays:
-  - Company badge (colored by type)
-  - Title and description
-  - Location, contact info
-  - Technology/industry tags
-  - "Get in Touch" button (blue gradient)
-  - "View on Map" button (outline style)
+- Click any marker to open modal with company details
 - Dark mode design with glassmorphism effect
-- Close button with hover effects
 - Smooth slideUp animation on open
+- Close button with hover effects
+- "Get in Touch" & "View on Map" buttons with enhanced styling
 
-#### Interactive Map Features
+#### Responsive Design
 
-- **Sweden Border:** Blue glow effect with inverted mask (world darkened)
-- **Gotland & Öland Islands:** Visible on zoom
-- **Back Button:** Returns to full Sweden view with gradient + pulse animation
-- **Responsive Design:** Works on desktop, tablet, mobile
-- **Mapbox GL:** Professional mapping library with dark styling
+- **Desktop (769px+):** Full map with dropdowns on right, zoom 4.2
+- **Tablet (481px-768px):** Adjusted layout, dropdowns repositioned
+- **Mobile (320px-480px):** Optimized view, dropdowns smaller, zoom 3.5
 
 ---
 
-## 📊 Development Status - Phase 2
+## 📊 Development Status
 
-### ✅ COMPLETED This Session
+### Phase 2: ✅ COMPLETE
 
-**Filtering System:**
+**Completed:**
 
-- [x] Created 3 dropdown filters (Technology, Industry, Organization Model)
-- [x] Implemented Zustand store for filter state management
-- [x] Built filter logic with AND combination (all filters must match)
-- [x] Filter supports null values for flexible data distribution
-- [x] Dropdown toggle logic (select = change value, works seamlessly)
+- ✅ Dropdown filters (Technology, Industry, Organization Model)
+- ✅ Search functionality
+- ✅ 24 organizations with full data
+- ✅ Zustand state management
+- ✅ Filter logic with AND combination
+- ✅ Dark mode UI improvements
+- ✅ Modal interactions
+- ✅ Responsive design
 
-**Data Expansion:**
+### Phase 3: ✅ COMPLETE
 
-- [x] Expanded from 14 to 24 organizations
-- [x] Added technology, industry, organizationModel fields to all orgs
-- [x] Distributed organizations across Swedish metropolitan areas
-- [x] Updated organizations.json with precise geolocation data
-- [x] Added missing `activity` field to TypeScript interface
+**Completed:**
 
-**Search Integration:**
+- ✅ Framer Motion installed & configured
+- ✅ MapAnimation component (fade + zoom entry, breathing effect)
+- ✅ SwedenBorderGlow component (pulsating border with glow)
+- ✅ FloatingParticles component (15 animated light particles)
+- ✅ MarkerAnimations component (pulse + hover scale effects)
+- ✅ Responsive map zoom adjustment (3.5 on mobile, 4.2 on desktop)
+- ✅ CSS animations for marker pulse effect (@keyframes markerPulse)
+- ✅ Fixed React hydration errors (Math.random in useEffect)
+- ✅ Integrated all animations into MapContainer
 
-- [x] Implemented search by name, description, type, technology, industry, model
-- [x] Search works independently and with dropdowns
-- [x] Real-time filtering updates on search input
-- [x] Search field styled to match dropdown aesthetics
+### Phase 4: 📋 PLANNED
 
-**UI/UX Improvements:**
+**Planned:**
 
-- [x] Dark mode design for dropdowns (rgba(44, 62, 80, 0.9) background)
-- [x] Glassmorphism effect on filter group (backdrop-filter: blur)
-- [x] Enhanced hover states (translateY animation + glow shadow)
-- [x] Improved typography and contrast
-- [x] Removed debug div from interface
-- [x] Responsive dropdowns on mobile
+- [ ] Parallax effects with depth perception
+- [ ] Shadow dynamics (light movement)
+- [ ] Dropdown open/close animations
+- [ ] Search field focus animations
+- [ ] Final polish and refinements
 
-**Modal/Card Enhancements:**
+---
 
-- [x] Dark mode card background (rgba(20, 30, 45, 0.8))
-- [x] Improved button styling with gradient + shine effects
-- [x] Better spacing and typography hierarchy
-- [x] Close button with blue highlight
-- [x] Activity tag styling with border
-- [x] Section dividers with subtle blue borders
+## 🎨 Animation Details
 
-**Technical Fixes:**
+### MapAnimation
 
-- [x] Fixed JSON loading (moved from public/ to src/data/)
-- [x] Changed fetch to require-based loading
-- [x] Fixed TypeScript types for Organization interface
-- [x] Removed toggle behavior from dropdowns (now simple select)
-- [x] Fixed filter comparison logic with proper string matching
-- [x] Unified Zustand subscription to prevent infinite re-renders
-- [x] Used `filteredOrganizations` in useMapMarkers hook
+- **Entry:** Scale 0.8 → 1.0, opacity 0 → 1 (1.5s easeOut)
+- **Breathing:** Scale 1.0 → 1.01 → 1.0 (infinite 4s easeInOut)
+- **Usage:** Wraps entire MapContainer, creates immersive entry effect
 
-### 📚 Learning & Documentation
+### SwedenBorderGlow
 
-**Key Discoveries:**
+- **Inner Glow:** Inset box-shadow with pulsation (3s cycle)
+- **Edge Glow:** Border with outer box-shadow pulsation
+- **Opacity:** Fades from 0.5 → 1.0 → 0.5
+- **Color:** rgba(79, 195, 255, ...) - cyan blue accent
 
-- Zustand best practices (single subscription per component)
-- Filter logic with AND combination vs OR
-- JSON loading in Next.js (public/ vs src/)
-- TypeScript strict mode in production builds
-- CSS Modules with dark mode design
-- Responsive dropdown styling
-- Glassmorphism effects with backdrop-filter
+### FloatingParticles
 
-**Technical Challenges Resolved:**
+- **Count:** 15 particles with random position
+- **Size:** 4-12px (scalable)
+- **Animation:** Y-axis movement up 150px with opacity fade
+- **Duration:** 4-7 seconds per particle, staggered
+- **Rendering:** Fixed position overlay with z-index 5
 
-1. JSON loading issues → Moved to src/data/ with require()
-2. Filter not working → Fixed string comparison with normalize
-3. Infinite re-renders → Unified Zustand subscription
-4. Dropdown values not changing → Fixed onChange handlers
-5. TypeScript errors in Vercel → Added missing interface fields
+### MarkerAnimations
+
+- **Pulse:** Scale 1.0 → 1.1 → 1.0 (2s infinite)
+- **Hover:** Scale 1.3 with smooth 0.3s transition
+- **Active:** Scale feedback on click
+- **CSS:** @keyframes markerPulse in globals.css
 
 ---
 
 ## 📈 Current Metrics
 
-- **Organizations:** 24 (14 base + 10 new with full data)
-- **Filters:** 3 (Technology, Industry, Organization Model)
-- **Filter Options:** 10 total (XR, AI, Visualization + Manufacturing, Healthcare, Culture, Games + Business, Nonprofit)
-- **Map Markers:** 24 active markers
-- **Geographic Distribution:** Spread across Swedish metropolitan areas
-- **Search Fields:** 6 (name, description, type, technology, industry, organizationModel)
+- **Organizations:** 24 with full metadata
+- **Filters:** 3 dropdown filters with AND logic
+- **Animations:** 5 components (MapAnimation, BorderGlow, FloatingParticles, MarkerAnimations, CSS pulse)
+- **Map Markers:** 24 active markers with animations
+- **Responsive Breakpoints:** 3 (mobile 320-480, tablet 481-768, desktop 769+)
+- **Floating Particles:** 15 staggered animations
 - **Code Quality:** TypeScript strict mode ✅ Passing
 
 ---
@@ -366,7 +339,6 @@ Each organization includes:
 Create `.env.local` in root:
 
 ```bash
-# Mapbox API Token (get from https://account.mapbox.com/tokens/)
 NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
 ```
 
@@ -374,32 +346,35 @@ NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
 
 ## 🐛 Troubleshooting
 
+### Animations Not Showing
+
+- Verify framer-motion is installed: `npm list framer-motion`
+- Check browser console for errors
+- Ensure 3D/Animations components are imported in MapContainer
+- Check z-index values (FloatingParticles: 5, Border: 5, Map: 10)
+
+### Hydration Errors
+
+- Caused by Math.random() - verify useEffect wraps random generation
+- Check that isClient state is used before rendering particles
+- Clear .next cache: `rm -rf .next`
+
+### Markers Not Animating
+
+- Verify CSS animation keyframes are in globals.css
+- Check that useMapMarkers hook adds animation styles
+- Ensure marker elements have 'marker' className
+
 ### Dropdowns Not Filtering
 
 - Check browser console for errors
-- Verify organization.json has technology, industry, organizationModel fields
+- Verify organization.json has all required fields
 - Ensure Zustand store is initialized
-- Check that filter values match exactly (case-sensitive)
-
-### Organizations Not Loading
-
-- Verify src/data/organizations.json exists
-- Check browser console for require() errors
-- Ensure JSON is valid (use JSON validator)
-- Verify geolocation coordinates are valid
-
-### Build Fails on Vercel
-
-- Run `npm run build` locally to catch TypeScript errors
-- Ensure all TypeScript interfaces are complete
-- Check .env variables are set in Vercel project settings
-- Verify no console.error or warnings are breaking build
+- Check that filter values match exactly
 
 ---
 
 ## 📞 Support
-
-### Get Help
 
 - 📧 Email: contact@immersivesweden.se (future)
 - 💬 GitHub Issues: [Report a bug](https://github.com/Luisal182/immersive-sweden/issues)
@@ -417,6 +392,7 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 
 - **Mapbox** - Interactive map technology
 - **Zustand** - State management library
+- **Framer Motion** - Animation library
 - **Next.js** - React framework
 - **Vercel** - Hosting & deployment
 - **Sweden** - Inspiration for the project 🇸🇪
@@ -427,111 +403,84 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 
 ### Phase 2: ✅ COMPLETE (February 24, 2026)
 
-**Completed:**
-
-- ✅ Dropdown filters (Technology, Industry, Organization Model)
-- ✅ Search functionality
-- ✅ 24 organizations with full data
+- ✅ Dropdown filters with AND logic
+- ✅ Search functionality (6 fields)
+- ✅ 24 organizations with metadata
 - ✅ Zustand state management
-- ✅ Filter logic with AND combination
-- ✅ Dark mode UI improvements
-- ✅ Modal interactions
+- ✅ Dark mode UI
 - ✅ Responsive design
 
-### Phase 3: CSS & Animation 📋 NEXT
+### Phase 3: ✅ COMPLETE (February 26, 2026)
 
-**Planned:**
+- ✅ Framer Motion animations
+- ✅ Map entry & breathing effects
+- ✅ Border glow & pulsation
+- ✅ Floating particles system
+- ✅ Marker pulse & hover animations
+- ✅ CSS animation keyframes
+- ✅ Responsive animations
 
-- [ ] Framer Motion animations for dropdowns
-- [ ] Hover effects on dropdown options
-- [ ] Polish card animations
-- [ ] Mobile responsive refinements
-- [ ] Search field UI improvements
+### Phase 4: 📋 NEXT
 
-### Phase 4: 3D & Advanced Features 📋 FUTURE
+- [ ] Parallax effects
+- [ ] Shadow dynamics
+- [ ] Dropdown animations
+- [ ] Search focus animations
+- [ ] Final polish
 
-**Planned:**
+### Phase 5-6: 📋 FUTURE
 
 - [ ] React Three Fiber integration
-- [ ] 3D GLB models with optimization
-- [ ] Dynamic texture mapping
-- [ ] Professional lighting system
-
-### Phase 5-6: Backend Integration & Production 📋 FUTURE
-
-**Planned:**
-
-- [ ] Bolagsverket API integration
+- [ ] 3D GLB models
+- [ ] Bolagsverket API
 - [ ] Firebase/Supabase database
 - [ ] User authentication
-- [ ] Admin dashboard
-- [ ] Batch import tools
 
 ---
 
-## 📋 Recent Session Notes (February 24, 2026)
+## 📋 Session Notes (February 26, 2026)
 
 ### What We Built
 
-1. **Dropdown Filter System** (3 dropdowns for Technology, Industry, Organization Model)
+1. **Framer Motion Animation System**
 
-   - Independent filters with AND logic
-   - Support for null values for flexible data
-   - Clean, dark-themed UI with glassmorphism
+   - MapAnimation: Entry fade + breathing effect
+   - SwedenBorderGlow: Pulsating border with dual glow
+   - FloatingParticles: 15 staggered light particles
+   - MarkerAnimations: Pulse + hover effects
 
-2. **Expanded Organization Data** (14 → 24 organizations)
+2. **Visual Enhancements**
 
-   - Added technology, industry, organizationModel fields
-   - Distributed across Swedish metropolitan areas
-   - Maintained data quality and consistency
+   - Map entry animation (0.8 → 1.0 scale)
+   - Continuous breathing effect (4s cycle)
+   - Border glow pulsation (3s cycle)
+   - Marker pulse animation (2s cycle)
+   - Floating particles with opacity fade
 
-3. **Advanced Search** (works with all filters)
-
-   - Searches 6 fields simultaneously
-   - Real-time filtering with Zustand
-   - Seamless integration with dropdowns
-
-4. **UI/UX Polish**
-   - Dark mode design throughout
-   - Improved spacing and typography
-   - Enhanced hover/focus states
-   - Responsive on mobile devices
+3. **Responsive Improvements**
+   - Dynamic zoom based on screen size
+   - Dropdown repositioning on mobile
+   - Particle animation scaling
+   - Touch-friendly interactions
 
 ### Key Learnings
 
-- Zustand best practices for React state management
-- CSS Modules for scoped styling
-- TypeScript strict mode for production builds
-- JSON loading strategies in Next.js
-- Filter logic design patterns
-- Glassmorphism design technique
+- Framer Motion motion.div component integration
+- React hydration error resolution (Math.random in useEffect)
+- CSS animation keyframes for continuous effects
+- Staggered animation techniques
+- Z-index layering for overlays
 
-### Technical Decisions
+### Technical Stack
 
-1. **Moved JSON from public/ to src/data/**
-
-   - Reason: Better bundling and type safety
-   - Method: Changed fetch to require()
-
-2. **Dropped toggle behavior on dropdowns**
-
-   - Reason: Simple select is more intuitive
-   - Result: Cleaner UX
-
-3. **Used AND combination for filters**
-
-   - Reason: More precise results
-   - Benefit: Users can narrow down more easily
-
-4. **Kept null values in organization data**
-   - Reason: Flexibility for incomplete data
-   - Benefit: Organizations appear across all filters
+- **Animation Library:** Framer Motion
+- **State:** Zustand + React hooks
+- **Styling:** CSS Modules + CSS animations
+- **Maps:** Mapbox GL
+- **Types:** TypeScript strict mode
 
 ---
 
 **Made with ❤️ for the Swedish immersive tech community**
 
----
-
-**Questions?** Open an issue or reach out!  
-**Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md) (coming soon)
+**Questions?** Open an issue or reach out!
