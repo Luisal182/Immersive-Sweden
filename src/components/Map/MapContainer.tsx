@@ -13,6 +13,9 @@ import { useMapStore } from '@/store/mapStore';
 import { useMapInteractions } from '@/hooks/useMapInteractions';
 import { TechnologyType, IndustryType, OrganizationModelType } from '@/types';
 import CustomDropdown from '@/components/_graveyard/CustomDropdown/CustomDropdown';
+import { MapAnimation } from '@/components/3D/Animations/MapAnimation';
+import { SwedenBorderGlow } from '@/components/3D/Animations/SwedenBorderGlow';
+import { FloatingParticles } from '@/components/3D/Animations/FloatingParticles';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -47,10 +50,10 @@ export default function MapContainer() {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: [15.0, 60.0],
-      zoom: 4.2,
-      pitch: 0,
-      bearing: 0,
+      center: [15.0, 62.0],
+      zoom: 3.0,
+      pitch: 48,
+      bearing: -12,
     });
 
     map.current.on('load', () => {
@@ -58,6 +61,20 @@ export default function MapContainer() {
         useMapLayers({ map: map.current });
       }
     });
+
+    // flyTo FUERA del on('load') — con más delay
+    map.current.once('idle', () => {
+       setTimeout(() => {
+        map.current?.flyTo({
+      center: [15.0, 62.0],
+      zoom: 4.3,
+      pitch: 30,
+      bearing: 0,
+      duration: 3000,
+      essential: true,
+       });
+      }, 800);
+       });
 
     console.log('✅ Map initialized');
 
@@ -76,7 +93,13 @@ export default function MapContainer() {
   }, [organizations, setOrganizations]);
 
   return (
+    <MapAnimation>
     <div className={styles.container}>
+
+    <FloatingParticles />
+ 
+    <SwedenBorderGlow />
+   
 
       {/* Back Button */}
       {map.current && isMapCentered && (
@@ -85,7 +108,7 @@ export default function MapContainer() {
           onClick={() => {
             setIsMapCentered(false);
             map.current?.flyTo({
-              center: [15.0, 60.0],
+              center: [15.0, 62.0],
               zoom: 4.2,
               duration: 1500,
             });
@@ -187,7 +210,8 @@ export default function MapContainer() {
           ]}
         />
       </div>
-
     </div>
+    </MapAnimation>
+    
   );
 }
