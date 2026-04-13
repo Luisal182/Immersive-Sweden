@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { Organization } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 interface UseOrganizationsReturn {
   organizations: Organization[];
@@ -13,17 +16,47 @@ export const useOrganizations = (): UseOrganizationsReturn => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const data = require('@/data/organizations.json');
-      setOrganizations(data.organizations);
-      console.log(`✅ Loaded ${data.organizations.length} organizations`);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      setError(message);
-      console.error('❌ Error loading organizations:', message);
-    } finally {
-      setLoading(false);
-    }
+    const fetchOrganizations = async () => {
+      try {
+        const { data, error: supabaseError } = await supabase
+          .from('organizations')
+          .select('*')
+          .limit(500);
+
+        if (supabaseError) throw supabaseError;
+
+        const mappedOrganizations: Organization[] = data.map((org: any) => ({
+          id: org.id,
+          name: org.name,
+          description: org.description,
+          type: org.type,
+          activity: org.activity,
+          technology: org.technology,
+          industry: org.industry,
+          organizationModel: org.organization_model,
+          contact: {
+            email: org.email,
+            phone: org.phone,
+          },
+          location: {
+            city: org.city,
+            lat: org.latitude,
+            lng: org.longitude,
+          },
+        }));
+
+        setOrganizations(mappedOrganizations);
+        console.log(`✅ Loaded ${mappedOrganizations.length} organizations from Supabase`);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        setError(message);
+        console.error('❌ Error loading organizations:', message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrganizations();
   }, []);
 
   return { organizations, loading, error };
