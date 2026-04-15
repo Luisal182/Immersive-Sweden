@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Organization } from '@/types';
 import { useMapStore } from '@/store/mapStore';
+import { applyJitter } from '@/hooks/useJitter';
 
 interface UseMapMarkersProps {
   map: mapboxgl.Map | null;
@@ -26,9 +27,10 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
     // Clear existing markers
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
+    const jitteredOrgs = applyJitter(organizations);
 
     // Add new markers
-    organizations.forEach(org => {
+     jitteredOrgs.forEach(org => {
       // ✅ VALIDACIÓN usando location.lat / location.lng
       if (
         !org.location ||
