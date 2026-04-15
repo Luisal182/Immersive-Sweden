@@ -25,8 +25,10 @@ export interface Organization {
     city: string;
     lat: number;
     lng: number;
-  };
+  }; 
 }
+ 
+
 
 // API response types
 export interface OrganizationResponse {

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState  } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './MapContainer.module.css';
@@ -23,6 +23,7 @@ export default function MapContainer() {
   // Refs
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const [mapReady, setMapReady] = useState(false);
 
   // Hooks
   const { organizations, loading, error } = useOrganizations();
@@ -41,7 +42,7 @@ export default function MapContainer() {
   const setCurrentOrganizationModels = useMapStore(state => state.setCurrentOrganizationModels);
 
   const { flyToOrganization } = useMapInteractions({ map: map.current });
-  useMapMarkers({ map: map.current, organizations: filteredOrganizations });
+  useMapMarkers({ map: mapReady ? map.current : null, organizations: filteredOrganizations });
 
   // Initialize map
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function MapContainer() {
     map.current.on('load', () => {
       if (map.current) {
         useMapLayers({ map: map.current });
+        setMapReady(true);
       }
     });
 
