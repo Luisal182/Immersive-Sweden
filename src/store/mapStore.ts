@@ -121,7 +121,7 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
         currentOrganizationModels.length === 0 ||
         currentOrganizationModels.includes(String(org.organizationModel).trim() as OrganizationModelType);
 
-        const searchMatch =git
+        const searchMatch =
         searchTerm === '' ||
         org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (org.location?.city ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
