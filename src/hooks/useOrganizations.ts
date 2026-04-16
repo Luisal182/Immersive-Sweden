@@ -37,6 +37,7 @@ export const useOrganizations = (): UseOrganizationsReturn => {
           contact: {
             email: org.email,
             phone: org.phone,
+            website: org.website,
           },
           location: {
             city: org.city,
