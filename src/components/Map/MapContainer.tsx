@@ -60,7 +60,6 @@ export default function MapContainer() {
     map.current.on('load', () => {
       if (map.current) {
         useMapLayers({ map: map.current });
-        setMapReady(true);
       }
     });
 
@@ -75,8 +74,12 @@ export default function MapContainer() {
       duration: 3000,
       essential: true,
        });
-      }, 800);
-       });
+      // ← Markers appear after fly to is finished
+      setTimeout(() => {
+        setMapReady(true);
+      }, 3000 + 800);
+          }, 800);
+      });
 
     console.log('✅ Map initialized');
 
