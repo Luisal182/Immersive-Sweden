@@ -3,7 +3,7 @@
 An interactive web platform to discover and connect with Swedish companies working in immersive technologies (XR, AI, Games, Visualization, Culture, Technologies).
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
-![Phase](https://img.shields.io/badge/Phase-3%20%2F%206-blue)
+![Phase](https://img.shields.io/badge/Phase-4%20%2F%206-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
@@ -15,14 +15,16 @@ An interactive web platform to discover and connect with Swedish companies worki
 ### Key Features
 
 - 🗺️ Interactive map of Sweden with animated company markers
-- 📍 24 organizations with precise geolocation distributed across Swedish metropolitan areas
+- 📍 **352 organizations** loaded from Supabase with precise geolocation
 - 🏷️ **3 Dropdown filters: Technology (XR, AI, Visualization), Industry (Manufacturing, Healthcare, Culture, Games), Organization Model (Business, Nonprofit)**
-- 🔍 **Advanced search functionality** (filters by name, description, type, technology, industry, organization model)
+- 🔍 **Advanced search functionality** (filters by name, city, technology, industry)
 - ✨ **Framer Motion animations:** Breathing map effect, pulsating border glow, floating particles, marker animations
+- 🎬 **Cinematic entry animation:** FlyTo animation on load, markers appear after movement completes
+- 📌 **Jitter system:** Markers at same coordinates are spread in a spiral pattern for visibility
 - 🎨 **Dark mode UI with modern design** (dropdowns, modal, cards with glassmorphism)
 - 📱 Fully responsive design (mobile-first, adaptive zoom)
 - 💬 Company contact information & modal interactions
-- 🚀 Fast, modern tech stack (Next.js, TypeScript, Zustand, Mapbox, Framer Motion)
+- 🚀 Fast, modern tech stack (Next.js, TypeScript, Zustand, Mapbox, Framer Motion, Supabase)
 
 ---
 
@@ -34,6 +36,7 @@ An interactive web platform to discover and connect with Swedish companies worki
 - npm or yarn
 - Git
 - Mapbox API token (free tier available)
+- Supabase project with organizations table
 
 ### Installation
 
@@ -49,6 +52,7 @@ cd immersive-sweden
 ```bash
 npm install
 npm install framer-motion
+npm install @supabase/supabase-js
 ```
 
 3. **Setup environment variables**
@@ -57,10 +61,12 @@ npm install framer-motion
 cp .env.example .env.local
 ```
 
-Add your Mapbox token:
+Add your tokens:
 
 ```
 NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
 4. **Run development server**
@@ -95,13 +101,14 @@ https://immersive-sweden.vercel.app
 - **Animations:** Framer Motion ✅ IMPLEMENTED
 - **3D Assets:** React Three Fiber (planned)
 
-### Backend
+### Backend / Database
 
-- **API:** Next.js API Routes
-- **Data:** JSON (local at src/data/organizations.json)
-- **External APIs:**
-  - [Bolagsverket API](https://bolagsverket.se/) - Swedish company registry (future)
-  - [OpenStreetMap Nominatim](https://nominatim.org/) - Free geocoding (future)
+- **Database:** Supabase (PostgreSQL) ✅ IMPLEMENTED
+- **Data:** 352 organizations with full metadata
+- **API:** Supabase auto-generated REST API
+- **External APIs (future):**
+  - [Bolagsverket API](https://bolagsverket.se/) - Swedish company registry
+  - [OpenStreetMap Nominatim](https://nominatim.org/) - Free geocoding
 
 ### DevOps
 
@@ -115,58 +122,76 @@ https://immersive-sweden.vercel.app
 
 ```
 immersive-sweden/
+├── public/
+│   ├── data/                         # Static data files
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+│
 ├── src/
 │   ├── app/
-│   │   ├── api/                 # API routes (future)
-│   │   ├── page.tsx             # Home page
-│   │   ├── layout.tsx           # Root layout
-│   │   └── globals.css          # Global styles + animations
+│   │   ├── favicon.ico
+│   │   ├── globals.css               # Global styles + animations + marker CSS
+│   │   ├── layout.tsx                # Root layout
+│   │   ├── page.module.css
+│   │   └── page.tsx                  # Home page
 │   │
 │   ├── components/
-│   │   ├── Map/
-│   │   │   ├── MapContainer.tsx      # Main map component
-│   │   │   └── MapContainer.module.css # Map + dropdown styling
+│   │   ├── 3D/
+│   │   │   └── Animations/
+│   │   │       ├── FloatingParticles.tsx  # 15 staggered light particles
+│   │   │       ├── MapAnimation.tsx       # Entry fade + breathing effect
+│   │   │       ├── MarkerAnimations.tsx   # Marker pulse + hover
+│   │   │       └── SwedenBorderGlow.tsx   # Pulsating border glow
 │   │   ├── Cards/
-│   │   │   ├── OrganizationCard.tsx  # Organization card component
-│   │   │   └── OrganizationCard.module.css
+│   │   │   ├── OrganizationCard.module.css
+│   │   │   └── OrganizationCard.tsx       # Organization info card
+│   │   ├── Map/
+│   │   │   ├── MapContainer.module.css    # Map + search + filter styling
+│   │   │   └── MapContainer.tsx           # Main map component
 │   │   ├── Modal/
-│   │   │   └── Modal.tsx             # Modal wrapper
-│   │   ├── 3D/Animations/
-│   │   │   ├── MapAnimation.tsx      # Map entry + breathing effect
-│   │   │   ├── SwedenBorderGlow.tsx  # Pulsating border
-│   │   │   ├── FloatingParticles.tsx # Light particles
-│   │   │   └── MarkerAnimations.tsx  # Marker pulse + hover
-│   │   └── _graveyard/               # Old/experimental components
+│   │   │   ├── Modal.module.css
+│   │   │   └── Modal.tsx                  # Modal wrapper
+│   │   └── _graveyard/                    # Old/experimental components
+│   │       ├── CustomDropdown/
+│   │       │   ├── CustomDropdown.module.css
+│   │       │   └── CustomDropdown.tsx
+│   │       └── organizations.json         # Old local data (replaced by Supabase)
+│   │
+│   ├── data/
+│   │   └── swedenBorder.ts               # Sweden GeoJSON border coordinates
 │   │
 │   ├── hooks/
-│   │   ├── useMapLayers.ts       # Map layer management
-│   │   ├── useOrganizations.ts   # Load organization data
-│   │   ├── useMapMarkers.ts      # Marker management with animations
-│   │   └── useMapInteractions.ts # Click handlers & zoom
+│   │   ├── useJitter.ts                  # Spiral distribution for overlapping markers
+│   │   ├── useMapInteractions.ts         # Click handlers & flyTo zoom
+│   │   ├── useMapLayers.ts               # Mapbox layer management (Sweden border)
+│   │   ├── useMapMarkers.ts              # Marker creation + validation + click
+│   │   └── useOrganizations.ts           # Fetch 352 organizations from Supabase
+│   │
+│   ├── lib/
+│   │   └── supabase.ts                   # Supabase client configuration
 │   │
 │   ├── store/
-│   │   └── mapStore.ts           # Zustand store
-│   │       - filteredOrganizations
-│   │       - currentTechnology, currentIndustry, currentOrganizationModel
-│   │       - searchTerm
-│   │       - Filter logic with AND combination
+│   │   └── mapStore.ts                   # Zustand global store
+│   │                                     # - organizations / filteredOrganizations
+│   │                                     # - currentTechnologies / Industries / Models
+│   │                                     # - searchTerm (name, city, tech, industry)
+│   │                                     # - selectedOrgId / isModalOpen / isMapCentered
 │   │
 │   ├── types/
-│   │   └── index.ts              # TypeScript types & constants
+│   │   └── index.ts                      # TypeScript interfaces & constants
 │   │
-│   ├── utils/
-│   │   └── mapLayerConfig.ts     # Mapbox layer configuration
-│   │
-│   └── data/
-│       └── organizations.json    # 24 organizations with all fields
+│   └── utils/
+│       └── mapLayerConfig.ts             # Mapbox layer config helpers
 │
-├── public/
-│   └── (assets, static files)
-├── .env.local                    # Environment variables (local)
-├── .gitignore
+├── .env.local                            # Environment variables (not in git)
+├── eslint.config.mjs
+├── next-env.d.ts
+├── next.config.ts
 ├── package.json
 ├── tsconfig.json
-├── next.config.js
 └── README.md
 ```
 
@@ -197,26 +222,39 @@ npm run lint
 
 ### Features
 
-#### Interactive Map with 24 Organizations
+#### Interactive Map with 352 Organizations
 
-- Map displays **24 Swedish companies** in immersive tech sectors
-- Each company shows a **red pin marker (📍)** with pulse animation
-- Markers with hover effects (scale 1.2) and click interactions
-- Distributed across Swedish metropolitan areas
+- Map displays **352 Swedish companies** in immersive tech sectors loaded from Supabase
+- Each company shows a **📍 marker** with pulse animation
+- Markers with hover effects (scale 1.3) and click interactions
+- **Jitter system** distributes overlapping markers in a golden-angle spiral pattern
+
+#### Cinematic Entry Animation
+
+- Map loads with initial zoom out view of Sweden (zoom 3.0, pitch 48°)
+- After 800ms delay, flyTo animation moves to final position (zoom 4.3, pitch 30°, duration 3s)
+- Markers appear after the flyTo animation completes for a cinematic reveal
 
 #### Advanced Filtering System
 
 **3 Dropdown Filters** (work independently with AND logic):
 
-1. **Technology Filter:** All Technologies, XR, AI, Visualization
-2. **Industry Filter:** All Industries, Manufacturing, Healthcare, Culture, Games
-3. **Organization Model Filter:** All Models, Business, Nonprofit Organization
+1. **Technology Filter:** XR, AI, Visualization
+2. **Industry Filter:** Manufacturing, Healthcare, Culture, Games
+3. **Organization Model Filter:** Business, Nonprofit Organization
 
 **Search Functionality:**
 
-- Searches across: name, description, type, technology, industry, organization model
+- Searches across: name, city, technology, industry
 - Works seamlessly with dropdown filters
 - Real-time filtering with Zustand state management
+
+#### Jitter System (useJitter.ts)
+
+- Organizations sharing the same city coordinates are spread in a spiral
+- Uses golden angle (137.5°) for optimal distribution
+- Radius scales with `√count` for clean spacing
+- Easily removable when precise per-company coordinates are available
 
 #### Animated Visual Effects
 
@@ -231,6 +269,7 @@ npm run lint
 
 - **Pulse Effect:** Continuous scale animation (1.0 → 1.1 → 1.0, 2s cycle)
 - **Hover State:** Scale 1.3 on mouse enter with smooth transition
+- **Appear Animation:** Fade in with scale pop when markers are revealed (0.3s)
 - **Click Feedback:** Opens organization modal
 
 #### Organization Card Modal
@@ -239,7 +278,6 @@ npm run lint
 - Dark mode design with glassmorphism effect
 - Smooth slideUp animation on open
 - Close button with hover effects
-- "Get in Touch" & "View on Map" buttons with enhanced styling
 
 #### Responsive Design
 
@@ -249,88 +287,87 @@ npm run lint
 
 ---
 
+## 🗄️ Database (Supabase)
+
+### Organizations Table
+
+| Field              | Type    | Description                                  |
+| ------------------ | ------- | -------------------------------------------- |
+| id                 | int     | Primary key                                  |
+| name               | text    | Company name                                 |
+| description        | text    | Company description                          |
+| type               | text    | Organization type                            |
+| technology         | text    | XR / AI / Visualization                      |
+| industry           | text    | Manufacturing / Healthcare / Culture / Games |
+| organization_model | text    | Business / Nonprofit Organization            |
+| email              | text    | Contact email                                |
+| phone              | text    | Contact phone                                |
+| city               | text    | Swedish city                                 |
+| latitude           | decimal | GPS latitude                                 |
+| longitude          | decimal | GPS longitude                                |
+
+### Supabase Setup
+
+```typescript
+// src/lib/supabase.ts
+import { createClient } from "@supabase/supabase-js";
+
+export const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+```
+
+---
+
 ## 📊 Development Status
 
-### Phase 2: ✅ COMPLETE
-
-**Completed:**
+### Phase 2: ✅ COMPLETE (February 24, 2026)
 
 - ✅ Dropdown filters (Technology, Industry, Organization Model)
 - ✅ Search functionality
-- ✅ 24 organizations with full data
 - ✅ Zustand state management
 - ✅ Filter logic with AND combination
 - ✅ Dark mode UI improvements
 - ✅ Modal interactions
 - ✅ Responsive design
 
-### Phase 3: ✅ COMPLETE
-
-**Completed:**
+### Phase 3: ✅ COMPLETE (February 26, 2026)
 
 - ✅ Framer Motion installed & configured
 - ✅ MapAnimation component (fade + zoom entry, breathing effect)
 - ✅ SwedenBorderGlow component (pulsating border with glow)
 - ✅ FloatingParticles component (15 animated light particles)
 - ✅ MarkerAnimations component (pulse + hover scale effects)
-- ✅ Responsive map zoom adjustment (3.5 on mobile, 4.2 on desktop)
 - ✅ CSS animations for marker pulse effect (@keyframes markerPulse)
 - ✅ Fixed React hydration errors (Math.random in useEffect)
 - ✅ Integrated all animations into MapContainer
 
-### Phase 4: 📋 PLANNED
+### Phase 4: ✅ IN PROGRESS (April 2026)
 
-**Planned:**
-
+- ✅ Supabase integration — 352 organizations loaded from database
+- ✅ useOrganizations hook — fetches and maps Supabase data
+- ✅ mapReady state — markers appear only after map is fully loaded
+- ✅ Cinematic entry — markers reveal after flyTo animation completes
+- ✅ useJitter hook — spiral distribution for overlapping city markers
+- ✅ Search expanded — now searches name, city, technology, industry
+- ✅ Coordinate validation — invalid/null coordinates skipped gracefully
+- ✅ Immersive Sweden logo placeholder (top-left corner)
 - [ ] Parallax effects with depth perception
-- [ ] Shadow dynamics (light movement)
 - [ ] Dropdown open/close animations
 - [ ] Search field focus animations
+- [ ] Logo animation (SVG/PNG with CSS animation)
 - [ ] Final polish and refinements
 
----
+### Phase 5-6: 📋 FUTURE
 
-## 🎨 Animation Details
-
-### MapAnimation
-
-- **Entry:** Scale 0.8 → 1.0, opacity 0 → 1 (1.5s easeOut)
-- **Breathing:** Scale 1.0 → 1.01 → 1.0 (infinite 4s easeInOut)
-- **Usage:** Wraps entire MapContainer, creates immersive entry effect
-
-### SwedenBorderGlow
-
-- **Inner Glow:** Inset box-shadow with pulsation (3s cycle)
-- **Edge Glow:** Border with outer box-shadow pulsation
-- **Opacity:** Fades from 0.5 → 1.0 → 0.5
-- **Color:** rgba(79, 195, 255, ...) - cyan blue accent
-
-### FloatingParticles
-
-- **Count:** 15 particles with random position
-- **Size:** 4-12px (scalable)
-- **Animation:** Y-axis movement up 150px with opacity fade
-- **Duration:** 4-7 seconds per particle, staggered
-- **Rendering:** Fixed position overlay with z-index 5
-
-### MarkerAnimations
-
-- **Pulse:** Scale 1.0 → 1.1 → 1.0 (2s infinite)
-- **Hover:** Scale 1.3 with smooth 0.3s transition
-- **Active:** Scale feedback on click
-- **CSS:** @keyframes markerPulse in globals.css
-
----
-
-## 📈 Current Metrics
-
-- **Organizations:** 24 with full metadata
-- **Filters:** 3 dropdown filters with AND logic
-- **Animations:** 5 components (MapAnimation, BorderGlow, FloatingParticles, MarkerAnimations, CSS pulse)
-- **Map Markers:** 24 active markers with animations
-- **Responsive Breakpoints:** 3 (mobile 320-480, tablet 481-768, desktop 769+)
-- **Floating Particles:** 15 staggered animations
-- **Code Quality:** TypeScript strict mode ✅ Passing
+- [ ] React Three Fiber integration
+- [ ] 3D GLB models
+- [ ] Bolagsverket API
+- [ ] User authentication
+- [ ] Research/Academic organizations (universities, labs, centers)
+- [ ] Multi-value organization model (Business + Academic + Research)
+- [ ] AI chatbot / RAG integration (Docker + FastAPI + LangChain)
 
 ---
 
@@ -340,11 +377,26 @@ Create `.env.local` in root:
 
 ```bash
 NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
 ---
 
 ## 🐛 Troubleshooting
+
+### Markers Not Appearing
+
+- Check browser console for `useMapMarkers triggered` logs
+- Verify `mapReady` state is `true` before markers are created
+- Confirm Supabase is returning organizations (`Loaded 352 organizations`)
+- Check coordinate validation warnings (`⚠️ Sin coordenadas`)
+
+### Supabase Connection Issues
+
+- Verify `.env.local` has correct URL and anon key
+- Check Supabase dashboard for RLS (Row Level Security) policies
+- Confirm `organizations` table exists with correct column names
 
 ### Animations Not Showing
 
@@ -359,18 +411,18 @@ NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_public_token_here
 - Check that isClient state is used before rendering particles
 - Clear .next cache: `rm -rf .next`
 
-### Markers Not Animating
+### Markers Overlapping
 
-- Verify CSS animation keyframes are in globals.css
-- Check that useMapMarkers hook adds animation styles
-- Ensure marker elements have 'marker' className
+- useJitter is applied in useMapMarkers before creating markers
+- Adjust radius multiplier in useJitter.ts (`0.015`) if spacing too tight/loose
+- Remove useJitter when per-company precise coordinates are added to database
 
 ### Dropdowns Not Filtering
 
 - Check browser console for errors
-- Verify organization.json has all required fields
+- Verify Supabase data has correct field values
 - Ensure Zustand store is initialized
-- Check that filter values match exactly
+- Check that filter values match exactly (case sensitive)
 
 ---
 
@@ -391,6 +443,7 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 ## 🙏 Acknowledgments
 
 - **Mapbox** - Interactive map technology
+- **Supabase** - Database and backend
 - **Zustand** - State management library
 - **Framer Motion** - Animation library
 - **Next.js** - React framework
@@ -399,88 +452,4 @@ This project is licensed under the **MIT License** - see [LICENSE](./LICENSE) fi
 
 ---
 
-## 🗺️ Roadmap
-
-### Phase 2: ✅ COMPLETE (February 24, 2026)
-
-- ✅ Dropdown filters with AND logic
-- ✅ Search functionality (6 fields)
-- ✅ 24 organizations with metadata
-- ✅ Zustand state management
-- ✅ Dark mode UI
-- ✅ Responsive design
-
-### Phase 3: ✅ COMPLETE (February 26, 2026)
-
-- ✅ Framer Motion animations
-- ✅ Map entry & breathing effects
-- ✅ Border glow & pulsation
-- ✅ Floating particles system
-- ✅ Marker pulse & hover animations
-- ✅ CSS animation keyframes
-- ✅ Responsive animations
-
-### Phase 4: 📋 NEXT
-
-- [ ] Parallax effects
-- [ ] Shadow dynamics
-- [ ] Dropdown animations
-- [ ] Search focus animations
-- [ ] Final polish
-
-### Phase 5-6: 📋 FUTURE
-
-- [ ] React Three Fiber integration
-- [ ] 3D GLB models
-- [ ] Bolagsverket API
-- [ ] Firebase/Supabase database
-- [ ] User authentication
-
----
-
-## 📋 Session Notes (February 26, 2026)
-
-### What We Built
-
-1. **Framer Motion Animation System**
-
-   - MapAnimation: Entry fade + breathing effect
-   - SwedenBorderGlow: Pulsating border with dual glow
-   - FloatingParticles: 15 staggered light particles
-   - MarkerAnimations: Pulse + hover effects
-
-2. **Visual Enhancements**
-
-   - Map entry animation (0.8 → 1.0 scale)
-   - Continuous breathing effect (4s cycle)
-   - Border glow pulsation (3s cycle)
-   - Marker pulse animation (2s cycle)
-   - Floating particles with opacity fade
-
-3. **Responsive Improvements**
-   - Dynamic zoom based on screen size
-   - Dropdown repositioning on mobile
-   - Particle animation scaling
-   - Touch-friendly interactions
-
-### Key Learnings
-
-- Framer Motion motion.div component integration
-- React hydration error resolution (Math.random in useEffect)
-- CSS animation keyframes for continuous effects
-- Staggered animation techniques
-- Z-index layering for overlays
-
-### Technical Stack
-
-- **Animation Library:** Framer Motion
-- **State:** Zustand + React hooks
-- **Styling:** CSS Modules + CSS animations
-- **Maps:** Mapbox GL
-- **Types:** TypeScript strict mode
-
----
-
 **Made with ❤️ for the Swedish immersive tech community**
-
-**Questions?** Open an issue or reach out!

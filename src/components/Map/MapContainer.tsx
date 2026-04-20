@@ -63,7 +63,7 @@ export default function MapContainer() {
       }
     });
 
-    // flyTo FUERA del on('load') — con más delay
+    // flyTo OUT of on('load') — with more delay
     map.current.once('idle', () => {
        setTimeout(() => {
         map.current?.flyTo({
@@ -74,10 +74,10 @@ export default function MapContainer() {
       duration: 3000,
       essential: true,
        });
-      // ← Markers appear after fly to is finished
+      // ← Markers appear after fly to is finished 
       setTimeout(() => {
         setMapReady(true);
-      }, 3000 + 800);
+      }, 3000 + 100);
           }, 800);
       });
 
@@ -104,7 +104,26 @@ export default function MapContainer() {
     <FloatingParticles />
  
     <SwedenBorderGlow />
-   
+
+{/* Logo placeholder */}
+<div style={{
+  position: 'absolute',
+  top: '20px',
+  left: '20px',
+  zIndex: 10,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '6px',
+  color: 'white',
+  background: 'rgba(0,0,0,0.4)',
+  padding: '12px 20px',
+  borderRadius: '8px',
+  backdropFilter: 'blur(8px)',
+}}>
+    <span style={{ fontSize: '26px', fontWeight: 'bold', letterSpacing: '1px' }}>Immersive Sweden</span>
+  <span style={{ fontSize: '70px', lineHeight: 1 }}>🌐</span>
+</div>
 
       {/* Back Button */}
       {map.current && isMapCentered && (
