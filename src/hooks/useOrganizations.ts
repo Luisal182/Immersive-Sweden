@@ -34,6 +34,7 @@ export const useOrganizations = (): UseOrganizationsReturn => {
           technology: org.technology,
           industry: org.industry,
           organizationModel: org.organization_model,
+          organizationSubtype: org.organization_subtype,
           contact: {
             email: org.email,
             phone: org.phone,
