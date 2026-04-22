@@ -1,24 +1,24 @@
 import { create } from 'zustand';
-import { Organization, TechnologyType, IndustryType, OrganizationModelType } from '@/types';
+import { Organization, TechnologyType, IndustryType, OrganizationModelType, OrganizationSubtypeType } from '@/types';
 
 interface MapStoreState {
-  // State
   organizations: Organization[];
   filteredOrganizations: Organization[];
   selectedOrgId: number | null;
-  currentTechnologies: TechnologyType[];              // ← was: TechnologyType | 'all'
-  currentIndustries: IndustryType[];                  // ← was: IndustryType | 'all'
-  currentOrganizationModels: OrganizationModelType[]; // ← was: OrganizationModelType | 'all'
+  currentTechnologies: TechnologyType[];
+  currentIndustries: IndustryType[];
+  currentOrganizationModels: OrganizationModelType[];
+  currentOrganizationSubtypes: OrganizationSubtypeType[];
   searchTerm: string;
   isModalOpen: boolean;
   isMapCentered: boolean;
 
-  // Actions
   setOrganizations: (organizations: Organization[]) => void;
   setSelectedOrgId: (id: number | null) => void;
   setCurrentTechnologies: (techs: TechnologyType[]) => void;
   setCurrentIndustries: (industries: IndustryType[]) => void;
   setCurrentOrganizationModels: (models: OrganizationModelType[]) => void;
+  setCurrentOrganizationSubtypes: (subtypes: OrganizationSubtypeType[]) => void;
   setSearchTerm: (term: string) => void;
   setModalOpen: (isOpen: boolean) => void;
   setIsMapCentered: (value: boolean) => void;
@@ -27,22 +27,16 @@ interface MapStoreState {
 }
 
 export const useMapStore = create<MapStoreState>((set, get) => ({
-  // ============================================
-  // STATE
-  // ============================================
   organizations: [],
   filteredOrganizations: [],
   selectedOrgId: null,
-  currentTechnologies: [],        // empty array = no filter active = show all
+  currentTechnologies: [],
   currentIndustries: [],
   currentOrganizationModels: [],
+  currentOrganizationSubtypes: [],
   searchTerm: '',
   isModalOpen: false,
   isMapCentered: false,
-
-  // ============================================
-  // ACTIONS
-  // ============================================
 
   setOrganizations: (organizations) => {
     set({ organizations });
@@ -68,6 +62,11 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
     get().filterOrganizations();
   },
 
+  setCurrentOrganizationSubtypes: (subtypes) => {
+    set({ currentOrganizationSubtypes: subtypes });
+    get().filterOrganizations();
+  },
+
   setSearchTerm: (term) => {
     set({ searchTerm: term });
     get().filterOrganizations();
@@ -82,15 +81,13 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
     set({ isMapCentered: value });
   },
 
-  // ============================================
-  // FILTERING LOGIC
-  // ============================================
   filterOrganizations: () => {
     const {
       organizations,
       currentTechnologies,
       currentIndustries,
       currentOrganizationModels,
+      currentOrganizationSubtypes,
       searchTerm,
     } = get();
 
@@ -99,16 +96,17 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
       currentTechnologies,
       currentIndustries,
       currentOrganizationModels,
+      currentOrganizationSubtypes,
       firstOrg: organizations[0] ? {
         name: organizations[0].name,
         technology: organizations[0].technology,
         industry: organizations[0].industry,
         organizationModel: organizations[0].organizationModel,
+        organizationSubtype: organizations[0].organizationSubtype,
       } : null,
     });
 
     const filtered = organizations.filter(org => {
-      // Empty array = "all" — no filter active
       const technologyMatch =
         currentTechnologies.length === 0 ||
         currentTechnologies.includes(String(org.technology).trim() as TechnologyType);
@@ -121,23 +119,24 @@ export const useMapStore = create<MapStoreState>((set, get) => ({
         currentOrganizationModels.length === 0 ||
         currentOrganizationModels.includes(String(org.organizationModel).trim() as OrganizationModelType);
 
-        const searchMatch =
+      const subtypeMatch =
+        currentOrganizationSubtypes.length === 0 ||
+        currentOrganizationSubtypes.includes(String(org.organizationSubtype).trim() as OrganizationSubtypeType);
+
+      const searchMatch =
         searchTerm === '' ||
         org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (org.location?.city ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
         (org.technology ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
         (org.industry ?? '').toLowerCase().includes(searchTerm.toLowerCase());
 
-      return technologyMatch && industryMatch && modelMatch && searchMatch;
+      return technologyMatch && industryMatch && modelMatch && subtypeMatch && searchMatch;
     });
 
     console.log('FILTER RESULT:', { filtered: filtered.length, total: organizations.length });
     set({ filteredOrganizations: filtered });
   },
 
-  // ============================================
-  // SELECTORS
-  // ============================================
   getSelectedOrganization: () => {
     const { organizations, selectedOrgId } = get();
     return organizations.find(org => org.id === selectedOrgId);
