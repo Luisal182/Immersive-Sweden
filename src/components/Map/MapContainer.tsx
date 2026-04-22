@@ -16,6 +16,7 @@ import CustomDropdown from '@/components/_graveyard/CustomDropdown/CustomDropdow
 import { MapAnimation } from '@/components/3D/Animations/MapAnimation';
 import { SwedenBorderGlow } from '@/components/3D/Animations/SwedenBorderGlow';
 import { FloatingParticles } from '@/components/3D/Animations/FloatingParticles';
+import { OrganizationSubtypeType } from '@/types';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -40,6 +41,8 @@ export default function MapContainer() {
   const setCurrentTechnologies = useMapStore(state => state.setCurrentTechnologies);
   const setCurrentIndustries = useMapStore(state => state.setCurrentIndustries);
   const setCurrentOrganizationModels = useMapStore(state => state.setCurrentOrganizationModels);
+  const currentOrganizationSubtypes = useMapStore(state => state.currentOrganizationSubtypes);
+  const setCurrentOrganizationSubtypes = useMapStore(state => state.setCurrentOrganizationSubtypes);
 
   const { flyToOrganization } = useMapInteractions({ map: map.current });
   useMapMarkers({ map: mapReady ? map.current : null, organizations: filteredOrganizations });
@@ -233,6 +236,17 @@ export default function MapContainer() {
             { value: 'Nonprofit Organization', label: 'Nonprofit Organization', icon: '🤝' },
           ]}
         />
+
+<CustomDropdown
+  label="Other Organizations"
+  selectedValues={currentOrganizationSubtypes}
+  onChange={(vals) => setCurrentOrganizationSubtypes(vals as OrganizationSubtypeType[])}
+  options={[
+    { value: 'Civic Organization',  label: 'Civic Organization',  icon: '🏛️' },
+    { value: 'University Lab',      label: 'University Lab',      icon: '🎓' },
+    { value: 'Research Institute',  label: 'Research Institute',  icon: '🔬' },
+  ]}
+/>
       </div>
     </div>
     </MapAnimation>
