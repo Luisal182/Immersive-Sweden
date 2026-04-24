@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './page.module.css';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -22,54 +23,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      minHeight: '100vh', background: '#0a1628',
-    }}>
-      <div style={{
-        background: 'rgba(255,255,255,0.05)', padding: '40px',
-        borderRadius: '12px', border: '1px solid rgba(79,195,255,0.2)',
-        width: '360px', display: 'flex', flexDirection: 'column', gap: '16px',
-      }}>
-        <h1 style={{ color: '#4fc3ff', textAlign: 'center', marginBottom: '8px' }}>
-          🌐 Admin Panel
-        </h1>
-
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>🌐 Admin Panel</h1>
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
-          style={inputStyle}
+          className={styles.input}
         />
-
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleLogin()}
-          style={inputStyle}
+          className={styles.input}
         />
-
-        {error && <p style={{ color: '#ff6b6b', fontSize: '14px' }}>{error}</p>}
-
-        <button onClick={handleLogin} style={btnStyle}>
+        {error && <p className={styles.error}>{error}</p>}
+        <button onClick={handleLogin} className={styles.btn}>
           Login
         </button>
       </div>
     </div>
   );
 }
-
-const inputStyle = {
-  padding: '12px', background: 'rgba(255,255,255,0.08)',
-  border: '1px solid rgba(79,195,255,0.3)', borderRadius: '8px',
-  color: 'white', fontSize: '14px', outline: 'none',
-} as React.CSSProperties;
-
-const btnStyle = {
-  padding: '12px', background: '#4fc3ff', color: '#0a1628',
-  border: 'none', borderRadius: '8px', fontWeight: 'bold',
-  fontSize: '14px', cursor: 'pointer',
-} as React.CSSProperties;
