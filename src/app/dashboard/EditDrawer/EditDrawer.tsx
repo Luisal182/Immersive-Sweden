@@ -27,9 +27,10 @@ interface EditDrawerProps {
   org: OrgRow;
   onClose: () => void;
   onSaved: (updated: OrgRow) => void;
+  mode?: 'edit' | 'create'; // ← añade esto
 }
 
-export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
+export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: EditDrawerProps) {
   const [editOrg, setEditOrg] = useState<OrgRow>({ ...org });
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
@@ -37,28 +38,54 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
   const handleSave = async () => {
     setSaving(true);
     setSaveMsg('');
-
-    const { error } = await supabase
-      .from('organizations')
-      .update({
-        name: editOrg.name,
-        city: editOrg.city,
-        type: editOrg.type,
-        activity: editOrg.activity,
-        technology: editOrg.technology,
-        industry: editOrg.industry,
-        organization_model: editOrg.organization_model,
-        organization_subtype: editOrg.organization_subtype,
-        description: editOrg.description,
-        email: editOrg.email,
-        phone: editOrg.phone,
-        website: editOrg.website,
-        established: editOrg.established,
-        latitude: editOrg.latitude,
-        longitude: editOrg.longitude,
-      })
-      .eq('id', editOrg.id);
-
+  
+    let error;
+  
+    if (mode === 'create') {
+      const { error: insertError } = await supabase
+        .from('organizations')
+        .insert({
+          name: editOrg.name,
+          city: editOrg.city,
+          type: editOrg.type,
+          activity: editOrg.activity,
+          technology: editOrg.technology,
+          industry: editOrg.industry,
+          organization_model: editOrg.organization_model,
+          organization_subtype: editOrg.organization_subtype,
+          description: editOrg.description,
+          email: editOrg.email,
+          phone: editOrg.phone,
+          website: editOrg.website,
+          established: editOrg.established,
+          latitude: editOrg.latitude,
+          longitude: editOrg.longitude,
+        });
+      error = insertError;
+    } else {
+      const { error: updateError } = await supabase
+        .from('organizations')
+        .update({
+          name: editOrg.name,
+          city: editOrg.city,
+          type: editOrg.type,
+          activity: editOrg.activity,
+          technology: editOrg.technology,
+          industry: editOrg.industry,
+          organization_model: editOrg.organization_model,
+          organization_subtype: editOrg.organization_subtype,
+          description: editOrg.description,
+          email: editOrg.email,
+          phone: editOrg.phone,
+          website: editOrg.website,
+          established: editOrg.established,
+          latitude: editOrg.latitude,
+          longitude: editOrg.longitude,
+        })
+        .eq('id', editOrg.id);
+      error = updateError;
+    }
+  
     if (error) {
       setSaveMsg('error');
     } else {
@@ -96,9 +123,11 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
       <div className={styles.drawer}>
         {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>Edit Organization</h2>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+          <h2 className={styles.title}>
+                {mode === 'create' ? 'Add Organization' : 'Edit Organization'}
+            </h2>
+                <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          </div>
 
         {/* Fields */}
         {field('Name', 'name')}
@@ -136,13 +165,11 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
 
         {/* Buttons */}
         <div className={styles.buttons}>
-          <button onClick={handleSave} disabled={saving} className={styles.saveBtn}>
-            {saving ? 'Saving...' : 'Save'}
-          </button>
-          <button onClick={onClose} className={styles.cancelBtn}>
-            Cancel
-          </button>
-        </div>
+           <button onClick={handleSave} disabled={saving} className={styles.saveBtn}>
+           {saving ? 'Saving...' : mode === 'create' ? 'Create' : 'Save'}
+           </button>
+        <button onClick={onClose} className={styles.cancelBtn}> Cancel </button>
+          </div>
       </div>
     </>
   );

@@ -6,14 +6,13 @@ import { supabase } from '@/lib/supabase';
 import styles from './page.module.css';
 import EditDrawer, { OrgRow } from '@/app/dashboard/EditDrawer/EditDrawer';
 
-
 export default function DashboardMain() {
   const router = useRouter();
   const [orgs, setOrgs] = useState<OrgRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [editOrg, setEditOrg] = useState<OrgRow | null>(null);
-
+  const [addOrg, setAddOrg] = useState(false);
 
   useEffect(() => {
     const auth = sessionStorage.getItem('admin_auth');
@@ -59,14 +58,19 @@ export default function DashboardMain() {
         Total organizations: <strong>{orgs.length}</strong>
       </div>
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search by name or city..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        className={styles.searchInput}
-      />
+      {/* Search + Add */}
+      <div className={styles.searchRow}>
+     <input
+    type="text"
+    placeholder="Search by name or city..."
+    value={search}
+    onChange={e => setSearch(e.target.value)}
+    className={styles.searchInput}
+  />
+  <button className={styles.addBtn} onClick={() => setAddOrg(true)}>
+     Add Organization
+  </button>
+</div>
 
       {/* Table */}
       {loading ? (
@@ -98,25 +102,46 @@ export default function DashboardMain() {
                   <td className={styles.td}>{org.phone ?? '—'}</td>
                   <td className={styles.tdWebsite}>{org.website ?? '—'}</td>
                   <td className={styles.td}>
-                  <button className={styles.editBtn} onClick={() => setEditOrg({ ...org })}>Edit</button>
-
+                    <button className={styles.editBtn} onClick={() => setEditOrg({ ...org })}>Edit</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {editOrg && (
-  <EditDrawer
-    org={editOrg}
-    onClose={() => setEditOrg(null)}
-    onSaved={(updated) => {
-      setOrgs(prev => prev.map(o => o.id === updated.id ? updated : o));
-      setEditOrg(null);
-    }}
-  />
-)}
         </div>
       )}
+
+      {/* Edit Drawer */}
+      {editOrg && (
+        <EditDrawer
+          org={editOrg}
+          onClose={() => setEditOrg(null)}
+          onSaved={(updated) => {
+            setOrgs(prev => prev.map(o => o.id === updated.id ? updated : o));
+            setEditOrg(null);
+          }}
+        />
+      )}
+
+      {/* Add Drawer */}
+      {addOrg && (
+        <EditDrawer
+          mode="create"
+          org={{
+            id: 0, name: '', city: '', type: null, activity: null,
+            technology: null, industry: null, organization_model: null,
+            organization_subtype: null, description: null, email: null,
+            phone: null, website: null, established: null,
+            latitude: null, longitude: null,
+          }}
+          onClose={() => setAddOrg(false)}
+          onSaved={(newOrg) => {
+            setOrgs(prev => [...prev, newOrg]);
+            setAddOrg(false);
+          }}
+        />
+      )}
+
     </div>
   );
 }
