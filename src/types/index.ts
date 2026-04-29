@@ -2,10 +2,12 @@
 export const TECHNOLOGY_OPTIONS = ['XR', 'AI', 'Visualization'] as const;
 export const INDUSTRY_OPTIONS = ['Manufacturing', 'Healthcare', 'Culture', 'Games'] as const;
 export const ORGANIZATION_MODEL_OPTIONS = ['Business', 'Nonprofit Organization'] as const;
+export const ORGANIZATION_SUBTYPE_OPTIONS = ['Civic Organization', 'University Lab', 'Research Institute'] as const;
 
 export type TechnologyType = typeof TECHNOLOGY_OPTIONS[number];
 export type IndustryType = typeof INDUSTRY_OPTIONS[number];
 export type OrganizationModelType = typeof ORGANIZATION_MODEL_OPTIONS[number];
+export type OrganizationSubtypeType = typeof ORGANIZATION_SUBTYPE_OPTIONS[number];
 
 export interface Organization {
   id: number;
@@ -16,6 +18,7 @@ export interface Organization {
   technology?: string | null;
   industry?:string | null;
   organizationModel?: string | null;
+  organizationSubtype?: string | null;
   contact: {
     email: string;
     phone: string;
@@ -25,8 +28,10 @@ export interface Organization {
     city: string;
     lat: number;
     lng: number;
-  };
+  }; 
 }
+ 
+
 
 // API response types
 export interface OrganizationResponse {

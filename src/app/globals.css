@@ -81,6 +81,8 @@
   cursor: pointer;
   transition: transform 0.2s ease-out, filter 0.2s ease-out;
   filter: drop-shadow(0 3px 5px rgba(255, 255, 255, 0.09));
+  z-index: 10;        /* ← añade esto */
+  position: relative;
 }
 
 .marker:hover {
@@ -91,6 +93,11 @@
 .marker-inner {
   font-size: 28px;
   animation: markerPulse 2s ease-in-out infinite;
+  width: 32px;   /* ← añade esto */
+  height: 32px;  /* ← añade esto */
+  display: flex; /* ← añade esto */
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes markerPulse {

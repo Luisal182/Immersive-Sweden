@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Organization } from '@/types';
 import { useMapStore } from '@/store/mapStore';
+import { applyJitter } from '@/hooks/useJitter';
 
 interface UseMapMarkersProps {
   map: mapboxgl.Map | null;
@@ -17,25 +18,39 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
   };
 
   useEffect(() => {
+    console.log('🔄 useMapMarkers triggered');
+    console.log('   map:', !!map);
+    console.log('   organizations:', organizations.length);
+
     if (!map || !organizations.length) return;
 
     // Clear existing markers
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
+    const jitteredOrgs = applyJitter(organizations);
 
     // Add new markers
-    organizations.forEach(org => {
+     jitteredOrgs.forEach(org => {
+      // ✅ VALIDACIÓN usando location.lat / location.lng
+      if (
+        !org.location ||
+        org.location.lat == null ||
+        org.location.lng == null ||
+        isNaN(org.location.lat) ||
+        isNaN(org.location.lng)
+      ) {
+        console.warn(`⚠️ Sin coordenadas: ${org.name}`);
+        return;
+      }
+
+      console.log(`📍 ${org.name}:`, org.location.lng, org.location.lat);
+
       const el = document.createElement('div');
       el.className = 'marker';
       el.style.cursor = 'pointer';
-      el.innerHTML = `
-        <div class="marker-inner">
-          ${getActivityEmoji()}
-        </div>
-      `;
+      el.innerHTML = `<div class="marker-inner">${getActivityEmoji()}</div>`;
 
       el.addEventListener('click', () => {
-        console.log('Clicked organization:', org.name);
         setSelectedOrgId(org.id);
       });
 
@@ -46,6 +61,6 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
       markersRef.current.push(marker);
     });
 
-    console.log(`✅ Added ${organizations.length} markers to map`);
+    console.log(`✅ Added ${markersRef.current.length} markers to map`);
   }, [map, organizations, setSelectedOrgId]);
 };

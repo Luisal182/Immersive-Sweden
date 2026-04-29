@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState  } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './MapContainer.module.css';
@@ -16,6 +16,7 @@ import CustomDropdown from '@/components/_graveyard/CustomDropdown/CustomDropdow
 import { MapAnimation } from '@/components/3D/Animations/MapAnimation';
 import { SwedenBorderGlow } from '@/components/3D/Animations/SwedenBorderGlow';
 import { FloatingParticles } from '@/components/3D/Animations/FloatingParticles';
+import { OrganizationSubtypeType } from '@/types';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -23,6 +24,7 @@ export default function MapContainer() {
   // Refs
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const [mapReady, setMapReady] = useState(false);
 
   // Hooks
   const { organizations, loading, error } = useOrganizations();
@@ -39,9 +41,11 @@ export default function MapContainer() {
   const setCurrentTechnologies = useMapStore(state => state.setCurrentTechnologies);
   const setCurrentIndustries = useMapStore(state => state.setCurrentIndustries);
   const setCurrentOrganizationModels = useMapStore(state => state.setCurrentOrganizationModels);
+  const currentOrganizationSubtypes = useMapStore(state => state.currentOrganizationSubtypes);
+  const setCurrentOrganizationSubtypes = useMapStore(state => state.setCurrentOrganizationSubtypes);
 
   const { flyToOrganization } = useMapInteractions({ map: map.current });
-  useMapMarkers({ map: map.current, organizations: filteredOrganizations });
+  useMapMarkers({ map: mapReady ? map.current : null, organizations: filteredOrganizations });
 
   // Initialize map
   useEffect(() => {
@@ -62,7 +66,7 @@ export default function MapContainer() {
       }
     });
 
-    // flyTo FUERA del on('load') — con más delay
+    // flyTo OUT of on('load') — with more delay
     map.current.once('idle', () => {
        setTimeout(() => {
         map.current?.flyTo({
@@ -73,8 +77,12 @@ export default function MapContainer() {
       duration: 3000,
       essential: true,
        });
-      }, 800);
-       });
+      // ← Markers appear after fly to is finished 
+      setTimeout(() => {
+        setMapReady(true);
+      }, 3000 + 100);
+          }, 800);
+      });
 
     console.log('✅ Map initialized');
 
@@ -99,7 +107,26 @@ export default function MapContainer() {
     <FloatingParticles />
  
     <SwedenBorderGlow />
-   
+
+{/* Logo placeholder */}
+<div style={{
+  position: 'absolute',
+  top: '20px',
+  left: '20px',
+  zIndex: 10,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '6px',
+  color: 'white',
+  background: 'rgba(0,0,0,0.4)',
+  padding: '12px 20px',
+  borderRadius: '8px',
+  backdropFilter: 'blur(8px)',
+}}>
+    <span style={{ fontSize: '26px', fontWeight: 'bold', letterSpacing: '1px' }}>Immersive Sweden</span>
+  <span style={{ fontSize: '70px', lineHeight: 1 }}>🌐</span>
+</div>
 
       {/* Back Button */}
       {map.current && isMapCentered && (
@@ -209,6 +236,17 @@ export default function MapContainer() {
             { value: 'Nonprofit Organization', label: 'Nonprofit Organization', icon: '🤝' },
           ]}
         />
+
+<CustomDropdown
+  label="Other Organizations"
+  selectedValues={currentOrganizationSubtypes}
+  onChange={(vals) => setCurrentOrganizationSubtypes(vals as OrganizationSubtypeType[])}
+  options={[
+    { value: 'Civic Organization',  label: 'Civic Organization',  icon: '🏛️' },
+    { value: 'University Lab',      label: 'University Lab',      icon: '🎓' },
+    { value: 'Research Institute',  label: 'Research Institute',  icon: '🔬' },
+  ]}
+/>
       </div>
     </div>
     </MapAnimation>

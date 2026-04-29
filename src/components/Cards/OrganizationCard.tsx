@@ -122,7 +122,10 @@ export default function OrganizationCard({
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.primaryBtn}>Get in Touch</button>
+      {organization.contact.website
+         ? <a href={organization.contact.website} target="_blank" rel="noopener noreferrer"
+      className={styles.primaryBtn} style={{ textDecoration: 'none', textAlign: 'center' }}>Visit Website</a>
+          : <button className={styles.primaryBtn}>Visit Website</button>}
         <button className={styles.secondaryBtn} onClick={handleViewOnMap}>
           View on Map
         </button>

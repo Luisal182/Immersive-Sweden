@@ -1,0 +1,137 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+  
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 575px;
+    height: 100vh;
+    background: #0f1e35;
+    border-left: 1px solid rgba(79, 195, 255, 0.3);
+    z-index: 100;
+    overflow-y: auto;
+    padding: 32px;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    color: #4fc3ff;
+    font-size: 18px;
+  }
+  
+  .closeBtn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .fieldGroup {
+    margin-bottom: 16px;
+  }
+  
+  .label {
+    display: block;
+    color: #4fc3ff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(79, 195, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .input:focus {
+    border-color: #4fc3ff;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(79, 195, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  
+  .saveMsg {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  
+  .saveMsgSuccess {
+    color: #4fc3ff;
+  }
+  
+  .saveMsgError {
+    color: #ff6b6b;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .saveBtn {
+    flex: 1;
+    padding: 12px;
+    background: #4fc3ff;
+    color: #0a1628;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .saveBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .saveBtn:hover:not(:disabled) {
+    background: #38b4f0;
+  }
+  
+  .cancelBtn {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
