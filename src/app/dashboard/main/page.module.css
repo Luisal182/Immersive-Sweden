@@ -102,6 +102,15 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .tdWebsite {
+    padding: 10px 12px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   
   .editBtn {
     padding: 4px 12px;

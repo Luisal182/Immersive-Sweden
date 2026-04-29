@@ -26,7 +26,7 @@ export default function DashboardMain() {
       .from('organizations')
       .select('*', { count: 'exact' })
       .order('id')
-      .limit(1000);
+      .range(0, 999);
 
     console.log('Total en Supabase:', count);
     console.log('Cargadas:', data?.length);
@@ -96,7 +96,7 @@ export default function DashboardMain() {
                   <td className={styles.td}>{org.established ?? '—'}</td>
                   <td className={styles.td}>{org.email ?? '—'}</td>
                   <td className={styles.td}>{org.phone ?? '—'}</td>
-                  <td className={styles.td}>{org.website ?? '—'}</td>
+                  <td className={styles.tdWebsite}>{org.website ?? '—'}</td>
                   <td className={styles.td}>
                   <button className={styles.editBtn} onClick={() => setEditOrg({ ...org })}>Edit</button>
 
