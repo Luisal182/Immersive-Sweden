@@ -34,6 +34,7 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
   const [editOrg, setEditOrg] = useState<OrgRow>({ ...org });
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleSave = async () => {
     setSaving(true);
@@ -115,6 +116,21 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
       />
     </div>
   );
+  const handleDelete = async () => {
+    setSaving(true);
+    const { error } = await supabase
+      .from('organizations')
+      .delete()
+      .eq('id', editOrg.id);
+  
+    if (error) {
+      setSaveMsg('error');
+    } else {
+      onSaved({ ...editOrg, id: -1 }); // señal de borrado
+      onClose();
+    }
+    setSaving(false);
+  };
 
   return (
     <>
@@ -162,6 +178,28 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
             {saveMsg === 'success' ? '✅ Saved successfully!' : '❌ Error saving. Try again.'}
           </p>
         )}
+        {/* Delete */}
+{mode !== 'create' && (
+  <div className={styles.deleteSection}>
+    {!confirmDelete ? (
+      <button className={styles.deleteBtn} onClick={() => setConfirmDelete(true)}>
+        🗑 Delete Organization
+      </button>
+    ) : (
+      <div className={styles.confirmBox}>
+        <p>Are you sure? This cannot be undone.</p>
+        <div className={styles.buttons}>
+          <button className={styles.confirmDeleteBtn} onClick={handleDelete}>
+            Yes, delete
+          </button>
+          <button className={styles.cancelBtn} onClick={() => setConfirmDelete(false)}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
         {/* Buttons */}
         <div className={styles.buttons}>
