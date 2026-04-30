@@ -117,7 +117,12 @@ export default function DashboardMain() {
           org={editOrg}
           onClose={() => setEditOrg(null)}
           onSaved={(updated) => {
-            setOrgs(prev => prev.map(o => o.id === updated.id ? updated : o));
+            if (updated.id === -1) {
+              
+              setOrgs(prev => prev.filter(o => o.id !== editOrg!.id));
+            } else {
+              setOrgs(prev => prev.map(o => o.id === updated.id ? updated : o));
+            }
             setEditOrg(null);
           }}
         />
