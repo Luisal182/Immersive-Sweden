@@ -86,25 +86,25 @@ export default function DashboardMain() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map(org => (
-                <tr key={org.id} className={styles.tr}>
-                  <td className={styles.td}>{org.id}</td>
-                  <td className={styles.td}>{org.name}</td>
-                  <td className={styles.tdDescription}>{org.description ?? '—'}</td>
-                  <td className={styles.td}>{org.city}</td>
-                  <td className={styles.td}>{org.type ?? '—'}</td>
-                  <td className={styles.td}>{org.technology ?? '—'}</td>
-                  <td className={styles.td}>{org.industry ?? '—'}</td>
-                  <td className={styles.td}>{org.organization_model ?? '—'}</td>
-                  <td className={styles.td}>{org.organization_subtype ?? '—'}</td>
-                  <td className={styles.td}>{org.established ?? '—'}</td>
-                  <td className={styles.td}>{org.email ?? '—'}</td>
-                  <td className={styles.td}>{org.phone ?? '—'}</td>
-                  <td className={styles.tdWebsite}>{org.website ?? '—'}</td>
-                  <td className={styles.td}>
-                    <button className={styles.editBtn} onClick={() => setEditOrg({ ...org })}>Edit</button>
-                  </td>
-                </tr>
+  {filtered.map(org => (
+    <tr key={org.id} className={styles.tr}>
+      <td className={styles.td} title={String(org.id)}>{org.id}</td>
+      <td className={styles.td} title={org.name}>{org.name}</td>
+      <td className={styles.tdDescription} title={org.description ?? ''}>{org.description ?? '—'}</td>
+      <td className={styles.td} title={org.city}>{org.city}</td>
+      <td className={styles.td} title={org.type ?? ''}>{org.type ?? '—'}</td>
+      <td className={styles.td} title={org.technology ?? ''}>{org.technology ?? '—'}</td>
+      <td className={styles.td} title={org.industry ?? ''}>{org.industry ?? '—'}</td>
+      <td className={styles.td} title={org.organization_model ?? ''}>{org.organization_model ?? '—'}</td>
+      <td className={styles.td} title={org.organization_subtype ?? ''}>{org.organization_subtype ?? '—'}</td>
+      <td className={styles.td} title={String(org.established ?? '')}>{org.established ?? '—'}</td>
+      <td className={styles.td} title={org.email ?? ''}>{org.email ?? '—'}</td>
+      <td className={styles.td} title={org.phone ?? ''}>{org.phone ?? '—'}</td>
+      <td className={styles.tdWebsite} title={org.website ?? ''}>{org.website ?? '—'}</td>
+      <td className={styles.td}>
+        <button className={styles.editBtn} onClick={() => setEditOrg({ ...org })}>Edit</button>
+      </td>
+    </tr>
               ))}
             </tbody>
           </table>

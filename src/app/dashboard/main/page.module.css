@@ -132,6 +132,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .tr:hover .td,
+.tr:hover .tdDescription,
+.tr:hover .tdWebsite {
+  font-size: 15px;
+  color: white;
+}
   
   .editBtn {
     padding: 4px 12px;

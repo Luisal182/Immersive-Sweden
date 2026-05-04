@@ -11,7 +11,7 @@ export const applyJitter = (organizations: Organization[]): Organization[] => {
     const count = coordCount[key];
 
     // Offset  a spiral to separet poins in the same place
-    const angle = (count - 1) * 137.5 * (Math.PI / 180); // ángulo áureo
+    const angle = (count - 1) * 137.5 * (Math.PI / 180); 
     const radius = count === 1 ? 0 : 0.015 * Math.sqrt(count - 1);
 
     return {
