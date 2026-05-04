@@ -27,7 +27,7 @@ interface EditDrawerProps {
   org: OrgRow;
   onClose: () => void;
   onSaved: (updated: OrgRow) => void;
-  mode?: 'edit' | 'create'; // ← añade esto
+  mode?: 'edit' | 'create';
 }
 
 export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: EditDrawerProps) {
@@ -126,7 +126,7 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
     if (error) {
       setSaveMsg('error');
     } else {
-      onSaved({ ...editOrg, id: -1 }); // señal de borrado
+      onSaved({ ...editOrg, id: -1 }); 
       onClose();
     }
     setSaving(false);

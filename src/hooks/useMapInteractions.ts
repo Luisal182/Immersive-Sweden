@@ -8,7 +8,6 @@ interface UseMapInteractionsProps {
 
 export const useMapInteractions = ({ map }: UseMapInteractionsProps) => {
   
-  // Fly to organization location
   const flyToOrganization = useCallback((organization: Organization) => {
     if (!map) {
       console.warn('Map not initialized');
@@ -42,7 +41,6 @@ export const useMapInteractions = ({ map }: UseMapInteractionsProps) => {
     });
   }, [map]);
 
-  // Reset map to Sweden view
   const resetMapView = useCallback(() => {
     if (!map) return;
 
