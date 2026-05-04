@@ -6,7 +6,7 @@ import styles from './CustomDropdown.module.css';
 export interface DropdownOption {
   value: string;
   label: string;
-  icon?: ReactNode; // accepts emoji, <img />, <svg>, or any React component
+  icon?: ReactNode;
 }
 
 interface CustomDropdownProps {
@@ -39,12 +39,11 @@ export default function CustomDropdown({
   const handleToggle = (optionValue: string) => {
     const isSelected = selectedValues.includes(optionValue);
     const updated = isSelected
-      ? selectedValues.filter(v => v !== optionValue)  // uncheck
-      : [...selectedValues, optionValue];               // check
+      ? selectedValues.filter(v => v !== optionValue) 
+      : [...selectedValues, optionValue];              
     onChange(updated);
   };
 
-  // Trigger label
   const triggerLabel =
     selectedValues.length === 0
       ? `All ${label}s`

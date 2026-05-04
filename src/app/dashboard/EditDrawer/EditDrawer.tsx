@@ -27,38 +27,66 @@ interface EditDrawerProps {
   org: OrgRow;
   onClose: () => void;
   onSaved: (updated: OrgRow) => void;
+  mode?: 'edit' | 'create';
 }
 
-export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
+export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: EditDrawerProps) {
   const [editOrg, setEditOrg] = useState<OrgRow>({ ...org });
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleSave = async () => {
     setSaving(true);
     setSaveMsg('');
-
-    const { error } = await supabase
-      .from('organizations')
-      .update({
-        name: editOrg.name,
-        city: editOrg.city,
-        type: editOrg.type,
-        activity: editOrg.activity,
-        technology: editOrg.technology,
-        industry: editOrg.industry,
-        organization_model: editOrg.organization_model,
-        organization_subtype: editOrg.organization_subtype,
-        description: editOrg.description,
-        email: editOrg.email,
-        phone: editOrg.phone,
-        website: editOrg.website,
-        established: editOrg.established,
-        latitude: editOrg.latitude,
-        longitude: editOrg.longitude,
-      })
-      .eq('id', editOrg.id);
-
+  
+    let error;
+  
+    if (mode === 'create') {
+      const { error: insertError } = await supabase
+        .from('organizations')
+        .insert({
+          name: editOrg.name,
+          city: editOrg.city,
+          type: editOrg.type,
+          activity: editOrg.activity,
+          technology: editOrg.technology,
+          industry: editOrg.industry,
+          organization_model: editOrg.organization_model,
+          organization_subtype: editOrg.organization_subtype,
+          description: editOrg.description,
+          email: editOrg.email,
+          phone: editOrg.phone,
+          website: editOrg.website,
+          established: editOrg.established,
+          latitude: editOrg.latitude,
+          longitude: editOrg.longitude,
+        });
+      error = insertError;
+    } else {
+      const { error: updateError } = await supabase
+        .from('organizations')
+        .update({
+          name: editOrg.name,
+          city: editOrg.city,
+          type: editOrg.type,
+          activity: editOrg.activity,
+          technology: editOrg.technology,
+          industry: editOrg.industry,
+          organization_model: editOrg.organization_model,
+          organization_subtype: editOrg.organization_subtype,
+          description: editOrg.description,
+          email: editOrg.email,
+          phone: editOrg.phone,
+          website: editOrg.website,
+          established: editOrg.established,
+          latitude: editOrg.latitude,
+          longitude: editOrg.longitude,
+        })
+        .eq('id', editOrg.id);
+      error = updateError;
+    }
+  
     if (error) {
       setSaveMsg('error');
     } else {
@@ -88,6 +116,21 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
       />
     </div>
   );
+  const handleDelete = async () => {
+    setSaving(true);
+    const { error } = await supabase
+      .from('organizations')
+      .delete()
+      .eq('id', editOrg.id);
+  
+    if (error) {
+      setSaveMsg('error');
+    } else {
+      onSaved({ ...editOrg, id: -1 }); 
+      onClose();
+    }
+    setSaving(false);
+  };
 
   return (
     <>
@@ -96,9 +139,11 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
       <div className={styles.drawer}>
         {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>Edit Organization</h2>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+          <h2 className={styles.title}>
+                {mode === 'create' ? 'Add Organization' : 'Edit Organization'}
+            </h2>
+                <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          </div>
 
         {/* Fields */}
         {field('Name', 'name')}
@@ -133,16 +178,36 @@ export default function EditDrawer({ org, onClose, onSaved }: EditDrawerProps) {
             {saveMsg === 'success' ? '✅ Saved successfully!' : '❌ Error saving. Try again.'}
           </p>
         )}
-
-        {/* Buttons */}
+        {/* Delete */}
+{mode !== 'create' && (
+  <div className={styles.deleteSection}>
+    {!confirmDelete ? (
+      <button className={styles.deleteBtn} onClick={() => setConfirmDelete(true)}>
+        🗑 Delete Organization
+      </button>
+    ) : (
+      <div className={styles.confirmBox}>
+        <p>Are you sure? This cannot be undone.</p>
         <div className={styles.buttons}>
-          <button onClick={handleSave} disabled={saving} className={styles.saveBtn}>
-            {saving ? 'Saving...' : 'Save'}
+          <button className={styles.confirmDeleteBtn} onClick={handleDelete}>
+            Yes, delete
           </button>
-          <button onClick={onClose} className={styles.cancelBtn}>
+          <button className={styles.cancelBtn} onClick={() => setConfirmDelete(false)}>
             Cancel
           </button>
         </div>
+      </div>
+    )}
+  </div>
+)}
+
+        {/* Buttons */}
+        <div className={styles.buttons}>
+           <button onClick={handleSave} disabled={saving} className={styles.saveBtn}>
+           {saving ? 'Saving...' : mode === 'create' ? 'Create' : 'Save'}
+           </button>
+        <button onClick={onClose} className={styles.cancelBtn}> Cancel </button>
+          </div>
       </div>
     </>
   );

@@ -31,7 +31,6 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
 
     // Add new markers
      jitteredOrgs.forEach(org => {
-      // ✅ VALIDACIÓN usando location.lat / location.lng
       if (
         !org.location ||
         org.location.lat == null ||
