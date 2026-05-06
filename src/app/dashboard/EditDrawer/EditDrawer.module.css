@@ -142,6 +142,36 @@
     gap: 12px;
     margin-top: 8px;
   }
+
+  .select {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(79, 195, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 6px;
+  }
+  
+  .select option {
+    background: #0f1e35;
+    color: white;
+  }
+  
+  .inputSmall {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(79, 195, 255, 0.2);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+  }
   
   .saveBtn {
     flex: 1;

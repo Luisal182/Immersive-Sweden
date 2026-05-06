@@ -43,15 +43,23 @@ export default function DashboardMain() {
     <div className={styles.container}>
 
       {/* Header */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>🌐 Admin Dashboard</h1>
-        <button
-          className={styles.logoutBtn}
-          onClick={() => { sessionStorage.removeItem('admin_auth'); router.push('/dashboard'); }}
-        >
-          Logout
-        </button>
-      </div>
+<div className={styles.header}>
+  <h1 className={styles.title}>🌐 Admin Dashboard</h1>
+  <div className={styles.headerActions}>
+    <button
+      className={styles.mapBtn}
+      onClick={() => window.open('https://immersive-sweden-lhtbga6f8-luis-arranz-garcias-projects.vercel.app/')}
+    >
+      🗺️ Go to Map
+    </button>
+    <button
+      className={styles.logoutBtn}
+      onClick={() => { sessionStorage.removeItem('admin_auth'); router.push('/dashboard'); }}
+    >
+      Logout
+    </button>
+  </div>
+</div>
 
       {/* Stats */}
       <div className={styles.stats}>
