@@ -13,9 +13,9 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const setSelectedOrgId = useMapStore(state => state.setSelectedOrgId);
 
-  const getActivityEmoji = (): string => {
-    return '📍';
-  };
+  //const getActivityEmoji = (): string => {
+    //return '📍';
+  //};
 
   useEffect(() => {
     console.log('🔄 useMapMarkers triggered');
@@ -42,12 +42,10 @@ export const useMapMarkers = ({ map, organizations }: UseMapMarkersProps) => {
         return;
       }
 
-      console.log(`📍 ${org.name}:`, org.location.lng, org.location.lat);
-
       const el = document.createElement('div');
       el.className = 'marker';
       el.style.cursor = 'pointer';
-      el.innerHTML = `<div class="marker-inner">${getActivityEmoji()}</div>`;
+      el.innerHTML = `<div class="marker-inner"><img src="/data/marker.svg" width="32" height="32" /></div>`;
 
       el.addEventListener('click', () => {
         setSelectedOrgId(org.id);
