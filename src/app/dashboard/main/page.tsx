@@ -48,7 +48,7 @@ export default function DashboardMain() {
   <div className={styles.headerActions}>
     <button
       className={styles.mapBtn}
-      onClick={() => window.open('https://immersive-sweden-lhtbga6f8-luis-arranz-garcias-projects.vercel.app/')}
+      onClick={() => window.open('https://immersive-sweden.vercel.app/')}
     >
       🗺️ Go to Map
     </button>
