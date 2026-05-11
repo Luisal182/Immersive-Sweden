@@ -51,12 +51,14 @@ export default function MapContainer() {
   useEffect(() => {
     if (!mapContainer.current) return;
 
+    const isMobile = window.innerWidth < 768;
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
       center: [15.0, 62.0],
-      zoom: 3.0,
-      pitch: 48,
+      zoom: isMobile ? 2.5 : 3.0,
+      pitch: isMobile ? 0 : 48,
       bearing: -12,
     });
 
@@ -70,9 +72,9 @@ export default function MapContainer() {
     map.current.once('idle', () => {
        setTimeout(() => {
         map.current?.flyTo({
-      center: [15.0, 62.0],
-      zoom: 4.3,
-      pitch: 30,
+      center: isMobile ? [15.0, 61.0] : [15.0, 62.0],
+      zoom: isMobile ? 3.8 : 4.3,
+      pitch: isMobile ? 0 : 30,
       bearing: 0,
       duration: 3000,
       essential: true,
@@ -108,7 +110,7 @@ export default function MapContainer() {
  
     <SwedenBorderGlow />
 
-{/* Logo placeholder */}
+{/* Logo placeholder 
 <div style={{
   position: 'absolute',
   top: '20px',
@@ -126,7 +128,7 @@ export default function MapContainer() {
 }}>
     <span style={{ fontSize: '26px', fontWeight: 'bold', letterSpacing: '1px' }}>Immersive Sweden</span>
   <span style={{ fontSize: '70px', lineHeight: 1 }}>🌐</span>
-</div>
+</div>*/}
 
       {/* Back Button */}
       {map.current && isMapCentered && (
