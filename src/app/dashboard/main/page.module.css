@@ -178,3 +178,127 @@
   .loading {
     color: rgba(255, 255, 255, 0.5);
   }
+  /* ── Add/Drop Column Buttons ── */
+.addColumnBtn {
+  padding: 8px 16px;
+  background: rgba(79, 195, 255, 0.15);
+  color: #4fc3ff;
+  border: 1px solid rgba(79, 195, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.addColumnBtn:hover {
+  background: rgba(79, 195, 255, 0.3);
+}
+
+.dropColumnBtn {
+  padding: 8px 16px;
+  background: rgba(255, 100, 100, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dropColumnBtn:hover {
+  background: rgba(255, 100, 100, 0.3);
+}
+
+/* ── Column Panels ── */
+.columnPanel {
+  background: rgba(79, 195, 255, 0.05);
+  border: 1px solid rgba(79, 195, 255, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.columnPanelDanger {
+  background: rgba(255, 100, 100, 0.05);
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.columnPanelTitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.columnPanelRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.columnInput {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(79, 195, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  width: 250px;
+}
+
+.cancelColumnBtn {
+  padding: 8px 16px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancelColumnBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.confirmDeleteBtn {
+  padding: 8px 16px;
+  background: rgba(255, 100, 100, 0.3);
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.confirmDeleteBtn:hover {
+  background: rgba(255, 100, 100, 0.5);
+}
+
+/* ── Messages ── */
+.successMsg {
+  color: #4fc3ff;
+  font-size: 14px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: rgba(79, 195, 255, 0.1);
+  border: 1px solid rgba(79, 195, 255, 0.2);
+  border-radius: 8px;
+}
+
+.errorMsg {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 100, 100, 0.1);
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  border-radius: 8px;
+}
