@@ -98,6 +98,8 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
   animation: slideDown 0.18s ease;
+  max-height: 300px;   /* ← añade esto */
+  overflow-y: auto;
 }
 
 @keyframes slideDown {

@@ -2,8 +2,12 @@
 export const TECHNOLOGY_OPTIONS = ['XR', 'AI', 'Visualization'] as const;
 export const INDUSTRY_OPTIONS = ['Manufacturing', 'Healthcare', 'Culture', 'Games'] as const;
 export const ORGANIZATION_MODEL_OPTIONS = ['Business', 'Nonprofit Organization'] as const;
-export const ORGANIZATION_SUBTYPE_OPTIONS = ['Civic Organization', 'University Lab', 'Research Institute'] as const;
-
+export const ORGANIZATION_SUBTYPE_OPTIONS = [
+  'Company','University or Research Institute','Research group at University',
+  'Research group at Research Institute','Lead user','Public organisation',
+  'City, Region, Municipality','Policy unit',
+  'Civic organization','Innovation platform',
+  'Competence center'] as const;
 export type TechnologyType = typeof TECHNOLOGY_OPTIONS[number];
 export type IndustryType = typeof INDUSTRY_OPTIONS[number];
 export type OrganizationModelType = typeof ORGANIZATION_MODEL_OPTIONS[number];

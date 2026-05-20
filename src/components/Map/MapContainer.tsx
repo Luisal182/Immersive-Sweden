@@ -240,13 +240,21 @@ export default function MapContainer() {
         />
 
 <CustomDropdown
-  label="Other Organizations"
+  label="Type of organisation"
   selectedValues={currentOrganizationSubtypes}
   onChange={(vals) => setCurrentOrganizationSubtypes(vals as OrganizationSubtypeType[])}
   options={[
-    { value: 'Civic Organization',  label: 'Civic Organization',  icon: '🏛️' },
-    { value: 'University Lab',      label: 'University Lab',      icon: '🎓' },
-    { value: 'Research Institute',  label: 'Research Institute',  icon: '🔬' },
+    { value: 'Company',                              label: 'Company',                              icon: '🏢' },
+    { value: 'University or Research Institute',     label: 'University or Research Institute',     icon: '🎓' },
+    { value: 'Research group at University',         label: 'Research group at University',         icon: '🔬' },
+    { value: 'Research group at Research Institute', label: 'Research group at Research Institute', icon: '🔭' },
+    { value: 'Lead user',                            label: 'Lead user',                            icon: '⭐' },
+    { value: 'Public organisation',                  label: 'Public organisation',                  icon: '🏛️' },
+    { value: 'City, Region, Municipality',           label: 'City, Region, Municipality',           icon: '🏙️' },
+    { value: 'Policy unit',                          label: 'Policy unit',                          icon: '📋' },
+    { value: 'Civic organization',                   label: 'Civic organization',                   icon: '🤝' },
+    { value: 'Innovation platform',                  label: 'Innovation platform',                  icon: '💡' },
+    { value: 'Competence center',                    label: 'Competence center',                    icon: '🎯' },
   ]}
 />
       </div>

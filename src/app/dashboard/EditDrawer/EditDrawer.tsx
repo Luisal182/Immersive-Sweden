@@ -83,7 +83,11 @@ const ACTIVITY_OPTIONS = ['XR', 'AI', 'Visualization', 'Games', 'Technologies'];
 const TECHNOLOGY_OPTIONS = ['XR', 'AI', 'Visualization', 'Games', 'Technologies'];
 const INDUSTRY_OPTIONS = ['Healthcare', 'Culture', 'Manufacturing', 'Games'];
 const MODEL_OPTIONS = ['Business', 'Nonprofit Organization'];
-const SUBTYPE_OPTIONS = ['Civic Organization', 'Research Institute', 'University Lab'];
+const SUBTYPE_OPTIONS = [
+  'Company','University or Research Institute','Research group at University',
+  'Research group at Research Institute','Lead user','Public organisation',
+  'City, Region, Municipality','Policy unit','Civic organization',
+  'Innovation platform','Competence center'];
 const YES_NO_OPTIONS = ['Yes', 'No'];
 const ACTIVE_OPTIONS = ['Yes', 'No', 'Not active'];
 
@@ -284,7 +288,7 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
         {selectField('Technology', 'technology', TECHNOLOGY_OPTIONS)}
         {selectField('Industry', 'industry', INDUSTRY_OPTIONS)}
         {selectField('Organization Model', 'organization_model', MODEL_OPTIONS)}
-        {selectField('Organization Subtype', 'organization_subtype', SUBTYPE_OPTIONS)}
+        {selectField('Type of organisation', 'organization_subtype', SUBTYPE_OPTIONS)}
         {field('Area', 'area')}
         {field('Category', 'category')}
         {field('System Role', 'system_role')}
