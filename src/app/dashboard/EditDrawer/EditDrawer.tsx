@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import styles from './EditDrawer.module.css';
+import { useEffect } from 'react';
 
 export interface OrgRow {
   id: number;
@@ -96,6 +97,42 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [dynamicColumns, setDynamicColumns] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchColumns = async () => {
+      const { data, error } = await supabase.rpc('get_organization_columns');
+      if (!error && data) {
+        const fixedColumns = [
+          'id', 'name', 'city', 'type', 'activity', 'technology', 'industry',
+          'organization_model', 'organization_subtype', 'description', 'email',
+          'phone', 'website', 'established', 'latitude', 'longitude',
+          'previous_names', 'workplace_number', 'include', 'inclusion_justification',
+          'org_number', 'contact_person_description', 'area', 'category',
+          'customers_industry', 'system_role', 'capability_classification',
+          'customer_sector', 'active', 'age', 'size_category', 'closure',
+          'reason_for_closure', 'public_or_private', 'size_turnover',
+          'size_employees', 'company_type', 'business_model', 'collaboration_role',
+          'regulatory_orientation', 'innovation_maturity', 'cities_in_sweden',
+          'country_of_hq', 'geographical_ownership', 'vi_activity_ostergotland',
+          'founder_type', 'region_at_establishment', 'mother_university',
+          'mother_company', 'mother_public_org', 'mother_org_ostergotland',
+          'owner_type', 'group_or_consortia', 'notes_on_owner', 'merged_or_acquired',
+          'acquiring_owner', 'subsidiaries', 'own_acquisitions', 'funding',
+          'success_and_growth', 'connected_to_cluster', 'notes_on_partners',
+          'sources', 'type_of_organisation',
+        ];
+  
+        const dynamic = data
+          .map((col: { column_name: string }) => col.column_name)
+          .filter((col: string) => !fixedColumns.includes(col));
+  
+        setDynamicColumns(dynamic);
+      }
+    };
+  
+    fetchColumns();
+  }, []);
 
   const payload = {
     name: editOrg.name,
@@ -161,6 +198,10 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
     notes_on_partners: editOrg.notes_on_partners,
     sources: editOrg.sources,
     type_of_organisation: editOrg.type_of_organisation,
+    ...dynamicColumns.reduce((acc, col) => ({
+      ...acc,
+      [col]: (editOrg as unknown as Record<string, unknown>)[col] ?? null
+    }), {}),
   };
 
   const handleSave = async () => {
@@ -349,6 +390,28 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
         {field('Connected to Cluster', 'connected_to_cluster')}
         {field('Notes on Partners', 'notes_on_partners')}
         {field('Sources', 'sources')}
+        {/* ── DYNAMIC COLUMNS ── */}
+{dynamicColumns.length > 0 && (
+  <div className={styles.fieldGroup}>
+    <p className={styles.label} style={{ color: '#4fc3ff', marginBottom: '12px' }}>
+      — Additional fields —
+    </p>
+  </div>
+)}
+{dynamicColumns.map(col => (
+  <div key={col} className={styles.fieldGroup}>
+    <label className={styles.label}>{col.replace(/_/g, ' ')}</label>
+    <input
+      type="text"
+      value={(editOrg as unknown as Record<string, unknown>)[col] as string ?? ''}
+      onChange={e => setEditOrg(prev => ({
+        ...prev,
+        [col]: e.target.value || null
+      }))}
+      className={styles.input}
+    />
+  </div>
+))}
 
         {/* Description */}
         <div className={styles.fieldGroup}>
@@ -400,5 +463,7 @@ export default function EditDrawer({ org, onClose, onSaved, mode = 'edit' }: Edi
         </div>
       </div>
     </>
+    
   );
+  
 }
