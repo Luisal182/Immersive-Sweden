@@ -1,6 +1,13 @@
 // INDEX.TS      Organization interface and types
 export const TECHNOLOGY_OPTIONS = ['XR', 'AI', 'Visualization'] as const;
-export const INDUSTRY_OPTIONS = ['Manufacturing', 'Healthcare', 'Culture', 'Games'] as const;
+export const INDUSTRY_OPTIONS = ['Aerospace','Agriculture, forestry and fishing','Automotive',
+    'Construction, infrastructure, architecture, urban development','Culture, Arts, & Entertainment',
+    'Defense and security','Education & training','Electronics','Energy','Food and packaging',
+    'Gaming','Healthcare, life sciences & medtech','ICT','Manufacturing',
+    'Media','Mining and natural resources','Process industries',
+    'Professional, scientific and technical activities',
+    'Research and testing','Retail','Robotics and autonomous systems',
+    'Transportation & logistics' ] as const;
 export const ORGANIZATION_MODEL_OPTIONS = ['Business', 'Nonprofit Organization'] as const;
 export const ORGANIZATION_SUBTYPE_OPTIONS = [
   'Company','University or Research Institute','Research group at University',

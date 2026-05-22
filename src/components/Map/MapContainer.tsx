@@ -217,17 +217,35 @@ export default function MapContainer() {
           ]}
         />
 
-        <CustomDropdown
+         <CustomDropdown
           label="Industry"
-          selectedValues={currentIndustries}
-          onChange={(vals) => setCurrentIndustries(vals as IndustryType[])}
-          options={[
-            { value: 'Manufacturing', label: 'Manufacturing', icon: '⚙️' },
-            { value: 'Healthcare',    label: 'Healthcare',    icon: '🏥' },
-            { value: 'Culture',       label: 'Culture',       icon: '🎨' },
-            { value: 'Games',         label: 'Games',         icon: '🎮' },
+           selectedValues={currentIndustries}
+           onChange={(vals) => setCurrentIndustries(vals as IndustryType[])}
+           options={[
+             { value: 'Aerospace',  label: 'Aerospace',   icon: '✈️' },
+             { value: 'Agriculture, forestry and fishing',  label: 'Agriculture, forestry and fishing', icon: '🌾' },
+             { value: 'Automotive',  label: 'Automotive',   icon: '🚗' },
+             { value: 'Construction, infrastructure, architecture, urban development',      label: 'Construction, infrastructure, architecture, urban development',      icon: '🏗️' },
+             { value: 'Culture, Arts, & Entertainment',label: 'Culture, Arts, & Entertainment',    icon: '🎨' },
+             { value: 'Defense and security', label: 'Defense and security',     icon: '🛡️' },
+             { value: 'Education & training',  label: 'Education & training',     icon: '📚' },
+             { value: 'Electronics', label: 'Electronics', icon: '💡' },
+             { value: 'Energy',  label: 'Energy',   icon: '⚡' },
+             { value: 'Food and packaging', label: 'Food and packaging', icon: '🍎' },
+             { value: 'Gaming',  label: 'Gaming', icon: '🎮' },
+             { value: 'Healthcare, life sciences & medtech',  label: 'Healthcare, life sciences & medtech', icon: '🏥' },
+             { value: 'ICT',label: 'ICT',  icon: '💻' },
+             { value: 'Manufacturing',label: 'Manufacturing', icon: '⚙️' },
+            { value: 'Media', label: 'Media', icon: '📺' },
+            { value: 'Mining and natural resources',label: 'Mining and natural resources', icon: '⛏️' },
+            { value: 'Process industries',  label: 'Process industries',icon: '🏭' },
+            { value: 'Professional, scientific and technical activities',  label: 'Professional, scientific and technical activities',icon: '🔬' },
+            { value: 'Research and testing', label: 'Research and testing',   icon: '🧪' },
+            { value: 'Retail',label: 'Retail',  icon: '🛒' },
+            { value: 'Robotics and autonomous systems',label: 'Robotics and autonomous systems',  icon: '🤖' },
+            { value: 'Transportation & logistics',  label: 'Transportation & logistics',  icon: '🚚' },
           ]}
-        />
+       />
 
         <CustomDropdown
           label="Organization Model"
