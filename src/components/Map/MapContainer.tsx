@@ -68,7 +68,7 @@ export default function MapContainer() {
       }
     });
 
-    // flyTo OUT of on('load') — with more delay
+    // flyTo OUT of on('load')
     map.current.once('idle', () => {
        setTimeout(() => {
         map.current?.flyTo({
@@ -208,6 +208,7 @@ export default function MapContainer() {
       <div className={styles.filterGroup}>
         <CustomDropdown
           label="Technology"
+          pluralLabel="Technologies"
           selectedValues={currentTechnologies}
           onChange={(vals) => setCurrentTechnologies(vals as TechnologyType[])}
           options={[
@@ -219,6 +220,7 @@ export default function MapContainer() {
 
          <CustomDropdown
           label="Industry"
+          pluralLabel='Industries'
            selectedValues={currentIndustries}
            onChange={(vals) => setCurrentIndustries(vals as IndustryType[])}
            options={[
@@ -252,7 +254,7 @@ export default function MapContainer() {
           selectedValues={currentOrganizationModels}
           onChange={(vals) => setCurrentOrganizationModels(vals as OrganizationModelType[])}
           options={[
-            { value: 'Business',               label: 'Business',               icon: '💼' },
+            { value: 'Business',  label: 'Business',  icon: '💼' },
             { value: 'Nonprofit Organization', label: 'Nonprofit Organization', icon: '🤝' },
           ]}
         />

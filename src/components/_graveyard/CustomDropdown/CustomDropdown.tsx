@@ -14,6 +14,7 @@ interface CustomDropdownProps {
   selectedValues: string[];
   options: DropdownOption[];
   onChange: (values: string[]) => void;
+  pluralLabel?: string
 }
 
 export default function CustomDropdown({
@@ -21,6 +22,7 @@ export default function CustomDropdown({
   selectedValues,
   options,
   onChange,
+  pluralLabel,
 }: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,7 @@ export default function CustomDropdown({
 
   const triggerLabel =
     selectedValues.length === 0
-      ? `All ${label}s`
+      ? `All ${pluralLabel ?? label + 's'}`
       : selectedValues.length === 1
       ? options.find(o => o.value === selectedValues[0])?.label ?? selectedValues[0]
       : `${label} (${selectedValues.length})`;
@@ -109,7 +111,7 @@ export default function CustomDropdown({
             );
           })}
 
-          {/* Clear button — only visible when something is checked */}
+          {/* Clear button  visible when  is checked */}
           {selectedValues.length > 0 && (
             <button className={styles.clearBtn} onClick={() => onChange([])}>
               Clear selection
