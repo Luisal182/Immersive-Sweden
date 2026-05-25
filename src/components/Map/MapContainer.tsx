@@ -249,7 +249,7 @@ export default function MapContainer() {
           ]}
        />
 
-        <CustomDropdown
+        {/* <CustomDropdown
           label="Organization Model"
           selectedValues={currentOrganizationModels}
           onChange={(vals) => setCurrentOrganizationModels(vals as OrganizationModelType[])}
@@ -257,7 +257,7 @@ export default function MapContainer() {
             { value: 'Business',  label: 'Business',  icon: '💼' },
             { value: 'Nonprofit Organization', label: 'Nonprofit Organization', icon: '🤝' },
           ]}
-        />
+        />*/}
 
 <CustomDropdown
   label="Type of organisation"
