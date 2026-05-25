@@ -68,7 +68,7 @@ export default function MapContainer() {
       }
     });
 
-    // flyTo OUT of on('load') — with more delay
+    // flyTo OUT of on('load')
     map.current.once('idle', () => {
        setTimeout(() => {
         map.current?.flyTo({
@@ -208,6 +208,7 @@ export default function MapContainer() {
       <div className={styles.filterGroup}>
         <CustomDropdown
           label="Technology"
+          pluralLabel="Technologies"
           selectedValues={currentTechnologies}
           onChange={(vals) => setCurrentTechnologies(vals as TechnologyType[])}
           options={[
@@ -217,36 +218,63 @@ export default function MapContainer() {
           ]}
         />
 
-        <CustomDropdown
+         <CustomDropdown
           label="Industry"
-          selectedValues={currentIndustries}
-          onChange={(vals) => setCurrentIndustries(vals as IndustryType[])}
-          options={[
-            { value: 'Manufacturing', label: 'Manufacturing', icon: '⚙️' },
-            { value: 'Healthcare',    label: 'Healthcare',    icon: '🏥' },
-            { value: 'Culture',       label: 'Culture',       icon: '🎨' },
-            { value: 'Games',         label: 'Games',         icon: '🎮' },
+          pluralLabel='Industries'
+           selectedValues={currentIndustries}
+           onChange={(vals) => setCurrentIndustries(vals as IndustryType[])}
+           options={[
+             { value: 'Aerospace',  label: 'Aerospace',   icon: '✈️' },
+             { value: 'Agriculture, forestry and fishing',  label: 'Agriculture, forestry and fishing', icon: '🌾' },
+             { value: 'Automotive',  label: 'Automotive',   icon: '🚗' },
+             { value: 'Construction, infrastructure, architecture, urban development',      label: 'Construction, infrastructure, architecture, urban development',      icon: '🏗️' },
+             { value: 'Culture, Arts, & Entertainment',label: 'Culture, Arts, & Entertainment',    icon: '🎨' },
+             { value: 'Defense and security', label: 'Defense and security',     icon: '🛡️' },
+             { value: 'Education & training',  label: 'Education & training',     icon: '📚' },
+             { value: 'Electronics', label: 'Electronics', icon: '💡' },
+             { value: 'Energy',  label: 'Energy',   icon: '⚡' },
+             { value: 'Food and packaging', label: 'Food and packaging', icon: '🍎' },
+             { value: 'Gaming',  label: 'Gaming', icon: '🎮' },
+             { value: 'Healthcare, life sciences & medtech',  label: 'Healthcare, life sciences & medtech', icon: '🏥' },
+             { value: 'ICT',label: 'ICT',  icon: '💻' },
+             { value: 'Manufacturing',label: 'Manufacturing', icon: '⚙️' },
+            { value: 'Media', label: 'Media', icon: '📺' },
+            { value: 'Mining and natural resources',label: 'Mining and natural resources', icon: '⛏️' },
+            { value: 'Process industries',  label: 'Process industries',icon: '🏭' },
+            { value: 'Professional, scientific and technical activities',  label: 'Professional, scientific and technical activities',icon: '🔬' },
+            { value: 'Research and testing', label: 'Research and testing',   icon: '🧪' },
+            { value: 'Retail',label: 'Retail',  icon: '🛒' },
+            { value: 'Robotics and autonomous systems',label: 'Robotics and autonomous systems',  icon: '🤖' },
+            { value: 'Transportation & logistics',  label: 'Transportation & logistics',  icon: '🚚' },
           ]}
-        />
+       />
 
         <CustomDropdown
           label="Organization Model"
           selectedValues={currentOrganizationModels}
           onChange={(vals) => setCurrentOrganizationModels(vals as OrganizationModelType[])}
           options={[
-            { value: 'Business',               label: 'Business',               icon: '💼' },
+            { value: 'Business',  label: 'Business',  icon: '💼' },
             { value: 'Nonprofit Organization', label: 'Nonprofit Organization', icon: '🤝' },
           ]}
         />
 
 <CustomDropdown
-  label="Other Organizations"
+  label="Type of organisation"
   selectedValues={currentOrganizationSubtypes}
   onChange={(vals) => setCurrentOrganizationSubtypes(vals as OrganizationSubtypeType[])}
   options={[
-    { value: 'Civic Organization',  label: 'Civic Organization',  icon: '🏛️' },
-    { value: 'University Lab',      label: 'University Lab',      icon: '🎓' },
-    { value: 'Research Institute',  label: 'Research Institute',  icon: '🔬' },
+    { value: 'Company',                              label: 'Company',                              icon: '🏢' },
+    { value: 'University or Research Institute',     label: 'University or Research Institute',     icon: '🎓' },
+    { value: 'Research group at University',         label: 'Research group at University',         icon: '🔬' },
+    { value: 'Research group at Research Institute', label: 'Research group at Research Institute', icon: '🔭' },
+    { value: 'Lead user',                            label: 'Lead user',                            icon: '⭐' },
+    { value: 'Public organisation',                  label: 'Public organisation',                  icon: '🏛️' },
+    { value: 'City, Region, Municipality',           label: 'City, Region, Municipality',           icon: '🏙️' },
+    { value: 'Policy unit',                          label: 'Policy unit',                          icon: '📋' },
+    { value: 'Civic organization',                   label: 'Civic organization',                   icon: '🤝' },
+    { value: 'Innovation platform',                  label: 'Innovation platform',                  icon: '💡' },
+    { value: 'Competence center',                    label: 'Competence center',                    icon: '🎯' },
   ]}
 />
       </div>

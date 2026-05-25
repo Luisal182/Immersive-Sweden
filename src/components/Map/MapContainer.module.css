@@ -101,7 +101,7 @@
    ============================================ */
    .filterGroup {
     position: absolute;
-    bottom: 180px;  /* ← Más arriba (era 20px) */
+    bottom: 280px;  /* ← Más arriba (era 180px) */
     right: 80px;
     width: 300px;
     display: flex;
@@ -276,5 +276,10 @@
     backdrop-filter: blur(8px);
     box-shadow: none;
     
+  }
+
+  .optionsList {
+    max-height: none;
+    overflow-y: visible;
   }
 }
